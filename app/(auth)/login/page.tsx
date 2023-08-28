@@ -37,18 +37,16 @@ export default function LoginForm() {
   })
 
 
-
-
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    
-    const result = await signIn('credentials', {
+
+    const response = await signIn('credentials', {
       username: data.username,
       password: data.password,
       redirect: true,
       callbackUrl: '/',
     });
-    if (result) {
-      console.log(result)
+    if (response) {
+      console.log('Success')
     }
     else {
       console.log('Error Occured')

@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.ADMIN_JWT_SECRET,
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         const { username, password } = credentials as any;
 
-        const res = await fetch("https://c799-41-80-112-48.ngrok-free.app/api/auth/local", {
+        const res = await fetch("http://localhost:5000/api/auth/local", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -32,7 +32,7 @@ export const authOptions: NextAuthOptions = {
 
         if (user) {
           user['name'] = user['username']
-          console.log(user)
+
           return user;
         }
         return null;
@@ -47,18 +47,18 @@ export const authOptions: NextAuthOptions = {
 
 
   pages: {
-    signIn: "/auth/login",
+    signIn: "/login",
   },
   callbacks: {
-    async session({ session, token }) {
-      session.user = token.user;
-      return session;
-    },
     async jwt({ token, user }) {
       if (user) {
         token.user = user;
       }
       return token;
+    },
+    async session({ session, token }) {
+      session.user = token.user;
+      return session;
     },
   },
 };

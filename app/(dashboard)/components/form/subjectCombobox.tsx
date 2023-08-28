@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect }  from "react"
+import { useState, useEffect } from "react"
 
 import { Check, ChevronsUpDown } from "lucide-react"
 
@@ -20,107 +20,112 @@ import {
 } from "@/components/ui/popover"
 
 const frameworks = [
-    {
+  {
     "value": "mathematics",
     "label": "Mathematics"
-    },
-    {
-    "value": "geography",
-    "label": "Geography"
-    },
-    {
-    "value": "economics",
-    "label": "Economics"
-    },
-    {
-    "value": "biology",
-    "label": "Biology"
-    },
-    {
-    "value": "physics",
-    "label": "Physics"
-    },
-    {
+  },
+  {
+    "value": "science",
+    "label": "Science"
+  },
+  {
     "value": "history",
     "label": "History"
-    },
-    {
+  },
+  {
     "value": "chemistry",
     "label": "Chemistry"
-    },
-    {
-    "value": "computer science",
-    "label": "Computer Science"
-    },
-    {
-    "value": "political science",
-    "label": "Political Science"
-    },
-    {
-    "value": "psychology",
-    "label": "Psychology"
-    },
-    {
-    "value": "social science",
-    "label": "Social Science"
-    },
-    {
-    "value": "accountancy",
-    "label": "Accountancy"
-    },
-    {
-    "value": "sociology",
-    "label": "Sociology"
-    },
-    {
-    "value": "physical education",
-    "label": "Physical Education"
-    },
-    {
-    "value": "philosophy",
-    "label": "Philosophy"
-    },
-    {
-    "value": "environmental science",
-    "label": "Environmental Science"
-    },
-    {
-    "value": "law",
-    "label": "Law"
-    },
-    {
-    "value": "home science",
-    "label": "Home Science"
-    },
-    {
-    "value": "business studies",
-    "label": "Business Studies"
-    },
-    {
-    "value": "botany",
-    "label": "Botany"
-    },
-    {
-    "value": "zoology",
-    "label": "Zoology"
-    },
-    {
+  },
+  {
+    "value": "biology",
+    "label": "Biology"
+  },
+  {
+    "value": "economics",
+    "label": "Economics"
+  },
+  {
     "value": "humanities",
     "label": "Humanities"
-    },
-    {
-    "value": "anthropology",
-    "label": "Anthropology"
-    },
-    {
-    "value": "literature",
-    "label": "Literature"
-    }
+  },
+  {
+    "value": "geography",
+    "label": "Geography"
+  },
+  {
+    "value": "physics",
+    "label": "Physics"
+  },
+  {
+    "value": "psychology",
+    "label": "Psychology"
+  },
+  {
+    "value": "computerScience",
+    "label": "Computer Science"
+  },
+  {
+    "value": "socialScience",
+    "label": "Social Science"
+  },
+  {
+    "value": "sociology",
+    "label": "Sociology"
+  },
+  {
+    "value": "engineering",
+    "label": "Engineering"
+  },
+  {
+    "value": "business",
+    "label": "Business"
+  },
+  {
+    "value": "physicalEducation",
+    "label": "Physical Education"
+  },
+  {
+    "value": "statistics",
+    "label": "Statistics"
+  },
+  {
+    "value": "law",
+    "label": "Law"
+  },
+  {
+    "value": "politicalScience",
+    "label": "Political Science"
+  },
+  {
+    "value": "philosophy",
+    "label": "Philosophy"
+  },
+  {
+    "value": "astronomy",
+    "label": "Astronomy"
+  },
+  {
+    "value": "accounting",
+    "label": "Accounting"
+  },
+  {
+    "value": "businessStudies",
+    "label": "Business Studies"
+  },
+  {
+    "value": "english",
+    "label": "English"
+  },
+  {
+    "value": "other",
+    "label": "Other"
+  }
 ]
 
-export default function SubjectCombobox({ value, setValue }) {
+
+export default function SubjectCombobox({ value, setValue }: any) {
   const [open, setOpen] = useState(false)
-  
+
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -146,6 +151,7 @@ export default function SubjectCombobox({ value, setValue }) {
               <CommandItem
                 key={framework.value}
                 onSelect={(currentValue) => {
+
                   setValue(currentValue === value ? "" : currentValue)
                   setOpen(false)
                 }}

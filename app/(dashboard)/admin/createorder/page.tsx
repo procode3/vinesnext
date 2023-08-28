@@ -1,6 +1,7 @@
 "use client"
 import React from 'react'
-import { ChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent, useState, useEffect, Fragment } from 'react';
+import { useSession } from 'next-auth/react'
 import { v4 } from 'uuid'
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,13 +10,18 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Separator } from "@/registry/new-york/ui/separator"
 import SubjectCombobox from "@/app/(dashboard)/components/form/subjectCombobox"
-import { toast } from "@/registry/new-york/ui/use-toast"
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import WriterCombobox from "@/app/(dashboard)/components/form/writersCombobox"
+import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
+import UsersCombobox from "@/app/(dashboard)/components/form/usersCombobox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import MinimizeRoundedIcon from '@mui/icons-material/MinimizeRounded';
-// import ActionTabs from "@/app/admin/createorder/AcademicLevel"
+import { useToast } from "@/components/ui/use-toast"
+
+
+import { httpCreateOrder, httpGetClients, httpGetWriters } from '../../hooks/requests';
+
+
 import {
   Form,
   FormControl,
@@ -26,14 +32,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+
 
 import { Label } from "@/components/ui/label"
 import {
@@ -45,25 +44,26 @@ import {
 
 
 interface order {
-  id: string,
   name: string,
   orderType: string,
   clientDeadline: string,
   writerDeadline: string,
   pages: string,
+  cpp: string,
   subject: string,
   topic: string,
-  detailedInstructions: string,
-  files: any,
-  academicLevel: string[],
+  instructions: string,
+  clientFiles?: string,
+  educationLevel: string[] | string,
   writerLevel: string,
   amount: number,
   writerFee: number,
   writerId: string,
-  assignedBy: string,
+  assignedBy?: string,
   writerRating: number,
-  clientID: string,
+  clientId?: string,
   orderNumber: string,
+  orderStatus: string,
 }
 
 const items = [
@@ -84,17 +84,13 @@ const items = [
     label: "Master's",
   },
   {
-    id: "graduate",
-    label: "Graduate",
-  },
-  {
-    id: "postgraduate",
+    id: "phd",
     label: "Post Graduate",
   },
 ] as const
 
 const formSchema = z.object({
-  id: z.string().min(2,).max(50),
+  // id: z.string().min(2,).max(50),
   name: z.string().min(2).max(50),
   orderType: z.string().min(2, {
     message: "Please choose atleast one odertype",
@@ -102,78 +98,82 @@ const formSchema = z.object({
   clientDeadline: z.string().min(2, { message: "Required" }).max(50),
   writerDeadline: z.string().min(2, { message: "Required" }).max(50),
   pages: z.string(),
+  cpp: z.string(),
   subject: z.string().min(2, {
     message: "Please choose atleast one option subject",
   }).max(50),
   topic: z.string().min(2, { message: "Required topic" }).max(50),
-  detailedInstructions: z.string().min(0).max(50),
-  files: z.string(),
-  academicLevel: z.array(z.string()).refine((value) => value.some((item) => item), {
+  instructions: z.string().min(0).max(1024),
+  clientFiles: z.array(z.string()).nullable(),
+  educationLevel: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to select at least one item.",
   }),
   writerLevel: z.string(),
   amount: z.number(),
   writerFee: z.number(),
-  writerId: z.string(),
-  assignedBy: z.string(),
+  writerId: z.string().nullable(),
+  assignedBy: z.string().nullable(),
   writerRating: z.number(),
-  clientID: z.string(),
+  clientId: z.string(),
   orderNumber: z.string().min(2).max(50),
+  orderStatus: z.string(),
 })
 
 function CreateOrder() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: v4(),
+      // id: v4(),
       name: "",
       orderType: "",
       clientDeadline: "",
       writerDeadline: "",
       pages: "0.5",
+      cpp: "300",
       subject: "",
       topic: "",
-      detailedInstructions: "",
-      files: "",
-      academicLevel: [],
+      instructions: "",
+      clientFiles: null,
+      educationLevel: [],
       writerLevel: "",
       amount: 50,
       writerFee: 50,
-      writerId: "",
-      assignedBy: "",
+      writerId: "4",
+      assignedBy: null,
       writerRating: 5,
-      clientID: "",
+      clientId: "",
       orderNumber: "",
+      orderStatus: "new",
     },
-  })
-  const [value, setValue] = React.useState('1');
+  });
 
+  const { data: session }: any = useSession();
 
-  const handleActionChange = (event: any, newValue: string) => {
-    setValue(newValue);
-  }
-  const clients = [
-    { "id": 1, "name": "Client 1" },
-    { "id": 2, "name": "Client 2" },
-    { "id": 3, "name": "Client 3" },
-    { "id": 4, "name": "Client 4" },
-    { "id": 5, "name": "Client 5" },
-    { "id": 6, "name": "Client 6" },
-    { "id": 7, "name": "Client 7" },
-    { "id": 8, "name": "Client 8" },
-    { "id": 9, "name": "Client 9" },
-    { "id": 10, "name": "Client 10" }
-  ]
+  const [orderName, setOrderName] = useState('');
+  const [isloading, setIsloading] = useState(false);
+  const { toast } = useToast()
+
+  const handleOrderNumberChange = (event: any) => {
+
+    const prefixName = form.getValues('clientId');
+    const orderNumber = event.target!.value;
+    const generatedOrderName = `GW${orderNumber}`;
+    setOrderName(generatedOrderName);
+    form.setValue("name", generatedOrderName);
+
+  };
+
 
   const [fileList, setFileList] = useState<FileList | null>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFileList(e.target.files);
   };
-  const writers = [{ value: 'erick', label: 'erick' }]
+
 
 
   let files = fileList ? [...fileList] : [];
+  console.log(files);
 
   const removeFileHandler = (index: number) => {
     const updatedFiles = [...files] as any;
@@ -181,31 +181,49 @@ function CreateOrder() {
     setFileList(updatedFiles); // Update the state with the modified array
   };
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
 
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-    
+    try {
+      setIsloading(true);
+      e.preventDefault();
+
+      values.educationLevel = values.educationLevel[0] as any;
+
+      console.log(values);
+      const res = await httpCreateOrder(values, session, toast, files);
+      if (res) {
+        form.reset();
+      }
+    } catch (error) {
+      console.error('Order creation error:', error);
+    } finally {
+      setIsloading(false);
+    }
+
+    console.log(values);
   }
 
   return (
     <div className=''>
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} >
-          <div className="flex flex-col items-center justify-center pt-8">
-            <p className=" font-bold">Creating an Order</p>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='p-4'>
+          <div className="flex flex-col items-center justify-center p-4 mb-4">
+            <p className=" font-bold text-xl">Create a New Order</p>
           </div>
 
-          <div className=' grid grid-cols-3  place-content-between gap-10 border-3 border-solid p-8   text-sm'>
-            <div className=" flex flex-col  w-full  ">
-              <div className='w-full p-2  flex flex-col gap-y-4 '>
+          <div className=' grid grid-cols-3  place-content-between gap-6 border-3 border-solid text-sm'>
+            <div className=" flex flex-col  w-full bg-white rounded ">
+              <div className="flex opacity-80"><HorizontalRuleIcon /> Order Details</div>
+
+              <div className='w-full p-6  flex flex-col gap-y-4 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'>
+
                 <FormField
                   control={form.control}
                   name="orderType"
 
                   render={({ field }) => (
+
                     <FormItem>
                       <FormLabel>Order Type</FormLabel>
 
@@ -220,7 +238,7 @@ function CreateOrder() {
                               <RadioGroupItem value="writing" className="sr-only" />
                             </FormControl>
                             <div className="items-center rounded-md border-2 border-muted cursor-pointer p-1 hover:border-accent">
-                              <span className="block w-full p-2 text-center font-normal">
+                              <span className="md:w-8 block w-full p-2 text-center font-normal">
                                 Writing
                               </span>
 
@@ -260,6 +278,7 @@ function CreateOrder() {
                     </FormItem>
                   )}
                 />
+                <Separator />
                 <FormField
                   control={form.control}
                   name="clientDeadline"
@@ -268,7 +287,7 @@ function CreateOrder() {
                     <FormItem>
                       <FormLabel>Deadline:{`10 days to go`}</FormLabel>
                       <FormControl>
-                        <Input type="datetime-local" placeholder="" {...field} />
+                        <Input type="datetime-local"  {...field} />
                       </FormControl>
                     </FormItem>
 
@@ -305,7 +324,7 @@ function CreateOrder() {
                 />
                 <FormField
                   control={form.control}
-                  name="academicLevel"
+                  name="educationLevel"
                   render={() => (
                     <FormItem >
                       <div className="mb-4">
@@ -317,7 +336,7 @@ function CreateOrder() {
                           <FormField
                             key={item.id}
                             control={form.control}
-                            name="academicLevel"
+                            name="educationLevel"
                             render={({ field }) => {
                               return (
                                 <FormItem
@@ -356,7 +375,11 @@ function CreateOrder() {
                     </FormItem>
                   )}
                 />
-
+              </div>
+            </div>
+            <div className=" flex flex-col w-full bg-white ">
+              <div className="flex opacity-80"><HorizontalRuleIcon /> Instructions and Attachments</div>
+              <div className='w-full p-6 flex flex-col space-y-3 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'>
                 <FormField
                   control={form.control}
                   name="topic"
@@ -371,13 +394,9 @@ function CreateOrder() {
 
                   )}
                 />
-              </div>
-            </div>
-            <div className=" flex flex-col w-full ">
-              <div className='w-full p-2 flex flex-col space-y-3 '>
                 <FormField
                   control={form.control}
-                  name="detailedInstructions"
+                  name="instructions"
 
                   render={({ field }) => (
                     <FormItem className='flex flex-col gap-y-2'>
@@ -391,7 +410,7 @@ function CreateOrder() {
                 />
                 <FormField
                   control={form.control}
-                  name="files"
+                  name="clientFiles"
 
                   render={({ field }) => (
                     <FormItem className='flex flex-col gap-y-2'>
@@ -417,124 +436,164 @@ function CreateOrder() {
                 />
               </div>
             </div>
-            <div className=" w-full p-2 flex flex-col space-y-4">
+            <div className="flex flex-col">
+              <div className="flex opacity-80"><HorizontalRuleIcon /> Writer Details</div>
+              <div className=" w-full p-6 flex flex-col bg-white space-y-4 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]">
 
-              <FormField
-                control={form.control}
-                name="writerDeadline"
+                <FormField
+                  control={form.control}
+                  name="writerDeadline"
 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Writer Deadline:{`10 days to go`}</FormLabel>
-                    <FormControl>
-                      <Input type="datetime-local" placeholder="" {...field} />
-                    </FormControl>
-                  </FormItem>
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Writer Deadline:{`10 days to go`}</FormLabel>
+                      <FormControl>
+                        <Input type="datetime-local" placeholder="" {...field} />
+                      </FormControl>
+                    </FormItem>
 
-                )}
-              />
-
-
-              <FormField
-                control={form.control}
-                name="writerId"
-
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Choose Action</FormLabel>
-
-                    <FormControl>
-                      <Tabs defaultValue="isAvailable" className="max-w-md ">
-                        <TabsList className="grid w-full grid-cols-3 ">
-                          <TabsTrigger value="isAvailable">Make Available</TabsTrigger>
-                          <TabsTrigger value="writer">Assign Writer</TabsTrigger>
-                          <TabsTrigger value="new">Add to New</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="isAvailable">
-                          <FormField
-                            control={form.control}
-                            name="writerLevel"
-
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Writer Proficiency</FormLabel>
-                                <FormControl>
-                                  <RadioGroup defaultValue="intermidiate" className='grid grid-cols-2'>
-                                    <div className="flex items-center space-x-2">
-                                      <RadioGroupItem value="beginner" id="r1" />
-                                      <Label htmlFor="r1">Beginner</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                      <RadioGroupItem value="intermidiate" id="r2" />
-                                      <Label htmlFor="r2">Intermidiate</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                      <RadioGroupItem value="pro" id="r3" />
-                                      <Label htmlFor="r3">Pro</Label>
-                                    </div>
-
-                                  </RadioGroup>
-                                </FormControl>
-                              </FormItem>
-
-                            )}
-                          />
-                        </TabsContent>
-                        <TabsContent value="writer">
-                          <div >
-                            <WriterCombobox />
-                          </div>
-                        </TabsContent>
-                        <TabsContent value="new">
-                          <div >
-                            <p className='opacity-80 py-3'>Add to New order list</p>
-
-                          </div>
-                        </TabsContent>
-                      </Tabs>
-
-                    </FormControl>
+                  )}
+                />
 
 
-                  </FormItem>
+                <FormField
+                  control={form.control}
+                  name="writerId"
 
-                )}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Choose Action</FormLabel>
 
-              />
+                      <FormControl>
+                        <Tabs defaultValue="isAvailable" className="max-w-md ">
+                          <TabsList className="grid w-full grid-cols-3 ">
+                            <TabsTrigger value="isAvailable">Make Available</TabsTrigger>
+                            <TabsTrigger value="writer">Assign Writer</TabsTrigger>
+                            <TabsTrigger value="new">Add to New</TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="isAvailable">
+                            <FormField
+                              control={form.control}
+                              name="writerLevel"
 
-              <FormField
-                control={form.control}
-                name="orderNumber"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Writer Proficiency</FormLabel>
+                                  <FormControl>
+                                    <RadioGroup defaultValue="intermidiate" className='grid grid-cols-2'>
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="beginner" id="r1" />
+                                        <Label htmlFor="r1">Beginner</Label>
+                                      </div>
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="intermidiate" id="r2" />
+                                        <Label htmlFor="r2">Intermidiate</Label>
+                                      </div>
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="pro" id="r3" />
+                                        <Label htmlFor="r3">Pro</Label>
+                                      </div>
 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Order Number</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="Order Number" {...field} />
-                    </FormControl>
-                  </FormItem>
+                                    </RadioGroup>
+                                  </FormControl>
+                                </FormItem>
 
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="name"
+                              )}
+                            />
+                          </TabsContent>
+                          <TabsContent value="writer">
+                            <div >
 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Order Name</FormLabel>
-                    <FormControl>
-                      <Input type="text" aria-readonly='true' placeholder="Order Name" {...field} />
-                    </FormControl>
-                  </FormItem>
+                              <UsersCombobox httpHook={httpGetWriters} form={form} formField={`writerId`} />
+                            </div>
+                          </TabsContent>
+                          <TabsContent value="new">
+                            <div >
+                              <p className='opacity-80 py-3'>Add to New order list</p>
 
-                )}
-              />
+                            </div>
+                          </TabsContent>
+                        </Tabs>
 
+                      </FormControl>
+
+
+                    </FormItem>
+
+                  )}
+
+
+                />
+
+                <FormField
+                  control={form.control}
+                  name="clientId"
+
+                  render={({ field }) => (
+                    <FormItem className='flex flex-col'>
+                      <FormLabel>Select Client</FormLabel>
+                      <FormControl>
+                        <Fragment >
+                          <UsersCombobox httpHook={httpGetClients} form={form} formField={`clientId`} />
+                        </Fragment>
+                      </FormControl>
+                    </FormItem>
+
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="cpp"
+
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>CPP</FormLabel>
+                      <FormControl>
+                        <Input type="text"  {...field} />
+                      </FormControl>
+                    </FormItem>
+
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="orderNumber"
+
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Order Number</FormLabel>
+                      <FormControl>
+                        <Input type="text" placeholder="Order Number" {...field} onChange={(e) => {
+                          field.onChange(e);
+                          handleOrderNumberChange(e);
+                        }} />
+                      </FormControl>
+                    </FormItem>
+
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="name"
+
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='italic opacity-70'>Order Name: {orderName}</FormLabel>
+                      <FormControl>
+                        <Input type="hidden" readOnly={true} value={orderName} placeholder="Order Name" />
+                      </FormControl>
+                    </FormItem>
+
+                  )}
+                />
+              </div>
             </div>
           </div>
-          <div className="flex place-content-end p-8">
-            <Button type="submit"  >Submit</Button>
+          <div className="flex place-content-end p-4 mt-3">
+            <Button variant='default' type="submit"> {
+              isloading ? 'Loading...' : 'Submit'
+            }</Button>
           </div>
         </form>
       </Form>
