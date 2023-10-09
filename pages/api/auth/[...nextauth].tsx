@@ -1,6 +1,9 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+require('dotenv').config();
 
+
+const HOST = process.env.HOST || 'DESKTOP-QQAQH05';
 export const authOptions: NextAuthOptions = {
   secret: process.env.ADMIN_JWT_SECRET,
   providers: [
@@ -16,7 +19,8 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         const { username, password } = credentials as any;
 
-        const res = await fetch("http://localhost:5000/api/auth/local", {
+
+        const res = await fetch(`http://${HOST}:5000/api/auth/local`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -47,7 +51,7 @@ export const authOptions: NextAuthOptions = {
 
 
   pages: {
-    signIn: "/login",
+    signIn: `http://${HOST}:3000/login`,
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -60,6 +64,10 @@ export const authOptions: NextAuthOptions = {
       session.user = token.user;
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      return `http://${HOST}:3000/`
+    }
   },
 };
 

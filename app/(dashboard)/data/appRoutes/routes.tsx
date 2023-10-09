@@ -17,38 +17,46 @@ import React from 'react'
 
 
 interface Route {
-    path: string;
-    sidebarProps: { 
-        displayText: string; 
-        icon: JSX.Element | string;
-        child?: {
-            path: string;
-            displayText: string;
-            icon: React.JSX.Element | string;
-        }[];
-        }
+  path: string;
+  sidebarProps: {
+    displayText: string;
+    icon: JSX.Element | string;
+    child?: {
+      path: string;
+      displayText: string;
+      icon: React.JSX.Element | string;
+      active: boolean;
+    }[];
+
+  };
+  active: boolean;
+
 }
 
 //routes for Admin
 
 
-const adminRoutes: Route[] =[
+const adminRoutes: Route[] = [
   {
     "path": "/admin",
     "sidebarProps": {
       "displayText": "Dashboard",
-      "icon": <SpaceDashboardIcon color="primary" />
-    }
+      "icon": <SpaceDashboardIcon color="primary" />,
+
+    },
+    "active": false,
   },
   {
     "path": "/admin/createorder",
     "sidebarProps": {
       "displayText": "Create Order",
-      "icon": <LibraryAddIcon color="secondary"/>,
-    }
+      "icon": <LibraryAddIcon color="secondary" />,
+    },
+    "active": false,
   },
   {
     "path": "/admin/orders",
+    "active": false,
     "sidebarProps": {
       "displayText": "Orders",
       "icon": <ViewListIcon color="action" />,
@@ -56,42 +64,50 @@ const adminRoutes: Route[] =[
         {
           "path": "/admin/orders/new",
           "displayText": "New",
-          "icon": <PlaylistAddSharpIcon color="info"/>
+          "icon": <PlaylistAddSharpIcon color="info" />,
+          "active": false,
         },
         {
           "path": "/admin/orders/unconfirmed",
           "displayText": "Unconfirmed",
-          "icon": <GppMaybeSharpIcon color="error" />
+          "icon": <GppMaybeSharpIcon color="error" />,
+          "active": false,
         },
         {
           "path": "/admin/orders/available",
           "displayText": "Available",
-          "icon": <NotesSharpIcon color="info" />
+          "icon": <NotesSharpIcon color="info" />,
+          "active": false,
         },
         {
           "path": "/admin/orders/inprogress",
           "displayText": "In Progress",
-          "icon": <PlaylistPlaySharpIcon color="info" />
+          "icon": <PlaylistPlaySharpIcon color="info" />,
+          "active": false,
         },
         {
           "path": "/admin/orders/editing",
           "displayText": "Editing",
-          "icon": <EditNoteSharpIcon color="info" />
+          "icon": <EditNoteSharpIcon color="info" />,
+          "active": false,
         },
         {
           "path": "/admin/orders/completed",
           "displayText": "Completed",
-          "icon": <PlaylistAddCheckSharpIcon  color="info" />
+          "icon": <PlaylistAddCheckSharpIcon color="info" />,
+          "active": false,
         },
         {
           "path": "/admin/orders/revision",
           "displayText": "Revision",
-          "icon": <WrapTextSharpIcon  color="info" />
+          "icon": <WrapTextSharpIcon color="info" />,
+          "active": false,
         },
         {
           "path": "/admin/orders/disputes",
           "displayText": "Disputes",
-          "icon": <PlaylistRemoveSharpIcon  color="info"/>
+          "icon": <PlaylistRemoveSharpIcon color="info" />,
+          "active": false,
         }
       ]
     }
@@ -100,8 +116,9 @@ const adminRoutes: Route[] =[
     "path": "/admin/finance",
     "sidebarProps": {
       "displayText": "Finances",
-      "icon": <PaymentsIcon color="secondary"/>,
-    }
+      "icon": <PaymentsIcon color="secondary" />,
+    },
+    "active": false,
   },
 
 ]
@@ -116,6 +133,6 @@ const adminRoutes: Route[] =[
 
 
 
- const getAdminRoutes = () =>  adminRoutes;
+const getAdminRoutes = () => adminRoutes;
 
- export {getAdminRoutes, type Route}
+export { getAdminRoutes, type Route }

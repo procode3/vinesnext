@@ -46,7 +46,7 @@ export default function AvailableOrders() {
 
 
   return (
-    <div className=" w-4/5 flex  flex-col py-4 rounded-xl">
+    <div className=" w-4/5 flex  flex-col py-4 rounded-xl text-black">
       <div className="flex items-center justify-between">
         <Heading title={`Available Orders (${orders.length})`} description='Manage  your Available Orders' />
         <Link href='/admin/createorder' className={buttonVariants({ variant: "default" })}>Add Order</Link>

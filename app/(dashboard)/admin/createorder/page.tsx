@@ -207,7 +207,7 @@ function CreateOrder() {
     <div className=''>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='p-4'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='p-4 text-black'>
           <div className="flex flex-col items-center justify-center p-4 mb-4">
             <p className=" font-bold text-xl">Create a New Order</p>
           </div>
