@@ -6,20 +6,31 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import LogoutIcon from '@mui/icons-material/Logout';
 import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
 import { Button } from "@/components/ui/button"
+import { useMediaQuery } from '@mui/material';
 require('dotenv').config();
 
+type NavbarProps = {
+  toggleSidenav: () => void;
+};
 
-
-export default function Navbar() {
+export default function Navbar({ toggleSidenav }: NavbarProps) {
   const host = process.env.HOST;
   const { data: session }: any = useSession();
   const path = `http://${host}/api/auth/signin`
 
-
+  const isSmallScreen = useMediaQuery((theme: any) => theme.breakpoints.down('xl'));
   return (
-    <div className=' flex justify-between text-m mb-4 px-12 py-2 min-h-[40px] ticky rounded-l spacex-2 items-center bg-white/75
-    shadow-[0_3px_10px_rgb(0,0,0,0.2)] text-black'>
-      <DehazeRoundedIcon />
+    <div className=' flex justify-between text-m mb-4 px-12 min-h-[40px] sticky rounded-l spacex-2 items-center bg-white/75
+    shadow-[0_3px_10px_rgb(0,0,0,0.2)] text-black py-8'>
+      <div className='flex items-center gap-4'>
+      <h2 className='text-2xl font-semibold '>
+        <span className="hidden lg:inline">Writers</span>
+        <span className='text-2xl font-semibold text-[#000] '>√ine</span>
+      </h2>
+      {isSmallScreen && (
+        <DehazeRoundedIcon className="flex xl:hidden " onClick={toggleSidenav} />
+      )}
+      </div>
       <div className="flex space-x-4 items-center my-auto py-0  " >
         {
           session?.user ? (

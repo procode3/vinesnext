@@ -204,7 +204,7 @@ function CreateOrder() {
   }
 
   return (
-    <div className=''>
+    <div className='w-screen'>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='p-4 text-black'>
@@ -212,11 +212,11 @@ function CreateOrder() {
             <p className=" font-bold text-xl">Create a New Order</p>
           </div>
 
-          <div className=' grid grid-cols-3  place-content-between gap-6 border-3 border-solid text-sm'>
-            <div className=" flex flex-col  w-full bg-white rounded ">
+          <div className=' flex flex-col px-0 sm:px-36 lg:px-0 lg:flex-row place-content-between mx-auto border-3 border-solid text-sm gap-[20px] w-full'>
+            <div className=" flex flex-col  items-center  w-full bg-white rounded ">
               <div className="flex opacity-80"><HorizontalRuleIcon /> Order Details</div>
 
-              <div className='w-full p-6  flex flex-col gap-y-4 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'>
+              <div className='w-full xl:w-[350px] p-6  flex flex-col md:gap-y-[19px] xl:gap-y-[22px] shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'>
 
                 <FormField
                   control={form.control}
@@ -233,7 +233,7 @@ function CreateOrder() {
                         className="grid max-w-md grid-cols-3 gap-2 pt-2"
                       >
                         <FormItem>
-                          <FormLabel className="[&:has([data-state=checked])>div]:bg-[#0C7076] [&:has([data-state=checked])>div]:text-white">
+                          <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
                             <FormControl>
                               <RadioGroupItem value="writing" className="sr-only" />
                             </FormControl>
@@ -247,7 +247,7 @@ function CreateOrder() {
                           </FormLabel>
                         </FormItem>
                         <FormItem>
-                          <FormLabel className="[&:has([data-state=checked])>div]:bg-[#0C7076] [&:has([data-state=checked])>div]:text-white">
+                          <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
                             <FormControl>
                               <RadioGroupItem value="editing" className="sr-only" />
                             </FormControl>
@@ -261,7 +261,7 @@ function CreateOrder() {
                         </FormItem>
 
                         <FormItem>
-                          <FormLabel className="[&:has([data-state=checked])>div]:bg-[#0C7076] [&:has([data-state=checked])>div]:text-white">
+                          <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
                             <FormControl>
                               <RadioGroupItem value="other" className="sr-only" />
                             </FormControl>
@@ -377,9 +377,9 @@ function CreateOrder() {
                 />
               </div>
             </div>
-            <div className=" flex flex-col w-full bg-white ">
+            <div className=" flex flex-col w-full items-center bg-white ">
               <div className="flex opacity-80"><HorizontalRuleIcon /> Instructions and Attachments</div>
-              <div className='w-full p-6 flex flex-col space-y-3 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'>
+              <div className='w-full xl:w-[350px] p-6 flex flex-col space-y-3 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'>
                 <FormField
                   control={form.control}
                   name="topic"
@@ -436,9 +436,9 @@ function CreateOrder() {
                 />
               </div>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full items-center bg-white">
               <div className="flex opacity-80"><HorizontalRuleIcon /> Writer Details</div>
-              <div className=" w-full p-6 flex flex-col bg-white space-y-4 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]">
+              <div className=" w-full xl:w-[350px] p-6 flex flex-col bg-white space-y-4 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]">
 
                 <FormField
                   control={form.control}
@@ -590,7 +590,7 @@ function CreateOrder() {
               </div>
             </div>
           </div>
-          <div className="flex place-content-end p-4 mt-3">
+          <div className="flex place-content-center py-4 mt-3 px-12 md:px-0">
             <Button variant='default' type="submit"> {
               isloading ? 'Loading...' : 'Submit'
             }</Button>
