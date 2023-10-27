@@ -1,3 +1,7 @@
+import Image from 'next/image'
+import { Button } from "@/components/ui/button"
+
+
 import {
   Card,
   CardContent,
@@ -16,21 +20,25 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+
+
 export default function Home() {
   return (
     <div className="flex flex-col w-screen gap-y-8">
-      <div className="flex w-full ">
-        <div className="w-1/3 h-auto flex gap-12 items-center ">
-          <div className="border rounded-full bg-orange-600">
-            Image flani
-          </div>
-          <h1 className="text-[24px] font-800 font-bold px-12">Prof Writer</h1>
-        </div>
-      <div className="w-full flex justify-between gap-4">
-        <Card className="w-screen sm:w-1/4">
+    <div className="flex flex-col sm:flex-row w-full items-center justify-between gap-[10px] px-4">
+      {/* change to dynamic after design */}
+       <Card className="w-screen sm:w-1/3">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Success Rate
+              Total Revenue
             </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -41,69 +49,21 @@ export default function Home() {
               strokeLinejoin="round"
               strokeWidth="2"
               className="h-4 w-4 text-muted-foreground"
-              >
+            >
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">97%</div>
-            
-          </CardContent>
-        </Card>
-        <Card className="w-screen sm:w-1/4">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Orders in Progress
-            </CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-              >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">6</div>
+            <div className="text-2xl font-bold">$750</div>
             <p className="text-xs text-muted-foreground">
-              Active orders
-            </p>
-          </CardContent>
-        </Card> 
-        <Card className="w-screen sm:w-1/4">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Activity Level
-            </CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-              >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">20</div>
-            <p className="text-xs text-muted-foreground">
-              Orders completed in the last 30 days
+              Earned in the last 30 days
             </p>
           </CardContent>
         </Card>
-        <Card className="w-screen sm:w-1/4">
+        <Card className="w-screen sm:w-1/3">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Sanctions
+              Pending payments
             </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -114,72 +74,111 @@ export default function Home() {
               strokeLinejoin="round"
               strokeWidth="2"
               className="h-4 w-4 text-muted-foreground"
-              >
+            >
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2</div>
+            <div className="text-2xl font-bold">$250</div>
             <p className="text-xs text-muted-foreground">
-              Disputes in the last 30 days
+              In progress orders
             </p>
           </CardContent>
-        </Card>                
-      </div>
-      </div>
-      <div>
-        <h2>Active Orders</h2>
-        <div>
-          <Table>
-        <TableCaption>All your pending orders will appear here</TableCaption>
+        </Card >
+        <Card className="w-screen sm:w-1/3">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Available Balance</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="h-4 w-4 text-muted-foreground"
+            >
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$500</div>
+            <p className="text-xs text-muted-foreground">
+              Available for withdrawal
+            </p>
+          </CardContent>
+        </Card>
+    </div>
+    <div className=" flex w-full px-4 justify-between">
+      <Select>
+        <SelectTrigger className="w-[180px] bg-white opacity-100 border-gray-200">
+          <SelectValue placeholder="Select range" />
+        </SelectTrigger>
+        <SelectContent className="bg-white opacity-100 z-10">
+          <SelectItem value="none">none</SelectItem>
+          <SelectItem value="week">week</SelectItem>
+          <SelectItem value="month">1 month</SelectItem>
+          <SelectItem value="three-months">3 months</SelectItem>
+          <SelectItem value="six-months">6 months</SelectItem>
+          <SelectItem value="year">year</SelectItem>
+          <SelectItem value="all-time">all time</SelectItem>
+        </SelectContent>
+      </Select>
+      {/* button can send a request to admin for payment */}
+      <Button variant="default">Request Withdrawal</Button>
+
+    </div>
+    <div>
+      <Table>
+        <TableCaption>Keep track of all your earnings.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="font-semibold">Order Number</TableHead>
             <TableHead className="font-semibold">Status</TableHead>
-            <TableHead className="font-semibold">Order Type</TableHead>
-            <TableHead className="font-semibold">cpp</TableHead>
+            <TableHead className="font-semibold">Type</TableHead>
+            <TableHead className="font-semibold">Method</TableHead>
             <TableHead className=" font-semibold">Amount</TableHead>
-            <TableHead className="text-right font-semibold">Deadline</TableHead>
+            <TableHead className="text-right font-semibold">Date</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {/* rows to be made dynamic after api consumption */}
+          {/* rows to be made dynamic after data - mapping through etc */}
           <TableRow>
             <TableCell className="font-medium">GW213</TableCell>
             <TableCell className="text-yellow-400">pending</TableCell>
-            <TableCell>Other</TableCell>
-            <TableCell>$3</TableCell>
+            <TableCell>Income</TableCell>
+            <TableCell>Credit Card</TableCell>
             <TableCell className="">$25.00</TableCell>
             <TableCell className="text-right">Oct 25, 2023</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="font-medium">GW021</TableCell>
-            <TableCell className="text-yellow-400">pending</TableCell>
-            <TableCell>Writing</TableCell>
-            <TableCell>$2.5</TableCell>
+            <TableCell className="text-green-400">paid</TableCell>
+            <TableCell>Income</TableCell>
+            <TableCell>Credit Card</TableCell>
             <TableCell className="">$25.00</TableCell>
-            <TableCell className="text-right">Oct 29, 2023</TableCell>
+            <TableCell className="text-right">Oct 25, 2023</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="font-medium">GW012</TableCell>
-            <TableCell className="text-yellow-400">pending</TableCell>
-            <TableCell>Editing</TableCell>
-            <TableCell>$1.5</TableCell>
+            <TableCell className="text-red-400">refunded</TableCell>
+            <TableCell>Income</TableCell>
+            <TableCell>Credit Card</TableCell>
             <TableCell className="">$25.00</TableCell>
-            <TableCell className="text-right">Oct 30, 2023</TableCell>
+            <TableCell className="text-right">Oct 25, 2023</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="font-medium">GW001</TableCell>
-            <TableCell className="text-yellow-400">pending</TableCell>            
-            <TableCell>Writing</TableCell>
-            <TableCell>$2.5</TableCell>
+            <TableCell className="text-green-400">processed</TableCell>
+            <TableCell>Withdrawal</TableCell>
+            <TableCell>Credit Card</TableCell>
             <TableCell className="">$200.00</TableCell>
-            <TableCell className="text-right">Sept 02, 2023</TableCell>
+            <TableCell className="text-right">Oct 25, 2023</TableCell>
           </TableRow>
         </TableBody>
       </Table>
-        </div>
-      </div>
+
+    </div>
     </div>
   )
 }

@@ -16,29 +16,29 @@ export default function Sidenav() {
 
   const appRoutes: Route[] = getAdminRoutes()
   return (
-    <div className="flex flex-col shadow-lg w-14  md:w-64 border-r-[1px]  min-h-screen p-4 dark:border-gray-600">
-      <h2 className='text-2xl font-semibold mx-auto pb-6'>Writers
-        <span className='text-2xl font-semibold text-[#000] '>√ine</span></h2>
+    <div id="sidenav" className="flex-col shadow-lg w-64 border-r-[1px]  min-h-screen p-4 dark:border-gray-600 gap-[20px] fixed  left-0  bg-neutral-100 z-10  opacity-100">
+      
       {appRoutes.map((route, idx) =>
         route.sidebarProps.child ? (
-          <div key={idx}>
-            <div className={`flex my-1 rounded  px-4 gap-x-2 py-2 text-[14px] hover:bg-[#132C33] hover:text-[#D8E3E7] transition ease-in-out duration-400`} key={idx}>
-              {route.sidebarProps!.icon}
-              <div className="flex w-80 justify-between">
-                <Link key={route.path} href={route.path!} className="">{route.sidebarProps!.displayText}</Link>
-                <KeyboardArrowDownOutlinedIcon onClick={toogle} className={!isOpen ? 'rotate-0 transition-all duration-500' : 'rotate-180 transition transform duration-300'} />
-
+          <div key={idx} className=''>
+            <div className="flex flex-row justify-between items-center  my-1 rounded text-[#132C33] hover:bg-orange-600 hover:text-[#D8E3E7]">
+            <Link key={route.path} href={route.path!} className={`flex flex-col md:flex-row  gap-x-2 px-4 py-2 text-[14px]  transition ease-in-out duration-400 gap-[10px]`}>
+              <div className="flex md:w-[120px] gap-[5px]">
+              {/* {route.sidebarProps!.icon} */}
+                <p className="">{route.sidebarProps!.displayText}</p>
               </div>
+            </Link>
+            <KeyboardArrowDownOutlinedIcon onClick={toogle} className={`transform ${isOpen ? 'rotate-180' : 'rotate-0'} transition-transform duration-300 hover:scale-110`} />
             </div>
             <div className={!isOpen ? 'hidden' : 'block'}>
-              <div className="flex flex-col pl-12 text-sm " key={idx}>
+              <div className="flex flex-col pl-4 text-sm gap-[10px]  " key={idx}>
                 {route.sidebarProps.child.map((child, idx) => (
-                  <div key={`P-${idx}`} className={`flex p-1 rounded gap-x-2 text-sm text-[#132C33] hover:bg-[#132C33] hover:text-[#D8E3E7] transition ease-in-out duration-400
+                  <Link href={child.path!} key={`P-${idx}`} className={`flex py-2 pl-[20px] rounded gap-x-2 text-sm text-[#132C33] hover:bg-orange-600 items-center  hover:text-[#D8E3E7] transition ease-in-out duration-400
                   ${pathname === child.path ? 'font-semibold text-opacity-100' : 'text-muted-foreground'}`}>
-                    {child.icon}
-                    <Link href={child.path!} className="">{child.displayText}</Link>
+                    {/* {child.icon} */}
+                    <p  className="">{child.displayText}</p>
 
-                  </div>
+                  </Link>
                 ))}
 
               </div>
@@ -47,14 +47,14 @@ export default function Sidenav() {
 
         ) :
           (
-            <div className={`flex py-2 my-1 text-[#132C33]  rounded px-4 gap-x-2 text-[14px]  hover:bg-[#132C33] hover:text-[#D8E3E7] hover:font-normal transition ease-in-out duration-400 
+            <Link key={idx} href={route.path!} className={`flex py-2 my-1 text-[#132C33] flex-col md:flex-row rounded justify-start  active:bg-orange-600 active:text-[#D8E3E7] px-4 gap-x-2 text-[14px]  hover:bg-orange-600 hover:text-[#D8E3E7] hover:font-normal transition ease-in-out duration-400 
             ${pathname === route.path ? 'font-semibold' : 'font-normal'}
-            `} key={idx}
+            `} 
 
             >
-              {route.sidebarProps!.icon}
-              <Link key={idx} href={route.path!} className="">{route.sidebarProps!.displayText}</Link>
-            </div>
+              {/* {route.sidebarProps!.icon} */}
+              <p className=""><span className="">{route.sidebarProps!.displayText}</span></p>
+            </Link>
           )
       )}
 
