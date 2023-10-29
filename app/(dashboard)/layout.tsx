@@ -4,6 +4,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
+
 import { Toaster } from "@/components/ui/toaster"
 import { Fragment, useState, useEffect } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
@@ -14,10 +15,10 @@ import { createTheme } from '@mui/material/styles';
 
 const inter = Inter({ weight: '400', subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: 'Writers√ine',
-  description: 'Writers√ine',
-}
+// export const metadata: Metadata = {
+//   title: 'Writers√ine',
+//   description: 'Writers√ine',
+// }
 interface IProps {
   children: React.ReactNode
   session: any
@@ -26,19 +27,19 @@ export default function RootLayout({
   children, session
 }: IProps) {
   const [isSidenavVisible, setIsSidenavVisible] = useState(true);
-  
+
 
   const toggleSidenav = () => {
-  const isLargeScreen = window.innerWidth >= 1280;
-  setIsSidenavVisible(isLargeScreen ? true : !isSidenavVisible);
-};
+    const isLargeScreen = window.innerWidth >= 1280;
+    setIsSidenavVisible(isLargeScreen ? true : !isSidenavVisible);
+  };
 
   useEffect(() => {
     window.addEventListener('resize', toggleSidenav);
     return () => {
       window.removeEventListener('resize', toggleSidenav);
     };
-}, []);
+  }, []);
 
 
 

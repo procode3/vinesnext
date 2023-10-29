@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 
 
-const HOST = process.env.HOST || 'DESKTOP-QQAQH05';
+const HOST = process.env.HOST || 'localhost';
 const FormSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
@@ -46,7 +46,7 @@ export default function LoginForm() {
       username: data.username,
       password: data.password,
       redirect: true,
-      callbackUrl: `http://DESKTOP-QQAQH05:3000/`,
+      callbackUrl: `http://localhost:3000/`,
     });
     if (response) {
       console.log('Success')

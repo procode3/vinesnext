@@ -24,20 +24,20 @@ export default function Navbar({ toggleSidenav }: NavbarProps) {
     <div className=' flex justify-between text-m mb-4 px-12 min-h-[40px] sticky rounded-l spacex-2 items-center bg-white/75
     shadow-[0_3px_10px_rgb(0,0,0,0.2)] text-black py-8'>
       <div className='flex items-center gap-4'>
-      <Link href="/" className='text-2xl font-semibold cursor-pointer hover:scale-110 transition-transform'>
-        <span className="hidden lg:inline">Writers</span>
-        <span className='text-2xl font-semibold text-[#000] '>√ine</span>
-      </Link>
-      {isSmallScreen && (
-        <DehazeRoundedIcon className="flex xl:hidden " onClick={toggleSidenav} />
-      )}
+        <Link href="/" className='text-2xl font-semibold cursor-pointer hover:scale-110 transition-transform'>
+          <span className="hidden lg:inline">Writers</span>
+          <span className='text-2xl font-semibold text-[#000] '>√ine</span>
+        </Link>
+        {isSmallScreen && (
+          <DehazeRoundedIcon className="flex xl:hidden " onClick={toggleSidenav} />
+        )}
       </div>
       <div className="flex space-x-4 items-center my-auto py-0  " >
         {
           session?.user ? (
 
             <>
-              <h2>Hello {session.user.user.username} </h2>
+              <h2>Hello {session?.user?.user?.username} </h2>
 
               <Avatar>
                 <AvatarFallback>CN</AvatarFallback>
