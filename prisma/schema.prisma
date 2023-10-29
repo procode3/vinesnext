@@ -1,0 +1,220 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String       @id @default(cuid())
+  name           String
+  email          String       @unique
+  userType       User_type
+  password       String?      @map("password")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  emailVerified  DateTime?
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
+  clientOrders   Order[]      @relation(name: "client")
+  assignedOrders Order[]      @relation(name: "assignedBy")
+  myOrders       Order[]      @relation(name: "writer")
+  submissions    submission[] @relation(name: "submittedBy")
+}
+
+enum User_type {
+  WRITER
+  CLIENT
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Order {
+  id             String          @id @default(cuid())
+  orderType      Order_type
+  writerId       String?
+  name           String
+  topic          String
+  description    String
+  subject        Subject
+  pages          Int
+  words          Int?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  clientDeadline DateTime
+  writerDeadline DateTime?
+  price          Float
+  educationLevel Education_level
+  status         Order_status    @default(NEW)
+  writerRating   Int?
+  userId         String?
+  assignedById   String?
+  clientId       String?
+  client         User?           @relation(name: "client", fields: [clientId], references: [id])
+  assignedBy     User?           @relation(name: "assignedBy", fields: [assignedById], references: [id])
+  writer         User?           @relation(name: "writer", fields: [writerId], references: [id])
+  files          File[]          @relation(name: "orderFiles")
+  submissions    submission[]    @relation(name: "order")
+
+  @@index([writerId], name: "writerId")
+}
+
+model submission {
+  id          String   @id @default(cuid())
+  orderId     String   @unique
+  userId      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  submittedBy User?    @relation(name: "submittedBy", fields: [userId], references: [id])
+  Order       Order?   @relation(name: "order", fields: [orderId], references: [id])
+
+  @@index([userId], name: "userId")
+}
+
+model File {
+  id        String   @id @default(cuid())
+  name      String
+  url       String
+  type      FileType
+  orderId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order?   @relation(name: "orderFiles", fields: [orderId], references: [id])
+
+  @@index([orderId], name: "orderId")
+}
+
+enum Subject {
+  MATH
+  SCIENCE
+  ENGLISH
+  BIOLOGY
+  HISTORY
+  GEOGRAPHY
+  CHEMISTRY
+  PHYSICS
+  LITERATURE
+  ECONOMICS
+  ENGINEERING
+  COMPUTER_SCIENCE
+  BUSINESS
+  LAW
+  PHILOSOPHY
+  PSYCHOLOGY
+  POLITICAL_SCIENCE
+  SOCIOLOGY
+  STATISTICS
+  ACCOUNTING
+  PROGRAMMING
+  OTHER
+  SOCIAL_STUDIES
+  SOCIAL_SCIENCE
+}
+
+enum Order_type {
+  ESSAY
+  RESEARCH_PAPER
+  TERM_PAPER
+  COURSEWORK
+  CASE_STUDY
+  BOOK_REVIEW
+  ARTICLE_REVIEW
+  ANNOTATED_BIBLIOGRAPHY
+  BOOK_REPORT
+  MOVIE_REVIEW
+  MOVIE_CRITIQUE
+  ARTICLE
+  ARTICLE_CRITIQUE
+  REACTION_PAPER
+  LETTER
+  REFLECTION_PAPER
+  LAB_REPORT
+  LAB_WORK
+  SPEECH
+  PRESENTATION
+  POWERPOINT_PRESENTATION
+  MATH_PROBLEM
+  STATISTICS_PROJECT
+  RESEARCH_SUMMARY
+  THESIS
+  DISSERTATION
+  THESIS_PROPOSAL
+  DISSERTATION_PROPOSAL
+  RESEARCH_PROPOSAL
+  ADMISSION_ESSAY
+  SCHOLARSHIP_ESSAY
+  PERSONAL_STATEMENT
+  EDITING
+  PROOFREADING
+  REWRITING
+  RESUME
+  CV
+  COVER_LETTER
+  OTHER
+}
+
+enum Order_status {
+  NEW
+  AVAILABLE
+  UNCONFIRMED
+  INPROGRESS
+  COMPLETED
+  CANCELLED
+  REVISION
+  DISPUTE
+  REFUNDED
+  EDITING
+}
+
+enum FileType {
+  ORDER_FILE
+  SUBMISSION_FILE
+}
+
+enum Education_level {
+  HIGH_SCHOOL
+  UNDERGRADUATE
+  COLLEGE
+  MASTERS
+  PHD
+  OTHER
+}
