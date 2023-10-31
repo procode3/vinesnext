@@ -120,6 +120,14 @@ const adminRoutes: Route[] = [
     },
     "active": false,
   },
+  {
+    "path": "/admin/settings",
+    "sidebarProps": {
+      "displayText": "Settings",
+      "icon": <PaymentsIcon color="secondary" />,
+    },
+    "active": false,
+  },
 
 ]
 

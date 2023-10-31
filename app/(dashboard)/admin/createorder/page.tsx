@@ -214,9 +214,9 @@ function CreateOrder() {
 
           <div className=' flex flex-col px-0 sm:px-36 lg:px-0 lg:flex-row place-content-between mx-auto border-3 border-solid text-sm gap-[20px] w-full'>
             <div className=" flex flex-col  items-center  w-full bg-white rounded ">
-              <div className="flex opacity-80"><HorizontalRuleIcon /> Order Details</div>
+              <div className="flex "><HorizontalRuleIcon /> Order Details</div>
 
-              <div className='w-full xl:w-[350px] p-6  flex flex-col md:gap-y-[19px] xl:gap-y-[22px] shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'>
+              <div className='w-full xl:w-[350px] p-6  flex flex-col gap-y-[22px] shadow-lg border'>
 
                 <FormField
                   control={form.control}
@@ -362,7 +362,7 @@ function CreateOrder() {
 
                                     />
                                   </FormControl>
-                                  <FormLabel className={field.value?.includes(item.id) ? "font-normal cursor-pointer " : "font-normal opacity-70 cursor-pointer "} >
+                                  <FormLabel className={field.value?.includes(item.id) ? "font-normal cursor-pointer " : "font-normal  cursor-pointer "} >
                                     {item.label}
                                   </FormLabel>
                                 </FormItem>
@@ -378,8 +378,8 @@ function CreateOrder() {
               </div>
             </div>
             <div className=" flex flex-col w-full items-center bg-white ">
-              <div className="flex opacity-80"><HorizontalRuleIcon /> Instructions and Attachments</div>
-              <div className='w-full xl:w-[350px] p-6 flex flex-col space-y-3 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'>
+              <div className="flex"><HorizontalRuleIcon /> Instructions and Attachments</div>
+              <div className='w-full xl:w-[350px] p-6 flex flex-col space-y-3 border shadow-lg'>
                 <FormField
                   control={form.control}
                   name="topic"
@@ -438,7 +438,7 @@ function CreateOrder() {
             </div>
             <div className="flex flex-col w-full items-center bg-white">
               <div className="flex opacity-80"><HorizontalRuleIcon /> Writer Details</div>
-              <div className=" w-full xl:w-[350px] p-6 flex flex-col bg-white space-y-4 shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]">
+              <div className=" w-full xl:w-[350px] p-6 flex flex-col bg-white space-y-4 shadow-lg border">
 
                 <FormField
                   control={form.control}
@@ -579,7 +579,7 @@ function CreateOrder() {
 
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='italic opacity-70'>Order Name: {orderName}</FormLabel>
+                      <FormLabel className='italic '>Order Name: {orderName}</FormLabel>
                       <FormControl>
                         <Input type="hidden" readOnly={true} value={orderName} placeholder="Order Name" />
                       </FormControl>
