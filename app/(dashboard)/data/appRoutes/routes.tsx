@@ -61,54 +61,54 @@ const adminRoutes: Route[] = [
       "displayText": "Orders",
       "icon": <ViewListIcon color="action" />,
       "child": [
-        {
-          "path": "/admin/orders/new",
-          "displayText": "New",
-          "icon": <PlaylistAddSharpIcon color="info" />,
-          "active": false,
-        },
-        {
-          "path": "/admin/orders/unconfirmed",
-          "displayText": "Unconfirmed",
-          "icon": <GppMaybeSharpIcon color="error" />,
-          "active": false,
-        },
-        {
-          "path": "/admin/orders/available",
-          "displayText": "Available",
-          "icon": <NotesSharpIcon color="info" />,
-          "active": false,
-        },
-        {
-          "path": "/admin/orders/inprogress",
-          "displayText": "In Progress",
-          "icon": <PlaylistPlaySharpIcon color="info" />,
-          "active": false,
-        },
-        {
-          "path": "/admin/orders/editing",
-          "displayText": "Editing",
-          "icon": <EditNoteSharpIcon color="info" />,
-          "active": false,
-        },
-        {
-          "path": "/admin/orders/completed",
-          "displayText": "Completed",
-          "icon": <PlaylistAddCheckSharpIcon color="info" />,
-          "active": false,
-        },
-        {
-          "path": "/admin/orders/revision",
-          "displayText": "Revision",
-          "icon": <WrapTextSharpIcon color="info" />,
-          "active": false,
-        },
-        {
-          "path": "/admin/orders/disputes",
-          "displayText": "Disputes",
-          "icon": <PlaylistRemoveSharpIcon color="info" />,
-          "active": false,
-        }
+        // {
+        //   "path": "/admin/orders/new",
+        //   "displayText": "New",
+        //   "icon": <PlaylistAddSharpIcon color="info" />,
+        //   "active": false,
+        // },
+        // {
+        //   "path": "/admin/orders/unconfirmed",
+        //   "displayText": "Unconfirmed",
+        //   "icon": <GppMaybeSharpIcon color="error" />,
+        //   "active": false,
+        // },
+        // {
+        //   "path": "/admin/orders/available",
+        //   "displayText": "Available",
+        //   "icon": <NotesSharpIcon color="info" />,
+        //   "active": false,
+        // },
+        // {
+        //   "path": "/admin/orders/inprogress",
+        //   "displayText": "In Progress",
+        //   "icon": <PlaylistPlaySharpIcon color="info" />,
+        //   "active": false,
+        // },
+        // {
+        //   "path": "/admin/orders/editing",
+        //   "displayText": "Editing",
+        //   "icon": <EditNoteSharpIcon color="info" />,
+        //   "active": false,
+        // },
+        // {
+        //   "path": "/admin/orders/completed",
+        //   "displayText": "Completed",
+        //   "icon": <PlaylistAddCheckSharpIcon color="info" />,
+        //   "active": false,
+        // },
+        // {
+        //   "path": "/admin/orders/revision",
+        //   "displayText": "Revision",
+        //   "icon": <WrapTextSharpIcon color="info" />,
+        //   "active": false,
+        // },
+        // {
+        //   "path": "/admin/orders/disputes",
+        //   "displayText": "Disputes",
+        //   "icon": <PlaylistRemoveSharpIcon color="info" />,
+        //   "active": false,
+        // }
       ]
     }
   },

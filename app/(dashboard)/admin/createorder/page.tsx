@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Separator } from "@/registry/new-york/ui/separator"
+import { Separator } from "@/components/ui/separator"
 import SubjectCombobox from "@/app/(dashboard)/components/form/subjectCombobox"
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';

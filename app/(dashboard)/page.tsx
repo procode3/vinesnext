@@ -1,66 +1,258 @@
-"use client"
+
 import Image from "next/image"
-import { useRouter } from 'next/navigation';
+import { Order, columns } from "../(dashboard)/admin/orders/columns"
+import { DataTable } from '@/components/ui/data-table';
+import { Heading } from "@/components/ui/heading";
+import Link from 'next/link';
+import { buttonVariants } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
-} from "@/registry/new-york/ui/card"
+} from "@/components/ui/card"
 
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 
-export default function Home() {
-  const router = useRouter();
-  const orders = [
-  {
+
+
+ async function getData():Promise<Order[]>{
+    return[
+{
     orderId: 'GW020',
+    name: "Lab report",
+    topic: "Science",
     status: 'pending',
-    orderType: 'Other',
-    cpp: '$3',
-    amount: '$25.00',
-    deadline: 'Oct 25, 2023'
+    orderType: 'Other',    
+    cpp: 3,
+    amount: 25.00,
+    writerDeadline: 'Oct 25, 2023',
+    educationLevel: 'college'
   },
   {
     orderId: 'GW021',
+    name: "Bio Essay",
+    topic: "Science",
     status: 'pending',
     orderType: 'Writing',
-    cpp: '$2.5',
-    amount: '$25.00',
-    deadline: 'Oct 29, 2023'
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
   },
   {
     orderId: 'GW022',
+    name: "Civil Eng",
+    topic: "Science",
     status: 'pending',
     orderType: 'Writing',
-    cpp: '$2.5',
-    amount: '$25.00',
-    deadline: 'Oct 29, 2023'
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
   },
   {
     orderId: 'GW023',
+    name: "Bio Hack",
+    topic: "Science",
     status: 'pending',
     orderType: 'Writing',
-    cpp: '$2.5',
-    amount: '$25.00',
-    deadline: 'Oct 29, 2023'
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
   },
-];
+  {
+    orderId: 'GW020',
+    name: "Lab report",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Other',    
+    cpp: 3,
+    amount: 25.00,
+    writerDeadline: 'Oct 25, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW021',
+    name: "Bio Essay",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW022',
+    name: "Civil Eng",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW023',
+    name: "Bio Hack",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW020',
+    name: "Lab report",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Other',    
+    cpp: 3,
+    amount: 25.00,
+    writerDeadline: 'Oct 25, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW021',
+    name: "Bio Essay",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW022',
+    name: "Civil Eng",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW023',
+    name: "Bio Hack",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW020',
+    name: "Lab report",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Other',    
+    cpp: 3,
+    amount: 25.00,
+    writerDeadline: 'Oct 25, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW021',
+    name: "Bio Essay",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW022',
+    name: "Civil Eng",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 24, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW023',
+    name: "Bio Hack",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW020',
+    name: "Lab report",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Other',    
+    cpp: 3,
+    amount: 25.00,
+    writerDeadline: 'Oct 25, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW021',
+    name: "Bio Essay",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW022',
+    name: "Civil Eng",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+  {
+    orderId: 'GW023',
+    name: "Bio Hack",
+    topic: "Science",
+    status: 'pending',
+    orderType: 'Writing',
+    cpp: 2.5,
+    amount: 25.00,
+    writerDeadline: 'Oct 29, 2023',
+    educationLevel: 'college'
+  },
+    ]
+  }
+
+export default async function Home() {
+  
+  const data = await getData()
+
+ 
+  
   return (
     <div className="flex flex-col w-screen gap-y-8">
       <div className="flex w-full ">
         <div className="w-1/3 h-full flex flex-col lg:flex-row gap-2  items-center justify-start">
           <div className=" w-[60px] h-[60px] md:w-[100px] md:h-[100px] flex">
-            {/* <div className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] z-[1px] relative"> */}
+            
             <Image
             src="/images/avatar-cactus.svg"
             alt="avatar"
@@ -68,7 +260,7 @@ export default function Home() {
             height={100}
             style={{objectFit: "contain"}}
             />
-            {/* </div> */}
+            
           </div>
           <h1 className="text-[14px] md:text-[24px] font-800 font-bold px-4  text-orange-400">Prof_Writer</h1>
         </div>
@@ -117,7 +309,7 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-md md:text-2xl font-bold">6</div>
+            <div className="text-md md:text-2xl font-bold">{data.length}</div>
             <p className="text-xs text-muted-foreground hidden sm:block">
               Active orders
             </p>
@@ -176,40 +368,48 @@ export default function Home() {
         </Card>                
       </div>
       </div>
-      <div>
-        <h2 className="p-4 font-semibold">Active Orders</h2>
-        <div>
-          <Table>
-        <TableCaption>All your pending orders will appear here</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="font-semibold">Order Number</TableHead>
-            <TableHead className="font-semibold">Status</TableHead>
-            <TableHead className="font-semibold">Order Type</TableHead>
-            <TableHead className="font-semibold">cpp</TableHead>
-            <TableHead className=" font-semibold">Amount</TableHead>
-            <TableHead className="text-right font-semibold">Deadline</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-  {orders.map((order) => (
-    <TableRow
-      key={order.orderId}
-      onClick={() => router.push(`/admin/orders/${order.orderId}`)}
-      className="cursor-pointer hover:bg-orange-100"
-    >
-      <TableCell className="font-medium">{order.orderId}</TableCell>
-      <TableCell className="text-yellow-400">{order.status}</TableCell>
-      <TableCell>{order.orderType}</TableCell>
-      <TableCell>{order.cpp}</TableCell>
-      <TableCell className="">{order.amount}</TableCell>
-      <TableCell className="text-right">{order.deadline}</TableCell>
-    </TableRow>
-  ))}
-</TableBody>
-      </Table>
-        </div>
+      <div className="container mx-auto py-4">
+      <div className="flex items-center justify-between">
+        <Heading title={`Pending orders (${data.length})`} description='Manage your orders' />
       </div>
+      <DataTable searchKey="orderId" columns={columns} data={data} />
+    </div>
     </div>
   )
 }
+
+
+ {/* <div>
+        <h2 className="p-4 font-semibold">Active Orders</h2>
+        <div>
+          <Table>
+            <TableCaption>All your pending orders will appear here</TableCaption>
+              <TableHeader>
+              <TableRow>
+                <TableHead className="font-semibold">Order Number</TableHead>
+                <TableHead className="font-semibold">Status</TableHead>
+                <TableHead className="font-semibold">Order Type</TableHead>
+                <TableHead className="font-semibold">cpp</TableHead>
+                <TableHead className=" font-semibold">Amount</TableHead>
+                <TableHead className="text-right font-semibold">Deadline</TableHead>
+              </TableRow>
+              </TableHeader>
+            <TableBody>
+              {orders.map((order) => (
+              <TableRow
+                key={order.orderId}
+                onClick={() => router.push(`/admin/orders/${order.orderId}`)}
+                className="cursor-pointer hover:bg-orange-100"
+              >
+                <TableCell className="font-medium">{order.orderId}</TableCell>
+                <TableCell className="text-yellow-400">{order.status}</TableCell>
+                <TableCell>{order.orderType}</TableCell>
+                <TableCell>{order.cpp}</TableCell>
+                <TableCell className="">{order.amount}</TableCell>
+                <TableCell className="text-right">{order.deadline}</TableCell>
+              </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div> */}
