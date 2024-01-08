@@ -21,8 +21,8 @@ export default function Navbar({ toggleSidenav }: NavbarProps) {
 
   const isSmallScreen = useMediaQuery((theme: any) => theme.breakpoints.down('xl'));
   return (
-    <div className=' flex justify-between text-m mb-4 px-12 min-h-[40px] sticky rounded-l spacex-2 items-center bg-white/75
-    shadow-[0_3px_10px_rgb(0,0,0,0.2)] text-black py-8'>
+    <div className=' flex justify-between text-m   px-12 min-h-[40px] static border shadow-b-lg rounded-l spacex-2 items-center bg-white
+    shadow-[0_3px_10px_rgb(0,0,0,0.2)] text-black h-[55px] opacity-100'>
       <div className='flex items-center gap-4'>
         <Link href="/" className='text-2xl font-semibold cursor-pointer hover:scale-110 transition-transform'>
           <span className="hidden lg:inline">Writers</span>

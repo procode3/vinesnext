@@ -1,5 +1,5 @@
 'use client'
-import { Button } from "@/registry/new-york/ui/button"
+import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
 import Image from 'next/image'
 import {
@@ -8,7 +8,7 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/registry/new-york/ui/card"
+} from "@/components/ui/card"
 import { httpGetOrder } from '@/app/(dashboard)/hooks/requests'
 
 
@@ -40,8 +40,8 @@ export default function Page({ params }: { params: { orderId: string } }) {
     useEffect(() => {
         httpGetOrder(params.orderId)
             .then((data) => {
-                setOrder(data.data.attributes)
-                console.log(data.data.attributes)
+                setOrder(data?.data.attributes)
+                console.log(data?.data.attributes)
             })
     }, [params.orderId])
 
