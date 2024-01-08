@@ -6,7 +6,7 @@ import { Inter } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 
 import { Toaster } from "@/components/ui/toaster"
-import { Fragment, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import Navbar from './components/navbar/navbar'
 import Sidenav from './components/sidenav/sidenav'
@@ -48,13 +48,15 @@ export default function RootLayout({
   const theme = createTheme();
   return (
     <html lang="en">
-      <body className={`${inter.className} flex flex-col`}>
+      <body className={`${inter.className} flex flex-col h-screen`}>
         <SessionProvider session={session}>
           <ThemeProvider theme={theme}>
-            <Navbar toggleSidenav={toggleSidenav} />
-            <div className="flex flex-col w-full px-4 py-2  bg-white relative  xl:pl-[200px]">
+            <div className="sticky top-0 z-50">
+              <Navbar toggleSidenav={toggleSidenav} />
+            </div>
+            <div className="flex flex-col w-full  bg-white h-screen relative  xl:pl-[170px]">
               {isSidenavVisible && <Sidenav />}
-              <div className="flex w-full justify-center">{children}</div>
+              <div className="flex w-full justify-center py-4 px-4 md:px-12">{children}</div>
               <Toaster />
             </div>
           </ThemeProvider>
