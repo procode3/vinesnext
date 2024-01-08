@@ -30,7 +30,62 @@ import {
 
 
 
+
 export default function Home() {
+
+const getStatusColorClass = (status: string) => {
+  switch (status) {
+    case 'pending':
+      return 'yellow-400';
+    case 'refunded':
+      return 'red-400';
+    case 'processed':
+      return 'green-400';
+    default:
+      return '';
+  }};
+
+const data = [
+  {
+    "orderNumber": "GW213",
+    "status": "pending",
+    "statusColor": "yellow-400",
+    "type": "Income",
+    "method": "bank transfer",
+    "amount": 25.00,
+    "date": "Oct 25, 2023"
+  },
+  {
+    "orderNumber": "GW021",
+    "status": "processed",
+    "statusColor": "green-400",
+    "type": "Income",
+    "method": "m-pesa",
+    "amount": 25.00,
+    "date": "Oct 25, 2023"
+  },
+  {
+    "orderNumber": "GW012",
+    "status": "refunded",
+    "statusColor": "red-400",
+    "type": "Income",
+    "method": "paypal",
+    "amount": 25.00,
+    "date": "Oct 25, 2023"
+  },
+  {
+    "orderNumber": "GW001",
+    "status": "processed",
+    "statusColor": "green-400",
+    "type": "Withdrawal",
+    "method": "paypal",
+    "amount": 200.00,
+    "date": "Oct 26, 2023"
+  }
+]
+
+
+
   return (
     <div className="flex flex-col w-screen gap-y-8">
     <div className="flex flex-col sm:flex-row w-full items-center justify-between gap-[10px] px-4">
@@ -142,40 +197,18 @@ export default function Home() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {/* rows to be made dynamic after data - mapping through etc */}
-          <TableRow>
-            <TableCell className="font-medium">GW213</TableCell>
-            <TableCell className="text-yellow-400">pending</TableCell>
-            <TableCell>Income</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="">$25.00</TableCell>
-            <TableCell className="text-right">Oct 25, 2023</TableCell>
+          
+          {data.map((item, index) => (
+            <TableRow key={index}>
+            <TableCell className="font-medium">{item.orderNumber}</TableCell>
+            <TableCell className={`text-${getStatusColorClass(item.status)}`}>{item.status}</TableCell>
+            <TableCell>{item.type}</TableCell>
+            <TableCell>{item.method}</TableCell>
+            <TableCell className="">{`$${item.amount}`}</TableCell>
+            <TableCell className="text-right">{item.date}</TableCell>
           </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">GW021</TableCell>
-            <TableCell className="text-green-400">paid</TableCell>
-            <TableCell>Income</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="">$25.00</TableCell>
-            <TableCell className="text-right">Oct 25, 2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">GW012</TableCell>
-            <TableCell className="text-red-400">refunded</TableCell>
-            <TableCell>Income</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="">$25.00</TableCell>
-            <TableCell className="text-right">Oct 25, 2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">GW001</TableCell>
-            <TableCell className="text-green-400">processed</TableCell>
-            <TableCell>Withdrawal</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="">$200.00</TableCell>
-            <TableCell className="text-right">Oct 25, 2023</TableCell>
-          </TableRow>
-        </TableBody>
+          ))}
+          </TableBody>
       </Table>
 
     </div>

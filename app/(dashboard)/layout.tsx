@@ -6,7 +6,7 @@ import { Inter } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 
 import { Toaster } from "@/components/ui/toaster"
-import { Fragment, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import Navbar from './components/navbar/navbar'
 import Sidenav from './components/sidenav/sidenav'

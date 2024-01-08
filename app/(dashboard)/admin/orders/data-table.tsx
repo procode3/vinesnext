@@ -29,9 +29,15 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[],
     searchKey: string;
+    onRowClick: (data: TData) => void
+    orderId: string
 }
 
+
+
 export function DataTable<TData, TValue>({
+    onRowClick,
+    orderId,
     columns,
     data,
     searchKey,
@@ -53,18 +59,20 @@ export function DataTable<TData, TValue>({
         }
     });
 
+ 
     return (
         <div>
             <div className="flex items-center py-4">
                 <Input
                     type='search'
-                    placeholder="Search..."
+                    placeholder="Search by order number..."
                     value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn(searchKey)?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
+                
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -93,6 +101,8 @@ export function DataTable<TData, TValue>({
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
                                     className="hover:bg-orange-100"
+                                    onClick={() => onRowClick(row.original)}
+                                    
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>

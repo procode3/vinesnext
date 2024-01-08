@@ -1,10 +1,11 @@
-
+"use client"
 import Image from "next/image"
+import { useEffect, useState } from 'react';
 import { Order, columns } from "../(dashboard)/admin/orders/columns"
-import { DataTable } from '@/components/ui/data-table';
+import { DataTable } from '../(dashboard)/admin/orders/data-table';
 import { Heading } from "@/components/ui/heading";
-import Link from 'next/link';
-import { buttonVariants } from "@/components/ui/button";
+import { useRouter } from "next/navigation"
+
 
 import {
   Card,
@@ -241,10 +242,26 @@ import {
     ]
   }
 
-export default async function Home() {
-  
-  const data = await getData()
+export default function Home() {
+    const [data, setData] = useState<Order[]>([]);
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const initialData = await getData();
+      setData(initialData);
+    };
+
+    fetchData();
+  }, []);
+  
+  
+
+  const router = useRouter();
+
+  const handleRowClick = (row: any, orderId: string) => {
+    router.push(`/admin/orders/${row.orderId}`);
+  };
  
   
   return (
@@ -372,7 +389,7 @@ export default async function Home() {
       <div className="flex items-center justify-between">
         <Heading title={`Pending orders (${data.length})`} description='Manage your orders' />
       </div>
-      <DataTable searchKey="orderId" columns={columns} data={data} />
+      <DataTable searchKey="orderId" columns={columns} data={data} onRowClick={(row)=> handleRowClick(row, row.orderId)} orderId={''} />
     </div>
     </div>
   )

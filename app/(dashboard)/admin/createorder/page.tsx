@@ -93,7 +93,7 @@ const formSchema = z.object({
   // id: z.string().min(2,).max(50),
   name: z.string().min(2).max(50),
   orderType: z.string().min(2, {
-    message: "Please choose atleast one odertype",
+    message: "Please choose atleast one ordertype",
   }).max(50),
   clientDeadline: z.string().min(2, { message: "Required" }).max(50),
   writerDeadline: z.string().min(2, { message: "Required" }).max(50),
@@ -117,7 +117,15 @@ const formSchema = z.object({
   clientId: z.string(),
   orderNumber: z.string().min(2).max(50),
   orderStatus: z.string(),
-})
+}).superRefine(({writerDeadline, clientDeadline}, ctx) => {
+  if(writerDeadline > clientDeadline){
+    ctx.addIssue({
+      message: "Writer deadline must be sooner than or equal to the client deadline.",
+      code: 'custom',
+      path: ['writerDeadline']
+    })
+  }
+});
 
 function CreateOrder() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -289,6 +297,8 @@ function CreateOrder() {
                       <FormControl>
                         <Input type="datetime-local"  {...field} />
                       </FormControl>
+                      <FormMessage />
+
                     </FormItem>
 
                   )}

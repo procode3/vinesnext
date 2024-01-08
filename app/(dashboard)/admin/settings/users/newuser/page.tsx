@@ -67,6 +67,7 @@ function CreateUser() {
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data)
+    form.reset()
   }
   return (
     <div className="flex flex-col gap-4 w-full sm:w-2/3 lg:w-1/2">

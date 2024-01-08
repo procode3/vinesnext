@@ -2,7 +2,7 @@
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-
+import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -13,30 +13,29 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
  
 const formSchema = z.object({
- 
-  automaticPayments: z.string().nonempty({ message: 'Required' }),
-  accountNumber: z.string().transform(data => Number(data)),
-  email: z.string().email({ message: 'Invalid email address' }),
+  email: z.string().min(2).max(50),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
+  confirmPassword: z.string().min(8, { message: 'Password must be at least 8 characters long' }),  
+}).superRefine(({ confirmPassword, password }, ctx) => {
+  if (confirmPassword !== password) {
+    ctx.addIssue({
+      code: "custom",
+      message: "The passwords did not match"
+    });
+  }
 });
 
 
-function BillingInfo() {
+function DeactivateAccount() {
 const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
         email:"",
-        automaticPayments:"",
-        accountNumber:undefined,
+        password:"",
+        confirmPassword:"",
     },
 })
 
@@ -45,38 +44,24 @@ function onSubmit(values: z.infer<typeof formSchema>){
     form.reset()
 }
   return (
-    <div className="w-full flex items-center justify-center pb-4">
+    <div className="w-full flex items-center justify-center py-4">
         <div className="w-full  bg-white p-4 ">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center justify-center p-2 mb-2 gap-2">
-        
+        <Heading title="Deactivate Account" description='' />
+        <p className="text-center text-sm text-gray-600 leading-normal tracking-wide">This action will shut down your account temporarily. Your account will reactivate when you sign in again.</p>
       </div>
       <div className="flex flex-col gap-6">
       
-       <FormField
+      <FormField
         name="email"
         control={form.control}
         render={({field}) => (
           <FormItem className="flex flex-col">
-            <FormLabel>Paypal Addresss</FormLabel>
+            <FormLabel>email address</FormLabel>
             <FormControl>
-              <Input  placeholder="bondjames007@gmail.com" {...field} />
-              </FormControl>              
-              <FormMessage />
-
-          </FormItem>
-        )}
-      /> 
-
-      <FormField
-        name="accountNumber"
-        control={form.control}
-        render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>Bank Account Number</FormLabel>
-            <FormControl>
-              <Input placeholder="1234567890" {...field} />
+              <Input placeholder="email address" {...field} />
               </FormControl>              
               <FormMessage />
 
@@ -84,33 +69,41 @@ function onSubmit(values: z.infer<typeof formSchema>){
         )}
       />
 
-     <FormField
-        name="automaticPayments"
+       <FormField
+        name="password"
         control={form.control}
         render={({field}) => (
-          <FormItem className="flex flex-col w-full">
-            <FormLabel>Automatic payments period</FormLabel>
+          <FormItem className="flex flex-col">
+            <FormLabel>password</FormLabel>
             <FormControl>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger className="w-[180px] bg-white opacity-100 border-gray-200">
-                  <SelectValue placeholder="select" />
-                </SelectTrigger>
-                <SelectContent className="bg-white opacity-100">
-                  <SelectItem value="monthly">monthly</SelectItem>
-                  <SelectItem value="weekly">weekly</SelectItem>
-                  <SelectItem value="bimonthly">every two weeks</SelectItem>
-                </SelectContent>
-              </Select>
+              <Input type="password" placeholder="Enter password" {...field} />
               </FormControl>              
               <FormMessage />
+
           </FormItem>
         )}
-      />    
+      />
+
+      <FormField
+        name="confirmPassword"
+        control={form.control}
+        render={({field}) => (
+          <FormItem className="flex flex-col">
+            <FormLabel>confirm password</FormLabel>
+            <FormControl>
+              <Input type="password" placeholder="confirm password" {...field} />
+              </FormControl>              
+              <FormMessage />
+
+          </FormItem>
+        )}
+      /> 
+     
 
       </div>
-    
-      <Button type="submit" variant='default' className="px-4 mt-4">Save Changes</Button>
-    
+    <div className="flex justify-between py-4">
+      <Button type="submit" variant='destructive' className="px-4">Deactivate Account</Button>
+    </div>
     </form>      
     </Form>
     </div>
@@ -118,4 +111,4 @@ function onSubmit(values: z.infer<typeof formSchema>){
   )
 }
 
-export default BillingInfo
+export default DeactivateAccount

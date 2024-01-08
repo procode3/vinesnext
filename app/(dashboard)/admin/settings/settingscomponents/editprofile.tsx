@@ -16,9 +16,9 @@ import {
 import { Input } from "@/components/ui/input"
  
 const formSchema = z.object({
- username: z.string().min(2, { message: 'Username must be at least 3 characters'}),
-  firstName: z.string().nonempty({ message: 'First name is required' }),
-  lastName: z.string().nonempty({ message: 'Last name is required' }),
+  username: z.string().min(2, { message: 'Username must be at least 3 characters'}),
+  firstName: z.string().min(1, { message: 'First name is required' }),
+  lastName: z.string().min(1, { message: 'Last name is required' }),
   phone: z.string().transform(data => Number(data)),
   email: z.string().email({ message: 'Invalid email address' }),
 });
@@ -33,14 +33,12 @@ const form = useForm<z.infer<typeof formSchema>>({
         firstName:"",
         lastName:"",
         phone:undefined,
-
-
-
     },
 })
 
 function onSubmit(values: z.infer<typeof formSchema>){
     console.log(values)
+    form.reset()
 }
   return (
     <div className="w-full flex items-center justify-center pb-4">
@@ -51,6 +49,21 @@ function onSubmit(values: z.infer<typeof formSchema>){
         
       </div>
       <div className="flex flex-col gap-6">
+
+        <FormField
+        name="username"
+        control={form.control}
+        render={({field}) => (
+          <FormItem className="flex flex-col">
+            <FormLabel>User Name</FormLabel>
+            <FormControl>
+              <Input placeholder="e.g. Prof_writer" {...field} />
+              </FormControl>              
+              <FormMessage />
+
+          </FormItem>
+        )}
+      />
       
       <FormField
         name="firstName"
@@ -59,7 +72,7 @@ function onSubmit(values: z.infer<typeof formSchema>){
           <FormItem className="flex flex-col">
             <FormLabel>First Name</FormLabel>
             <FormControl>
-              <Input placeholder="James" {...field} />
+              <Input placeholder="e.g. James" {...field} />
               </FormControl>              
               <FormMessage />
 
@@ -111,12 +124,10 @@ function onSubmit(values: z.infer<typeof formSchema>){
           </FormItem>
         )}
       /> 
-     
-
-      </div>
-    <div className="flex justify-between py-4">
-      <Button type="submit" variant='default' className="px-4">Save Changes</Button>
     </div>
+    
+      <Button type="submit" variant='default' className="px-4 mt-4">Save Changes</Button>
+    
     </form>      
     </Form>
     </div>

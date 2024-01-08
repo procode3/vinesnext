@@ -17,12 +17,10 @@ import { Button } from "@/components/ui/button"
 export type Order = {
     orderId: string
     orderType: string
-    cpp:number
     name: string
-    topic: string
+    writer: string
     status: "pending" | "available" | "completed" | "active" | "disputed" | "revision"
     writerDeadline: string
-    amount: number
     educationLevel: string
 }
 
@@ -43,16 +41,8 @@ export const columns: ColumnDef<Order>[] = [
    
    
   {
-    accessorKey: "topic",
-    header: "Topic",
-  },
-  {
-    accessorKey: "cpp",
-    header: "cpp",
-  },
-  {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: "writer",
+    header: "Writer",
   },
   {
     accessorKey: 'educationLevel',

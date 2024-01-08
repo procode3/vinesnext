@@ -40,8 +40,8 @@ export default function Page({ params }: { params: { orderId: string } }) {
     useEffect(() => {
         httpGetOrder(params.orderId)
             .then((data) => {
-                setOrder(data.data.attributes)
-                console.log(data.data.attributes)
+                setOrder(data?.data.attributes)
+                console.log(data?.data.attributes)
             })
     }, [params.orderId])
 

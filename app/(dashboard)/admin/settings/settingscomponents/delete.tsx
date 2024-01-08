@@ -41,6 +41,7 @@ const form = useForm<z.infer<typeof formSchema>>({
 
 function onSubmit(values: z.infer<typeof formSchema>){
     console.log(values)
+    form.reset()
 }
   return (
     <div className="w-full flex items-center justify-center py-4">
