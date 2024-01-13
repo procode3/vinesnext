@@ -2,18 +2,18 @@
 
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 
 import { Toaster } from "@/components/ui/toaster"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import Navbar from './components/navbar/navbar'
 import Sidenav from './components/sidenav/sidenav'
 import { createTheme } from '@mui/material/styles';
 
 
-const inter = Inter({ weight: '400', subsets: ['latin'] })
+const inter = Poppins({ weight: '400', subsets: ['latin'] })
 
 // export const metadata: Metadata = {
 //   title: 'Writers√ine',
@@ -48,13 +48,13 @@ export default function RootLayout({
   const theme = createTheme();
   return (
     <html lang="en">
-      <body className={`${inter.className} flex flex-col h-screen`}>
+      <body className={`${inter.className} flex flex-col h-full`}>
         <SessionProvider session={session}>
           <ThemeProvider theme={theme}>
             <div className="sticky top-0 z-50">
               <Navbar toggleSidenav={toggleSidenav} />
             </div>
-            <div className="flex flex-col w-full  bg-white h-screen relative  xl:pl-[170px]">
+            <div className="flex flex-col w-full  bg-slate-100 min-h-screen relative  xl:pl-[250px]">
               {isSidenavVisible && <Sidenav />}
               <div className="flex w-full justify-center py-4 px-4 md:px-12">{children}</div>
               <Toaster />

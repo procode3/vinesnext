@@ -1,4 +1,4 @@
-import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
+import SpaceDashboardSharpIcon from '@mui/icons-material/SpaceDashboardSharp';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
@@ -12,9 +12,28 @@ import RateReviewSharpIcon from '@mui/icons-material/RateReviewSharp';
 import NotesSharpIcon from '@mui/icons-material/NotesSharp';
 import WrapTextSharpIcon from '@mui/icons-material/WrapTextSharp';
 import EditNoteSharpIcon from '@mui/icons-material/EditNoteSharp';
+import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import { createTheme } from '@mui/material/styles';
 import React from 'react'
 
+
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       light: '#757ce8',
+//       main: '#3f50b5',
+//       dark: '#002884',
+//       contrastText: '#fff',
+//     },
+//     secondary: {
+//       light: '#ff7961',
+//       main: '#f44336',
+//       dark: '#ba000d',
+//       contrastText: '#000',
+//     },
+//   },
+// });
 
 interface Route {
   path: string;
@@ -41,7 +60,7 @@ const adminRoutes: Route[] = [
     "path": "/admin",
     "sidebarProps": {
       "displayText": "Dashboard",
-      "icon": <SpaceDashboardIcon color="primary" />,
+      "icon": <SpaceDashboardSharpIcon  />,
 
     },
     "active": false,
@@ -50,7 +69,7 @@ const adminRoutes: Route[] = [
     "path": "/admin/createorder",
     "sidebarProps": {
       "displayText": "Create Order",
-      "icon": <LibraryAddIcon color="secondary" />,
+      "icon": <LibraryAddIcon  />,
     },
     "active": false,
   },
@@ -59,64 +78,64 @@ const adminRoutes: Route[] = [
     "active": false,
     "sidebarProps": {
       "displayText": "Orders",
-      "icon": <ViewListIcon color="action" />,
-      "child": [
-        // {
-        //   "path": "/admin/orders/new",
-        //   "displayText": "New",
-        //   "icon": <PlaylistAddSharpIcon color="info" />,
-        //   "active": false,
-        // },
-        // {
-        //   "path": "/admin/orders/unconfirmed",
-        //   "displayText": "Unconfirmed",
-        //   "icon": <GppMaybeSharpIcon color="error" />,
-        //   "active": false,
-        // },
-        // {
-        //   "path": "/admin/orders/available",
-        //   "displayText": "Available",
-        //   "icon": <NotesSharpIcon color="info" />,
-        //   "active": false,
-        // },
-        // {
-        //   "path": "/admin/orders/inprogress",
-        //   "displayText": "In Progress",
-        //   "icon": <PlaylistPlaySharpIcon color="info" />,
-        //   "active": false,
-        // },
-        // {
-        //   "path": "/admin/orders/editing",
-        //   "displayText": "Editing",
-        //   "icon": <EditNoteSharpIcon color="info" />,
-        //   "active": false,
-        // },
-        // {
-        //   "path": "/admin/orders/completed",
-        //   "displayText": "Completed",
-        //   "icon": <PlaylistAddCheckSharpIcon color="info" />,
-        //   "active": false,
-        // },
-        // {
-        //   "path": "/admin/orders/revision",
-        //   "displayText": "Revision",
-        //   "icon": <WrapTextSharpIcon color="info" />,
-        //   "active": false,
-        // },
-        // {
-        //   "path": "/admin/orders/disputes",
-        //   "displayText": "Disputes",
-        //   "icon": <PlaylistRemoveSharpIcon color="info" />,
-        //   "active": false,
-        // }
-      ]
+      "icon": <ViewListIcon  />,
+      // "child": [
+      //   // {
+      //   //   "path": "/admin/orders/new",
+      //   //   "displayText": "New",
+      //   //   "icon": <PlaylistAddSharpIcon color="info" />,
+      //   //   "active": false,
+      //   // },
+      //   // {
+      //   //   "path": "/admin/orders/unconfirmed",
+      //   //   "displayText": "Unconfirmed",
+      //   //   "icon": <GppMaybeSharpIcon color="error" />,
+      //   //   "active": false,
+      //   // },
+      //   // {
+      //   //   "path": "/admin/orders/available",
+      //   //   "displayText": "Available",
+      //   //   "icon": <NotesSharpIcon color="info" />,
+      //   //   "active": false,
+      //   // },
+      //   // {
+      //   //   "path": "/admin/orders/inprogress",
+      //   //   "displayText": "In Progress",
+      //   //   "icon": <PlaylistPlaySharpIcon color="info" />,
+      //   //   "active": false,
+      //   // },
+      //   // {
+      //   //   "path": "/admin/orders/editing",
+      //   //   "displayText": "Editing",
+      //   //   "icon": <EditNoteSharpIcon color="info" />,
+      //   //   "active": false,
+      //   // },
+      //   // {
+      //   //   "path": "/admin/orders/completed",
+      //   //   "displayText": "Completed",
+      //   //   "icon": <PlaylistAddCheckSharpIcon color="info" />,
+      //   //   "active": false,
+      //   // },
+      //   // {
+      //   //   "path": "/admin/orders/revision",
+      //   //   "displayText": "Revision",
+      //   //   "icon": <WrapTextSharpIcon color="info" />,
+      //   //   "active": false,
+      //   // },
+      //   // {
+      //   //   "path": "/admin/orders/disputes",
+      //   //   "displayText": "Disputes",
+      //   //   "icon": <PlaylistRemoveSharpIcon color="info" />,
+      //   //   "active": false,
+      //   // }
+      // ]
     }
   },
   {
     "path": "/admin/finance",
     "sidebarProps": {
       "displayText": "Finances",
-      "icon": <PaymentsIcon color="secondary" />,
+      "icon": <PaymentsIcon />,
     },
     "active": false,
   },
@@ -124,7 +143,7 @@ const adminRoutes: Route[] = [
     "path": "/admin/settings",
     "sidebarProps": {
       "displayText": "Settings",
-      "icon": <PaymentsIcon color="secondary" />,
+      "icon": <SettingsSharpIcon/>,
     },
     "active": false,
   },

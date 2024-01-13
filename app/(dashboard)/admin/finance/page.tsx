@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
+import DashCard from "../../components/dashcard"
 
 
 import {
@@ -28,22 +29,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-
-
-
-export default function Home() {
-
-const getStatusColorClass = (status: string) => {
-  switch (status) {
-    case 'pending':
-      return 'yellow-400';
-    case 'refunded':
-      return 'red-400';
-    case 'processed':
-      return 'green-400';
-    default:
-      return '';
-  }};
 
 const data = [
   {
@@ -84,13 +69,57 @@ const data = [
   }
 ]
 
+  const cardProps = [
+  {
+    title: "Total Revenue",
+    value: "$750",
+    changeText: "Earned in the last 30 days",
+    iconName: "revenue",
+  },
+  {
+    title: "Pending Payments",
+    value: "250",
+    changeText: "In Progress Orders",
+    iconName: "revenue",
+  },
+  {
+    title: "Available Balance",
+    value: "$250",
+    changeText: "Available for withdrawal",
+    iconName: "revenue",
+  },
+];
+
+export default function Home() {
+
+const getStatusColorClass = (status: string) => {
+  switch (status) {
+    case 'pending':
+      return 'yellow-400';
+    case 'refunded':
+      return 'red-400';
+    case 'processed':
+      return 'green-400';
+    default:
+      return '';
+  }};
+
 
 
   return (
     <div className="flex flex-col w-screen gap-y-8">
     <div className="flex flex-col sm:flex-row w-full items-center justify-between gap-[10px] px-4">
       {/* change to dynamic after design */}
-       <Card className="w-screen sm:w-1/3">
+      {cardProps.map((props, index) => (
+            <DashCard
+              key={index}
+              title={props.title}
+              value={props.value}
+              iconUrl={`/images/${props.iconName}.svg`}
+              changeText={props.changeText}
+            />
+        ))} 
+       {/* <Card className="w-screen sm:w-1/3">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Revenue
@@ -162,7 +191,7 @@ const data = [
               Available for withdrawal
             </p>
           </CardContent>
-        </Card>
+        </Card> */}
     </div>
     <div className=" flex w-full px-4 justify-between">
       <Select>

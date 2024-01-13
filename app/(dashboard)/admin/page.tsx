@@ -1,11 +1,8 @@
 'use client'
-
 import React from 'react'
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import * as z from "zod"
- 
+import * as z from "zod" 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -31,6 +28,10 @@ import { Order, columns } from "./columns"
 import { DataTable } from '../admin/orders/data-table';
 import { Heading } from "@/components/ui/heading";
 import { useRouter } from "next/navigation"
+import DashCard from "../components/dashcard"
+import Image from 'next/image'
+import Overview from "../components/overview/overview"
+import RankingItem from "../components/rankingItem"
 
 
 
@@ -260,8 +261,100 @@ const FormSchema = z.object({
     ]
   }
 
-  
+   const cardProps = [
+  {
+    title: "Total revenue",
+    value: "$45000",
+    changeValue: 1,
+    changeText: "from last month",
+    iconName: "revenue",
+  },
+  {
+    title: "All Orders",
+    value: "2100",
+    changeValue: 21,
+    changeText: "Active Orders",
+    iconName: "progress",
+  },
+  {
+    title: "Active writers",
+    value: "48",
+    changeValue: 18,
+    changeText: "from last month",
+    iconName: "activewriter",
+  },
+  {
+    title: "In Progress",
+    value: "560",
+    changeValue: 2,
+    changeText: "from last month",
+    iconName: "progress",
+  },
+];
     
+const rankingData = [
+  {
+    rank: 1,
+    avatarSrc: "/images/avatar-cactus.svg",
+    name: "John Doe",
+    points: "+150"
+  },
+  {
+    rank: 2,
+    avatarSrc: "/images/sloth.svg",
+    name: "Jane Smith",
+    points: "+120"
+  },
+  {
+    rank: 3,
+    avatarSrc: "/images/avatar-cactus.svg",
+    name: "Bob Johnson",
+    points: "+100"
+  },
+  {
+    rank: 4,
+    avatarSrc: "/images/sloth.svg",
+    name: "Alice Williams",
+    points: "+70"
+  },
+  {
+    rank: 5,
+    avatarSrc: "/images/avatar-cactus.svg",
+    name: "Charlie Brown",
+    points: "+40"
+  },
+  {
+    rank: 6,
+    avatarSrc: "/images/sloth.svg",
+    name: "Emma Davis",
+    points: "+40"
+  },
+  {
+    rank: 7,
+    avatarSrc: "/images/avatar-cactus.svg",
+    name: "Frank Miller",
+    points: "+40"
+  },
+  {
+    rank: 8,
+    avatarSrc: "/images/sloth.svg",
+    name: "Grace Wilson",
+    points: "+40"
+  },
+  {
+    rank: 9,
+    avatarSrc: "/images/avatar-cactus.svg",
+    name: "Henry Jones",
+    points: "+40"
+  },
+  {
+    rank: 10,
+    avatarSrc: "/images/sloth.svg",
+    name: "Isabel White",
+    points: "+40"
+  }
+]
+
 
 function Dashboard() {
 
@@ -308,121 +401,31 @@ function Dashboard() {
   return (
     <div className="w-full flex flex-col">
 
-    <div className=" container w-full space-y-4">
+    <div className="  w-full space-y-4">
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Revenue
-            </CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">
-              +20.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              All Orders
-            </CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{`+${data.length}`}</div>
-            <p className="text-xs text-muted-foreground">
-              +180.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <rect width="20" height="14" x="2" y="5" rx="2" />
-              <path d="M2 10h20" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
-            <p className="text-xs text-muted-foreground">
-              +19% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Active Writers
-            </CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+573</div>
-            <p className="text-xs text-muted-foreground">
-              +201 since last hour
-            </p>
-          </CardContent>
-        </Card>
+        {cardProps.map((props, index) => (
+            <DashCard
+              key={index}
+              title={props.title}
+              value={props.value}
+              iconUrl={`/images/${props.iconName}.svg`}
+              changeValue={props.changeValue}
+              changeText={props.changeText}
+            />
+        ))} 
       </div>
-
       <div className="grid gap-4 grid-cols-3">
-        <Card className="col-span-2">
+        <Card className="col-span-3 md:col-span-2 rounded-xl">
           <CardHeader>
-            <CardTitle>Overview</CardTitle>
+            <CardTitle>
+              Overview
+            </CardTitle>
           </CardHeader>
-          <CardContent className="pl-2">
-
+          <CardContent className="pl-2 w-full h-full">
+              <Overview/>
           </CardContent>
         </Card>
-        <Card className="col-span-1">
+        <Card className="col-span-3 md:col-span-1 ">
           <CardHeader>
             <CardTitle>Writer Ranking</CardTitle>
             <CardDescription>
@@ -430,12 +433,23 @@ function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-
+            <div className="flex flex-col text-lg font-semibold pr-3 h-[50vh] overflow-y-scroll">
+              {rankingData.map((item) => (
+                <RankingItem
+                  key={item.rank}
+                  rank={item.rank}
+                  avatarSrc={item.avatarSrc}
+                  name={item.name}
+                  points={item.points}
+                />
+              ))}
+            </div>
+            <p className="text-center hover:text-green-600 pointer">see more...</p>         
           </CardContent>
         </Card>
       </div>
     </div>
-    <div className="container mx-auto py-4 overflow-hidden">
+    <div className="py-4 overflow-hidden">
       <div className="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-4 sm:justify-between w-full">
         <div className="w-1/3">
         <Heading title={`Orders (${filteredOrders.length})`} description='Manage your orders' />
@@ -495,7 +509,7 @@ function Dashboard() {
         />
         <Button type="submit">Apply</Button>
       </form>
-    </Form>
+      </Form>
         </div>
       </div>
       <DataTable  searchKey="orderId" columns={columns} data={filteredOrders} onRowClick={(row)=> handleRowClick(row, row.orderId)} orderId={''} />
@@ -505,500 +519,3 @@ function Dashboard() {
 }
 
 export default Dashboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 'use client'
-
-// import React from 'react'
-
-// import Image from "next/image"
-
-// import { Button } from "@/components/ui/button"
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card"
-
-// import { useEffect, useState } from 'react';
-// import { Order, columns } from "../admin/orders/columns"
-// import { DataTable } from '../admin/orders/data-table';
-// import { Heading } from "@/components/ui/heading";
-// import { useRouter } from "next/navigation"
-
-
-
-// const items = [
-//   {
-//     id: "available",
-//     label: "Available",
-//   },
-//   {
-//     id: "pending",
-//     label: "Pending",
-//   },
-//   {
-//     id: "completed",
-//     label: "Completed",
-//   },
-//   {
-//     id: "revision",
-//     label: "Revision",
-//   },
-//   {
-//     id: "disputed",
-//     label: "Disputed",
-//   },
-//   {
-//     id: "revision",
-//     label: "Revision",
-//   },
-// ] as const
-
-
-
-
-//  async function getData():Promise<Order[]>{
-//     return[
-// {
-//     orderId: 'GW020',
-//     name: "Lab report",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Other',    
-//     cpp: 3,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 25, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW021',
-//     name: "Bio Essay",
-//     topic: "Science",
-//     status: 'completed',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW022',
-//     name: "Civil Eng",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW023',
-//     name: "Bio Hack",
-//     topic: "Science",
-//     status:'pending',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW020',
-//     name: "Lab report",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Other',    
-//     cpp: 3,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 25, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW021',
-//     name: "Bio Essay",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW022',
-//     name: "Civil Eng",
-//     topic: "Science",
-//     status: 'active',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW023',
-//     name: "Bio Hack",
-//     topic: "Science",
-//     status: 'active',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW020',
-//     name: "Lab report",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Other',    
-//     cpp: 3,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 25, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW021',
-//     name: "Bio Essay",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW022',
-//     name: "Civil Eng",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW023',
-//     name: "Bio Hack",
-//     topic: "Science",
-//     status: 'completed',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW020',
-//     name: "Lab report",
-//     topic: "Science",
-//     status: 'pending',
-//     orderType: 'Other',    
-//     cpp: 3,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 25, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW021',
-//     name: "Bio Essay",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW022',
-//     name: "Civil Eng",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 24, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW023',
-//     name: "Bio Hack",
-//     topic: "Science",
-//     status: 'pending',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW020',
-//     name: "Lab report",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Other',    
-//     cpp: 3,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 25, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW021',
-//     name: "Bio Essay",
-//     topic: "Science",
-//     status: 'available',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW022',
-//     name: "Civil Eng",
-//     topic: "Science",
-//     status: 'active',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//   {
-//     orderId: 'GW023',
-//     name: "Bio Hack",
-//     topic: "Science",
-//     status: 'completed',
-//     orderType: 'Writing',
-//     cpp: 2.5,
-//     amount: 25.00,
-//     writerDeadline: 'Oct 29, 2023',
-//     educationLevel: 'college'
-//   },
-//     ]
-//   }
-
-  
-    
-
-// function Dashboard() {
-// const [data, setData] = useState<Order[]>([]);
-//     const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-//     const statuses = [...new Set(data.map(order => order.status))];
-
-// useEffect(() => {
-//     const fetchData = async () => {
-//       const initialData = await getData();
-//       setData(initialData);
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   const router = useRouter();
-  
-//   const handleRowClick = (row: any, orderId: string) => {
-//     router.push(`/admin/orders/${row.orderId}`);
-//   };
- 
-//  const handleCheckboxChange = (event: { target: { checked: any; value: string; }; }) => {
-//     if (event.target.checked) {
-//       setSelectedStatuses(prevStatuses => [...prevStatuses, event.target.value]);
-//     } else {
-//       setSelectedStatuses(prevStatuses => prevStatuses.filter(status => status !== event.target.value));
-//     }
-//   };
-
-//   const filteredOrders = data.filter((order) =>
-//     selectedStatuses.length > 0 ? selectedStatuses.includes(order.status) : true
-//   );
-
-
-//   return (
-//     <div className="w-full flex flex-col">
-
-//     <div className=" container w-full space-y-4">
-//       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-//         <Card>
-//           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//             <CardTitle className="text-sm font-medium">
-//               Total Revenue
-//             </CardTitle>
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24"
-//               fill="none"
-//               stroke="currentColor"
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               strokeWidth="2"
-//               className="h-4 w-4 text-muted-foreground"
-//             >
-//               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-//             </svg>
-//           </CardHeader>
-//           <CardContent>
-//             <div className="text-2xl font-bold">$45,231.89</div>
-//             <p className="text-xs text-muted-foreground">
-//               +20.1% from last month
-//             </p>
-//           </CardContent>
-//         </Card>
-//         <Card>
-//           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//             <CardTitle className="text-sm font-medium">
-//               All Orders
-//             </CardTitle>
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24"
-//               fill="none"
-//               stroke="currentColor"
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               strokeWidth="2"
-//               className="h-4 w-4 text-muted-foreground"
-//             >
-//               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-//               <circle cx="9" cy="7" r="4" />
-//               <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-//             </svg>
-//           </CardHeader>
-//           <CardContent>
-//             <div className="text-2xl font-bold">{`+${data.length}`}</div>
-//             <p className="text-xs text-muted-foreground">
-//               +180.1% from last month
-//             </p>
-//           </CardContent>
-//         </Card>
-//         <Card>
-//           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//             <CardTitle className="text-sm font-medium">In Progress</CardTitle>
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24"
-//               fill="none"
-//               stroke="currentColor"
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               strokeWidth="2"
-//               className="h-4 w-4 text-muted-foreground"
-//             >
-//               <rect width="20" height="14" x="2" y="5" rx="2" />
-//               <path d="M2 10h20" />
-//             </svg>
-//           </CardHeader>
-//           <CardContent>
-//             <div className="text-2xl font-bold">+12,234</div>
-//             <p className="text-xs text-muted-foreground">
-//               +19% from last month
-//             </p>
-//           </CardContent>
-//         </Card>
-//         <Card>
-//           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//             <CardTitle className="text-sm font-medium">
-//               Active Writers
-//             </CardTitle>
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24"
-//               fill="none"
-//               stroke="currentColor"
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               strokeWidth="2"
-//               className="h-4 w-4 text-muted-foreground"
-//             >
-//               <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-//             </svg>
-//           </CardHeader>
-//           <CardContent>
-//             <div className="text-2xl font-bold">+573</div>
-//             <p className="text-xs text-muted-foreground">
-//               +201 since last hour
-//             </p>
-//           </CardContent>
-//         </Card>
-//       </div>
-
-//       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-//         <Card className="col-span-4">
-//           <CardHeader>
-//             <CardTitle>Overview</CardTitle>
-//           </CardHeader>
-//           <CardContent className="pl-2">
-
-//           </CardContent>
-//         </Card>
-//         <Card className="col-span-3">
-//           <CardHeader>
-//             <CardTitle>Writer Ranking</CardTitle>
-//             <CardDescription>
-//               Top Writers this month.
-//             </CardDescription>
-//           </CardHeader>
-//           <CardContent>
-
-//           </CardContent>
-//         </Card>
-//       </div>
-//     </div>
-//     <div className="container mx-auto py-4 overflow-hidden">
-//       <div className="flex items-center justify-between w-full">
-//         <div className="w-1/3">
-//         <Heading title={`Orders (${filteredOrders.length})`} description='Manage your orders' />
-//         </div>
-//         <div className="flex   flex-wrap items-center justify-end gap-4 w-2/3">
-//           {statuses.map(status => (
-//             <label key={status} className='flex gap-1 items-center'>
-//               <input type="checkbox" value={status} onChange={handleCheckboxChange} className='  border-gray-700 checked:bg-orange-600 checked:border-orange-600 h-5 w-5 text-orange-600 border  rounded-md bg-orange-600 focus:ring-orange-500' />
-//               {status}
-//             </label>
-//           ))}
-//         </div>
-//       </div>
-//       <DataTable  searchKey="orderId" columns={columns} data={filteredOrders} onRowClick={(row)=> handleRowClick(row, row.orderId)} orderId={''} />
-//     </div>
-//     </div>
-//   )
-// }
-
-// export default Dashboard
