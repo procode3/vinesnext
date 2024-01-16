@@ -59,10 +59,10 @@ export function DataTable<TData, TValue>({
         }
     });
 
- 
+
     return (
-        <div>
-            <div className="flex items-center py-4">
+        <div className='w-full  bg-white p-5 rounded-[10px] '>
+            <div className="flex items-center py-4 ">
                 <Input
                     type='search'
                     placeholder="Search by order number..."
@@ -70,18 +70,18 @@ export function DataTable<TData, TValue>({
                     onChange={(event) =>
                         table.getColumn(searchKey)?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm"
+                    className="max-w-sm rounded-full"
                 />
-                
+
             </div>
-            <div className="rounded-md border">
+            <div className="rounded-[10px] text-sm ">
                 <Table>
-                    <TableHeader className=''>
+                    <TableHeader className='rounded-[10px]  text-slate-900 text-base text-bold'>
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow   key={headerGroup.id}>
+                            <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead className="font-bold" key={header.id}>
+                                        <TableHead className="font-normal whitespace-nowrap border-t" key={header.id}>
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -94,15 +94,15 @@ export function DataTable<TData, TValue>({
                             </TableRow>
                         ))}
                     </TableHeader>
-                    <TableBody>
+                    <TableBody className='bg-white p-10 m-10'>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className="hover:bg-orange-100"
-                                    onClick={() => onRowClick(row.original)}
-                                    
+                                    className="hover:bg-gray-100"
+                                // onClick={() => onRowClick(row.original)}
+
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -112,8 +112,8 @@ export function DataTable<TData, TValue>({
                                 </TableRow>
                             ))
                         ) : (
-                            <TableRow className="hover:bg-orange-100">
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                            <TableRow className="hover:bg-gray-100">
+                                <TableCell colSpan={columns.length} className="h-8 text-center">
                                     No results.
                                 </TableCell>
                             </TableRow>
