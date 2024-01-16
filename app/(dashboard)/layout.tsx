@@ -23,11 +23,8 @@ interface IProps {
   children: React.ReactNode
   session: any
 }
-export default function RootLayout({
-  children, session
-}: IProps) {
+export default function RootLayout({ children, session }: IProps) {
   const [isSidenavVisible, setIsSidenavVisible] = useState(true);
-
 
   const toggleSidenav = () => {
     const isLargeScreen = window.innerWidth >= 1280;
@@ -54,7 +51,7 @@ export default function RootLayout({
             <div className="sticky top-0 z-50">
               <Navbar toggleSidenav={toggleSidenav} />
             </div>
-            <div className="flex flex-col w-full  bg-slate-100 min-h-screen relative  xl:pl-[250px]">
+            <div className="flex flex-col w-full  bg-gray-100 min-h-screen relative  xl:pl-[250px]">
               {isSidenavVisible && <Sidenav />}
               <div className="flex w-full justify-center py-4 px-4 md:px-12">{children}</div>
               <Toaster />
