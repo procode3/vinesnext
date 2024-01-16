@@ -73,26 +73,29 @@ export default function Overview() {
   labels: ChartData.map((data) => data.month),
   datasets: [
     {
-      label: 'Revenue',
-      data: ChartData.map((data) => data.revenue),
-      backgroundColor: 'rgba(0, 128, 0, 0.3)',
-      borderColor: 'green',
-      borderWidth: 2,
-      lineTension: 0.3,
-      pointHoverBackgroundColor: 'teal',
-      bezierCurve: true,
-      fill: true,
-    },
-    {
       label: 'Moving Average',
       data: movingAverageData,
-      borderColor: 'blue',
+      borderColor: '#CAEE53',
       borderWidth: 2,
       lineTension: 0.3,
       pointHoverBackgroundColor: 'teal',
       bezierCurve: true,
-      fill: false,
+      fill:false,
+      
+      
     },
+    {
+      label: 'Revenue',
+      data: ChartData.map((data) => data.revenue),
+      borderColor: '#889BB8',
+      borderWidth: 2,
+      lineTension: 0.3,
+      pointHoverBackgroundColor: 'teal',
+      bezierCurve: true,
+      fill:true ,
+      backgroundColor: '#3E5F74'
+    },
+    
   ],
 });
 
@@ -115,7 +118,6 @@ export default function Overview() {
   }, []);
 
   const handleChartResize = (chart: ChartJS, newSize: { width: number; height: number }) => {
-    // Handle chart resize if needed
     console.log('Chart resized. New size:', newSize);
   };
 
@@ -124,7 +126,7 @@ export default function Overview() {
       x: {
         type: 'category',
         title: {
-          display: true,
+          display: false,
           text: 'Months',
         },
         time: {
@@ -133,11 +135,14 @@ export default function Overview() {
         grid: {
           display: false,
         },
-        
+        ticks: {
+          color:'#E3E9E2'
+        }
       },
       y: {
+        display: false,
         title: {
-          display: true,
+          display: false,
           text: 'Revenue',
         },
         grid: {
@@ -151,16 +156,24 @@ export default function Overview() {
     },
     maintainAspectRatio: true,
     responsive: true,
-    options: {
-      onResize: (chart: ChartJS, newSize: { width: number; height: number }) => {
-        handleChartResize(chart, newSize);
-      },
-      resizeDelay: 200,
+    plugins:{
+        legend: {
+        display: false, 
+        position: 'bottom', 
+        align: 'center',
+        labels: {
+        color: 'black', 
+        usePointStyle: true, 
+        boxWidth: 5, 
+        padding: 10,
+        pointStyle: 'dash', 
+      }
+    },      
     },
   };
 
   return (
-    <div className='flex justify-center items-center h-full'>
+    <div className='flex justify-center items-center h-[85%] md:h-full'>
       <LineChart chartData={chartData} options={config} />
     </div>
   );

@@ -322,13 +322,13 @@ export default function Orders() {
   );
   return (
 
-    <div className="container mx-auto py-4 overflow-hidden">
-      <div className="py-4 overflow-hidden">
-        <div className="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-4 sm:justify-between w-full">
-          <div className="w-1/3">
+    <div className=" w-full ">
+      <div className="">
+        <div className="flex flex-col-reverse sm:flex-row items-start gap-4 sm:justify-between">
+          <div className="sm:w-1/3">
             <Heading title={`Orders (${filteredOrders.length})`} description='Manage your orders' />
           </div>
-          <div className="flex   flex-wrap items-center justify-end gap-4 w-2/3">
+          <div className="flex  flex-wrap w-full items-center justify-end gap-4 sm:w-2/3">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField

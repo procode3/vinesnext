@@ -405,18 +405,19 @@ function Dashboard() {
             />
           ))}
         </div>
-        <div className="grid gap-4 grid-cols-3">
-          <Card className="col-span-3 md:col-span-2 rounded-xl">
+        <div className="grid gap-4 grid-cols-3 ">
+          <Card className="col-span-3 md:col-span-2 rounded-xl bg-[#1F4A57]">
             <CardHeader>
-              <CardTitle>
-                Overview
+              <CardTitle className="leading-wide text-gray-100 tracking-tight flex items-center justify-between">
+                <p className="text-lg md:text-3xl">Overview</p>
+                <p className="text-lg md:text-3xl  text-green-400">$4500</p>
               </CardTitle>
             </CardHeader>
-            <CardContent className="pl-2 w-full h-full">
+            <CardContent className="px-0 w-full h-full">
               <Overview />
             </CardContent>
           </Card>
-          <Card className="col-span-3 md:col-span-1 ">
+          <Card className="col-span-3 md:col-span-1 rounded-xl">
             <CardHeader>
               <CardTitle>Writer Ranking</CardTitle>
               <CardDescription>
@@ -424,7 +425,7 @@ function Dashboard() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col text-lg font-semibold pr-3 h-[50vh] overflow-y-scroll">
+              <div className="flex flex-col text-sm font-md pr-3 h-[55vh] overflow-y-scroll">
                 {rankingData.map((item) => (
                   <RankingItem
                     key={item.rank}
