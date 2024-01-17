@@ -1,22 +1,22 @@
 export const ChartData = [
     { 
         id: 1, 
-        month: 'January', 
+        month: 'Jan', 
         revenue: 1000 
     },
     { 
         id: 2, 
-        month: 'February', 
+        month: 'Feb', 
         revenue: 1200 
     },
     { 
         id: 3, 
-        month: 'March', 
+        month: 'Mar', 
         revenue: 800 
     },
     { 
         id: 4, 
-        month: 'April', 
+        month: 'Apr', 
         revenue: 1500 
     },
     { 
@@ -36,27 +36,27 @@ export const ChartData = [
     },
     { 
         id: 8, 
-        month: 'August', 
+        month: 'Aug', 
         revenue: 1000 
     },
     { 
         id: 9, 
-        month: 'September', 
+        month: 'Sept', 
         revenue: 1200 
     },
     { 
         id: 10, 
-        month: 'October', 
+        month: 'Oct', 
         revenue: 850 
     },
     { 
         id: 11, 
-        month: 'November', 
+        month: 'Nov', 
         revenue: 1100 
     },
     { 
         id: 12, 
-        month: 'December', 
+        month: 'Dec', 
         revenue: 1600 
     },
 ];

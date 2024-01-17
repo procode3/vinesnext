@@ -295,23 +295,9 @@ export default function Home() {
 
 
   return (
-    <div className="flex flex-col w-screen gap-y-8">
-      <div className="flex w-full px-8 ">
-        <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* <div className="h-full flex flex-col  gap-2  items-center justify-start col-span-2 sm:col-span-2 md:col-span-4 lg:col-span-1">
-            <div className=" w-[60px] h-[60px] md:w-[100px] md:h-[100px] flex relative">
-              <Image
-                src="/images/avatar-cactus.svg"
-                alt="avatar"
-                width={100}
-                height={100}
-                style={{ objectFit: "contain" }}
-                priority
-              />
-
-            </div>
-            <h1 className="text-[14px] md:text-[24px] font-800 font-bold px-4  text-slate-900">Prof_Writer</h1>
-          </div> */}
+    <div className="flex flex-col w-full gap-y-8">
+      <div className="flex   ">
+        <div className="grid gap-2 md:gap-4 grid-cols-2 lg:grid-cols-4 w-full">
           {cardProps.map((props, index) => (
             <DashCard
               key={index}

@@ -107,8 +107,8 @@ const getStatusColorClass = (status: string) => {
 
 
   return (
-    <div className="flex flex-col w-screen gap-y-8">
-    <div className="flex flex-col sm:flex-row w-full items-center justify-between gap-[10px] px-4">
+    <div className="flex flex-col w-full gap-y-8">
+    <div className="flex flex-col sm:flex-row w-full items-center justify-between gap-[10px] ">
       {/* change to dynamic after design */}
       {cardProps.map((props, index) => (
             <DashCard
