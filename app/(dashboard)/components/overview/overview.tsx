@@ -46,7 +46,7 @@ export default function Overview() {
       const start = Math.max(0, index - windowSize + 1);
       const end = index + 1;
       const subset = array.slice(start, end);
-      const sum = subset.reduce((acc: any, val: { revenue: any}) => acc + val.revenue, 0);
+      const sum = subset.reduce((acc: any, val: { revenue: any }) => acc + val.revenue, 0);
       return sum / subset.length;
     });
   };
@@ -57,44 +57,44 @@ export default function Overview() {
   const movingAverageData = calculateMovingAverage(ChartData, movingAverageWindowSize);
 
   const [chartData, setChartData] = useState<{
-  labels: string[];
-  datasets: {
-    label: string;
-    data: number[];
-    backgroundColor?: string;
-    borderColor: string;
-    borderWidth: number;
-    lineTension: number;
-    pointHoverBackgroundColor: string;
-    bezierCurve: boolean;
-    fill?: boolean; // Make 'fill' property optional
-  }[];
-}>({
-  labels: ChartData.map((data) => data.month),
-  datasets: [
-    {
-      label: 'Revenue',
-      data: ChartData.map((data) => data.revenue),
-      backgroundColor: 'rgba(0, 128, 0, 0.3)',
-      borderColor: 'green',
-      borderWidth: 2,
-      lineTension: 0.3,
-      pointHoverBackgroundColor: 'teal',
-      bezierCurve: true,
-      fill: true,
-    },
-    {
-      label: 'Moving Average',
-      data: movingAverageData,
-      borderColor: 'blue',
-      borderWidth: 2,
-      lineTension: 0.3,
-      pointHoverBackgroundColor: 'teal',
-      bezierCurve: true,
-      fill: false,
-    },
-  ],
-});
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      backgroundColor?: string;
+      borderColor: string;
+      borderWidth: number;
+      lineTension: number;
+      pointHoverBackgroundColor: string;
+      bezierCurve: boolean;
+      fill?: boolean; // Make 'fill' property optional
+    }[];
+  }>({
+    labels: ChartData.map((data) => data.month),
+    datasets: [
+      {
+        label: 'Revenue',
+        data: ChartData.map((data) => data.revenue),
+        backgroundColor: 'rgba(0, 128, 0, 0.3)',
+        borderColor: 'green',
+        borderWidth: 2,
+        lineTension: 0.3,
+        pointHoverBackgroundColor: 'teal',
+        bezierCurve: true,
+        fill: true,
+      },
+      {
+        label: 'Moving Average',
+        data: movingAverageData,
+        borderColor: 'blue',
+        borderWidth: 2,
+        lineTension: 0.3,
+        pointHoverBackgroundColor: 'teal',
+        bezierCurve: true,
+        fill: false,
+      },
+    ],
+  });
 
   const updateChart = () => {
     if (chartRef.current) {
@@ -133,19 +133,19 @@ export default function Overview() {
         grid: {
           display: false,
         },
-        
+
       },
       y: {
         title: {
-          display: true,
+          display: false,
           text: 'Revenue',
         },
         grid: {
           display: false,
-        }, 
+        },
         ticks: {
-        stepSize: 200, 
-      },
+          stepSize: 200,
+        },
 
       },
     },
@@ -160,7 +160,7 @@ export default function Overview() {
   };
 
   return (
-    <div className='flex justify-center items-center h-full'>
+    <div className='flex justify-center px-0 bg-red-500 items-center h-full'>
       <LineChart chartData={chartData} options={config} />
     </div>
   );
