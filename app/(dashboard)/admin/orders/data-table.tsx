@@ -61,11 +61,7 @@ export function DataTable<TData, TValue>({
 
 
     return (
-<<<<<<< HEAD
-        <div className='w-full  bg-white p-5 rounded-[10px]  overflow-hidden'>
-=======
         <div className='w-full  bg-white p-5 rounded-[10px] '>
->>>>>>> 347fc5b82bcf38131688ecc304cd8cac952d84c0
             <div className="flex items-center py-4 ">
                 <Input
                     type='search'

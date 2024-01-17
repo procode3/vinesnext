@@ -57,46 +57,6 @@ export default function Overview() {
   const movingAverageData = calculateMovingAverage(ChartData, movingAverageWindowSize);
 
   const [chartData, setChartData] = useState<{
-<<<<<<< HEAD
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor?: string;
-      borderColor: string;
-      borderWidth: number;
-      lineTension: number;
-      pointHoverBackgroundColor: string;
-      bezierCurve: boolean;
-      fill?: boolean; // Make 'fill' property optional
-    }[];
-  }>({
-    labels: ChartData.map((data) => data.month),
-    datasets: [
-      {
-        label: 'Revenue',
-        data: ChartData.map((data) => data.revenue),
-        backgroundColor: 'rgba(0, 128, 0, 0.3)',
-        borderColor: 'green',
-        borderWidth: 2,
-        lineTension: 0.3,
-        pointHoverBackgroundColor: 'teal',
-        bezierCurve: true,
-        fill: true,
-      },
-      {
-        label: 'Moving Average',
-        data: movingAverageData,
-        borderColor: 'blue',
-        borderWidth: 2,
-        lineTension: 0.3,
-        pointHoverBackgroundColor: 'teal',
-        bezierCurve: true,
-        fill: false,
-      },
-    ],
-  });
-=======
   labels: string[];
   datasets: {
     label: string;
@@ -138,7 +98,6 @@ export default function Overview() {
     
   ],
 });
->>>>>>> 347fc5b82bcf38131688ecc304cd8cac952d84c0
 
   const updateChart = () => {
     if (chartRef.current) {
@@ -176,13 +135,9 @@ export default function Overview() {
         grid: {
           display: false,
         },
-<<<<<<< HEAD
-
-=======
         ticks: {
           color:'#E3E9E2'
         }
->>>>>>> 347fc5b82bcf38131688ecc304cd8cac952d84c0
       },
       y: {
         display: false,
@@ -218,11 +173,7 @@ export default function Overview() {
   };
 
   return (
-<<<<<<< HEAD
-    <div className='flex justify-center px-0 bg-red-500 items-center h-full'>
-=======
     <div className='flex justify-center items-center h-[85%] md:h-full'>
->>>>>>> 347fc5b82bcf38131688ecc304cd8cac952d84c0
       <LineChart chartData={chartData} options={config} />
     </div>
   );
