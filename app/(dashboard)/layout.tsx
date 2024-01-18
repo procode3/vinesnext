@@ -45,7 +45,7 @@ export default function RootLayout({ children, session }: IProps) {
   const theme = createTheme();
   return (
     <html lang="en">
-      <body className={`${inter.className} flex flex-col h-full pl-[70px] xl:pl-[220px]`}>
+      <body className={`${inter.className} flex flex-col h-full pl-[70px] xl:pl-[260px]`}>
         <SessionProvider session={session}>
           <ThemeProvider theme={theme}>
             {/* <div className="sticky top-0 z-50">

@@ -1,10 +1,10 @@
 import React from 'react'
-import {Line} from "react-chartjs-2"
+import { Line } from "react-chartjs-2"
 
 interface Dataset {
   label: string;
   data: number[];
-  backgroundColor?: string; 
+  backgroundColor?: string;
   borderColor: string;
   borderWidth: number;
   lineTension: number;
@@ -18,13 +18,13 @@ interface LineChartProps {
     labels: string[];
     datasets: Dataset[];
   };
-  options:any
+  options: any
 }
-export default function LineChart({chartData , options}: LineChartProps) {
- 
+export default function LineChart({ chartData, options }: LineChartProps) {
+
   return (
-    <div className='w-full h-full flex items-center justify-center'>
-      <Line data={chartData} options={options}/>
+    <div className='relative w-full h-4/5 flex items-center justify-center'>
+      <Line data={chartData} options={options} />
     </div>
   )
 }

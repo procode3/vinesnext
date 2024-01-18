@@ -391,23 +391,25 @@ function Dashboard() {
 
   return (
     <div className="w-full flex flex-col">
-
-      <div className="  w-full space-y-4">
-        <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-          {cardProps.map((props, index) => (
-            <DashCard
-              key={index}
-              title={props.title}
-              value={props.value}
-              iconUrl={`/images/${props.iconName}.svg`}
-              changeValue={props.changeValue}
-              changeText={props.changeText}
-            />
-          ))}
+      <div className='flex w-full h-1/5 justify-between items-center py-5'>
+        <div>
+          <h2 className='font-bold text-3xl'>Welcome back, Erick!</h2>
+          <p className='text-muted opacity-0.5'>Take a look at you dashboard:)</p>
         </div>
+        <div className='relative h-[70px] w-[70px]'>
+          <Image
+            src={`/images/bell.svg`}
+            fill={true}
+            style={{ objectFit: "cover" }}
+            alt='bell' />
+          <div className='absolute top-0 right-0'>5</div>
+        </div>
+
+      </div>
+      <div className="  w-full space-y-4">
         <div className="grid gap-4 grid-cols-3 ">
-          <Card className="col-span-3 md:col-span-2 rounded-xl bg-[#1F4A57]">
-            <CardHeader>
+          <Card className=" col-span-3 md:col-span-2 rounded-xl bg-[#1F4A57]">
+            <CardHeader className=' top-0 w-full '>
               <CardTitle className="leading-wide text-gray-100 tracking-tight flex items-center justify-between">
                 <p className="text-lg md:text-3xl">Overview</p>
                 <p className="text-lg md:text-3xl  text-green-400">$4500</p>
@@ -417,7 +419,7 @@ function Dashboard() {
               <Overview />
             </CardContent>
           </Card>
-          <Card className="col-span-3 md:col-span-1 rounded-xl">
+          <Card className="col-span-3 md:col-span-1 rounded-xl h-[40vh] overflow-y-scroll">
             <CardHeader>
               <CardTitle>Writer Ranking</CardTitle>
               <CardDescription>
@@ -425,7 +427,7 @@ function Dashboard() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col text-sm font-md pr-3 h-[55vh] overflow-y-scroll">
+              <div className="flex flex-col text-sm font-md pr-3">
                 {rankingData.map((item) => (
                   <RankingItem
                     key={item.rank}
@@ -439,6 +441,18 @@ function Dashboard() {
               <p className="text-center hover:text-green-600 pointer">see more...</p>
             </CardContent>
           </Card>
+        </div>
+        <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+          {cardProps.map((props, index) => (
+            <DashCard
+              key={index}
+              title={props.title}
+              value={props.value}
+              iconUrl={`/images/${props.iconName}.svg`}
+              changeValue={props.changeValue}
+              changeText={props.changeText}
+            />
+          ))}
         </div>
       </div>
 
