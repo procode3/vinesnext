@@ -29,31 +29,31 @@ export default function Sidenav({ toggleSidenav }: SideNavProps) {
   const appRoutes: Route[] = getAdminRoutes()
   const isSmallScreen = useMediaQuery((theme: any) => theme.breakpoints.down('xl'));
   return (
-    <div id="sidenav" className="flex-col shadow-lg h-screen w-[70px] xl:w-[220px] border-r-[1px]  p-4 dark:border-gray-600  fixed  left-0  bg-slate-800 z-10  opacity-[100%] text-md items-center">
-     
-      
-        <Link href="/" className='flex justify-center w-full py-5 text-4xl md:text-4xl text-center font-semibold cursor-pointer hover:scale-110 transition-transform'>
-          <span className="hidden xl:inline text-green-600 ">Writers</span>
-          <span className='text-xl xl:text-4xl font-semibold text-green-600 '>√ine</span>
-        </Link>
+    <div id="sidenav" className="flex-col shadow-lg h-screen w-[70px] xl:w-[260px] border-r-[1px]  p-4 dark:border-gray-600  fixed  left-0  bg-slate-800 z-10  opacity-[100%] text-md items-center">
 
-      
-       <div className="flex space-x-4 items-center my-auto py-0 text-gray-200 justify-evenly " >
-        
-         { !session?.user ? (
 
-            <div className="flex flex-col gap-3 items-center h-full justify-evenly">
-              <h2 className="text-xl"><span className="hidden xl:block">Hello </span>{session?.user?.user?.username} </h2>
+      <Link href="/" className='flex justify-center w-full py-5 text-4xl md:text-4xl text-center font-semibold cursor-pointer hover:scale-110 transition-transform'>
+        <span className="hidden xl:inline text-green-600 ">Writers</span>
+        <span className='text-xl xl:text-4xl font-semibold text-green-600 '>√ine</span>
+      </Link>
 
-              <Avatar className="w-[50px] xl:w-[80px] h-[50px] xl:h-[80px]">
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </div>
-          ) : (
 
-            <Button variant="default" onClick={() => signIn()}>Sign In</Button>
+      <div className="flex space-x-4 items-center my-auto py-0 text-gray-200 justify-evenly " >
 
-          )
+        {!session?.user ? (
+
+          <div className="flex flex-col gap-3 items-center h-full justify-evenly">
+            <h2 className="text-xl"><span className="hidden xl:block">Hello </span>{session?.user?.user?.username} </h2>
+
+            <Avatar className="w-[50px] xl:w-[80px] h-[50px] xl:h-[80px]">
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </div>
+        ) : (
+
+          <Button variant="default" onClick={() => signIn()}>Sign In</Button>
+
+        )
         }
       </div>
       {appRoutes.map((route, idx) =>
@@ -95,19 +95,19 @@ export default function Sidenav({ toggleSidenav }: SideNavProps) {
           )
       )}
 
-        <div className="flex flex-col space-x-4 items-center my-auto py-0 text-gray-200 justify-evenly h-[20%] " >
-        
-         { !session?.user ? (
+      <div className="flex flex-col space-x-4 items-center my-auto py-0 text-gray-200 justify-evenly h-[20%] " >
 
-            <div className="flex  flex-col items-center h-full justify-evenly">
-              <h2>ksh. 1500</h2>
-              <LogoutIcon onClick={() => signOut()} />
-            </div>
-          ) : (
+        {!session?.user ? (
 
-            <Button variant="default" onClick={() => signIn()}>Sign In</Button>
+          <div className="flex  flex-col items-center h-full justify-evenly">
+            <h2>ksh. 1500</h2>
+            <LogoutIcon onClick={() => signOut()} />
+          </div>
+        ) : (
 
-          )
+          <Button variant="default" onClick={() => signIn()}>Sign In</Button>
+
+        )
         }
       </div>
 
