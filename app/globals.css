@@ -63,3 +63,21 @@ html, body, #root{
     @apply bg-background text-foreground;
   }
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1F2937 #1F2937;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #1F2937;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #1F2937;
+  border-radius: 5px;
+}
