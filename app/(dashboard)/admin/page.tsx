@@ -115,33 +115,34 @@ function Dashboard() {
     <div className="w-full flex flex-col">
       <Header name={'Erick'} notificationCount={5}/>
       <div className="  w-full space-y-4">
-        <div className="grid gap-4 grid-cols-3 ">
-          <Card className=" col-span-3 md:col-span-2 rounded-xl bg-[#1F4A57]">
-            <CardHeader className=' top-0 w-full '>
-              <CardTitle className="leading-wide text-gray-100 tracking-tight flex items-center justify-between">
-                <p className="text-lg md:text-3xl">Overview</p>
-                <p className="text-lg md:text-3xl  text-green-400">$4500</p>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="px-0 w-full h-full">
-              <Overview />
-            </CardContent>
-          </Card>
-          <div className="col-span-3 md:col-span-1">
-            {cardProps.map((props, index) => (
-            <DashCard
-              key={index}
-              title={props.title}
-              value={props.value}
-              iconUrl={`/images/${props.iconName}.svg`}
-              changeValue={props.changeValue}
-              changeText={props.changeText}
-            />
-          ))}
-          </div>
-        </div>
+        <div className="grid gap-4 grid-cols-3">
+  <Card className="col-span-3 md:col-span-2 rounded-xl bg-[#1F4A57]">
+    <CardHeader className='top-0 w-full'>
+      <CardTitle className="leading-wide text-gray-100 tracking-tight flex items-center justify-between">
+        <p className="text-lg md:text-3xl">Overview</p>
+        <p className="text-lg md:text-3xl text-green-400">$4500</p>
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="px-0 w-full h-full">
+      <Overview />
+    </CardContent>
+  </Card>
+  <div className="col-span-3 md:col-span-1 space-y-4">
+    {cardProps.map((props, index) => (
+      <DashCard
+        key={index}
+        title={props.title}
+        value={props.value}
+        iconUrl={`/images/${props.iconName}.svg`}
+        changeValue={props.changeValue}
+        changeText={props.changeText}
+      />
+    ))}
+  </div>
+</div>
+
         <div className="grid gap-4 grid-cols-2">
-           <Card className="col-span-1 md:col-span-1 rounded-xl">
+           <Card className="col-span-2 md:col-span-1 rounded-xl">
             <CardHeader>
               <CardTitle>Writer Ranking</CardTitle>
               <CardDescription>

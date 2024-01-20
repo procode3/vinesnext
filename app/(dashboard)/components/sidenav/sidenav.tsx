@@ -29,7 +29,7 @@ export default function Sidenav({ toggleSidenav }: SideNavProps) {
   const appRoutes: Route[] = getAdminRoutes()
   const isSmallScreen = useMediaQuery((theme: any) => theme.breakpoints.down('xl'));
   return (
-    <div id="sidenav" className="flex-col shadow-lg h-screen w-[70px] xl:w-[260px] border-r-[1px]  p-4 dark:border-gray-600  fixed  left-0  bg-slate-800 z-10  opacity-[100%] text-md items-center">
+    <div id="sidenav" className="flex-col  h-screen w-[70px] xl:w-[260px]  p-4 dark:border-gray-600  fixed  left-0  bg-slate-800 z-10  opacity-[100%] text-md items-center">
 
 
       <Link href="/" className='flex justify-center w-full py-5 text-4xl md:text-4xl text-center font-semibold cursor-pointer hover:scale-110 transition-transform'>

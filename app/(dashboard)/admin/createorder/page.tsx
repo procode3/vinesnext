@@ -89,6 +89,12 @@ const items = [
   },
 ] as const
 
+const formItems = [
+  { value: "writing", label: "Writing" },
+  { value: "editing", label: "Editing" },
+  { value: "other", label: "Other" },
+];
+
 const formSchema = z.object({
   // id: z.string().min(2,).max(50),
   name: z.string().min(2).max(50),
@@ -185,8 +191,8 @@ function CreateOrder() {
 
   const removeFileHandler = (index: number) => {
     const updatedFiles = [...files] as any;
-    updatedFiles.splice(index, 1); // Remove the element at the given index
-    setFileList(updatedFiles); // Update the state with the modified array
+    updatedFiles.splice(index, 1); 
+    setFileList(updatedFiles); 
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
@@ -215,16 +221,16 @@ function CreateOrder() {
     <div className='w-screen'>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='p-4 text-black'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className=' text-black'>
           <div className="flex flex-col items-center justify-center p-4 mb-4">
             <p className=" font-bold text-xl">Create a New Order</p>
           </div>
 
-          <div className=' flex flex-col px-0 sm:px-36 lg:px-0 lg:flex-row place-content-between mx-auto border-3 border-solid text-sm gap-[20px] w-full'>
-            <div className=" flex flex-col  items-center  w-full bg-white rounded ">
-              <div className="flex "><HorizontalRuleIcon /> Order Details</div>
+          <div className=' flex flex-wrap justify-evenly text-md gap-[10px] w-full  '>
+            <div className=" flex flex-col justify-center items-center p-10 h-[80vh]  bg-white rounded ">
+              <h3 className="font-semibold text-lg mb-5">Order Details</h3> 
 
-              <div className='w-full xl:w-[350px] p-6  flex flex-col gap-y-[22px] shadow-lg border'>
+              <div className='w-full xl:w-[350px]  flex flex-col gap-y-[22px]'>
 
                 <FormField
                   control={form.control}
@@ -238,50 +244,24 @@ function CreateOrder() {
                       <RadioGroup
                         onValueChange={field.onChange}
                         defaultValue={field.value}
-                        className="grid max-w-md grid-cols-3 gap-2 pt-2"
+                        className="grid max-w-md grid-cols-3 gap-2 "
                       >
-                        <FormItem>
-                          <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
-                            <FormControl>
-                              <RadioGroupItem value="writing" className="sr-only" />
-                            </FormControl>
-                            <div className="items-center rounded-md border-2 border-muted cursor-pointer p-1 hover:border-accent">
-                              <span className="md:w-8 block w-full p-2 text-center font-normal">
-                                Writing
-                              </span>
-
-                            </div>
-
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem>
-                          <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
-                            <FormControl>
-                              <RadioGroupItem value="editing" className="sr-only" />
-                            </FormControl>
-                            <div className="items-center rounded-md border-2 border-muted bg-popover p-1 cursor-pointer hover:bg-accent hover:text-accent-foreground">
-                              <span className="block w-full p-2 text-center font-normal">
-                                Editing
-                              </span>
-
-                            </div>
-                          </FormLabel>
-                        </FormItem>
-
-                        <FormItem>
-                          <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
-                            <FormControl>
-                              <RadioGroupItem value="other" className="sr-only" />
-                            </FormControl>
-                            <div className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent cursor-pointer hover:text-accent-foreground">
-                              <span className="block w-full p-2 text-center font-normal">
-                                Other
-                              </span>
-
-                            </div>
-                          </FormLabel>
-                        </FormItem>
+                        {formItems.map((item) => (
+                          <FormItem key={item.value}>
+                            <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
+                              <FormControl>
+                                <RadioGroupItem value={item.value} className="sr-only" />
+                              </FormControl>
+                              <div className="items-center rounded-md border-2 border-muted cursor-pointer p-1 hover:border-accent">
+                                <span className="md:w-8 block w-full p-2 text-center font-normal">
+                                  {item.label}
+                                </span>
+                              </div>
+                            </FormLabel>
+                          </FormItem>
+                        ))}
                       </RadioGroup>
+
                       <FormMessage />
                     </FormItem>
                   )}
@@ -311,7 +291,7 @@ function CreateOrder() {
                     <FormItem>
                       <FormLabel>Pages</FormLabel>
                       <FormControl>
-                        <Input type="number"  {...field} />
+                        <Input type="number" placeholder='number of pages' {...field} />
                       </FormControl>
                     </FormItem>
 
@@ -325,7 +305,6 @@ function CreateOrder() {
                     <FormItem className='flex flex-col gap-y-2'>
                       <FormLabel>Subject</FormLabel>
                       <FormControl>
-
                         <SubjectCombobox value={field.value} setValue={field.onChange} />
                       </FormControl>
                     </FormItem>
@@ -387,9 +366,9 @@ function CreateOrder() {
                 />
               </div>
             </div>
-            <div className=" flex flex-col w-full items-center bg-white ">
-              <div className="flex"><HorizontalRuleIcon /> Instructions and Attachments</div>
-              <div className='w-full xl:w-[350px] p-6 flex flex-col space-y-3 border shadow-lg'>
+            <div className=" flex flex-col  justify-center items-center  h-[80vh]  bg-white rounded overflow-hidden p-10 ">
+              <h3 className="font-semibold text-lg mb-5">Instructions and Attachments</h3> 
+              <div className='w-full h-full xl:w-[350px] flex flex-col justify-between space-y-3 '>
                 <FormField
                   control={form.control}
                   name="topic"
@@ -409,7 +388,7 @@ function CreateOrder() {
                   name="instructions"
 
                   render={({ field }) => (
-                    <FormItem className='flex flex-col gap-y-2'>
+                    <FormItem className='flex flex-col gap-y-2 h-full'>
                       <FormLabel>Detailed Instructions</FormLabel>
                       <FormControl>
                         <Textarea {...field} />
@@ -423,15 +402,15 @@ function CreateOrder() {
                   name="clientFiles"
 
                   render={({ field }) => (
-                    <FormItem className='flex flex-col gap-y-2'>
+                    <FormItem className='flex flex-col gap-y-2 '>
                       <FormLabel>Upload attachments</FormLabel>
                       <FormControl>
                         <Input type="file" onChange={handleFileChange} multiple placeholder="Select file(s)..." />
 
                       </FormControl>
-                      <ul>
+                      <ul className=" h-[20vh] overflow-auto">
                         {files.map((file, i) => (
-                          <li key={i} className='flex justify-between gap-x-4 p-1 my-1 hover:bg-slate-150  rounded border-b'>
+                          <li key={i} className='flex justify-between gap-x-4  my-1 hover:bg-slate-150  rounded border-b'>
 
                             <p className='truncate hover:underline hover:cursor-pointer opacity-70 hover:opacity-80'>
                               {file.name}
@@ -446,9 +425,9 @@ function CreateOrder() {
                 />
               </div>
             </div>
-            <div className="flex flex-col w-full items-center bg-white">
-              <div className="flex opacity-80"><HorizontalRuleIcon /> Writer Details</div>
-              <div className=" w-full xl:w-[350px] p-6 flex flex-col bg-white space-y-4 shadow-lg border">
+            <div className=" flex flex-col justify-center items-center h-[80vh]  bg-white rounded p-10 ">
+              <h3 className="font-semibold text-lg mb-5"> Writer Details</h3>
+              <div className=" w-full xl:w-[350px] flex flex-col bg-white space-y-4">
 
                 <FormField
                   control={form.control}
