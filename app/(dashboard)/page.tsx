@@ -7,12 +7,15 @@ import { Heading } from "@/components/ui/heading";
 import { useRouter } from "next/navigation"
 import DashCard from ".././(dashboard)/components/dashcard"
 
+
+
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import Header from "./components/Header";
 
 
 
@@ -296,6 +299,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full gap-y-8">
+      <Header name={'Erick'} notificationCount={5}/>
+      
       <div className="flex   ">
         <div className="grid gap-2 md:gap-4 grid-cols-2 lg:grid-cols-4 w-full">
           {cardProps.map((props, index) => (
