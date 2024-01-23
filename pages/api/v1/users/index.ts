@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { successResponse, failureResponse } from "../middlewares/response";
 import { BadRequestError, NotFoundError } from "../middlewares/errorhandler";
+import bcrypt from "bcrypt";
 
 export default async function handler(
   req: NextApiRequest,
@@ -31,9 +32,10 @@ export default async function handler(
                 .join(", ")} are required`;
         throw new BadRequestError(errorMessage);
       }
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       const user: any = await prisma.user.create({
-        data: { name, email, password, image, phone, userType },
+        data: { name, email, password: hashedPassword, image, phone, userType },
       });
       if (!user) throw new NotFoundError("User not created.");
       successResponse(res, user, 201);
