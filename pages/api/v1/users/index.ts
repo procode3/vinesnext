@@ -45,7 +45,7 @@ export default async function handler(
   }
   if (req.method === "GET") {
     try {
-      const { isArchived } = req.query || false;
+      const isArchived = req?.query.isArchived == "true" ? true : false;
       const users = await prisma.user.findMany({ where: { isArchived } });
       if (!users) {
         throw new NotFoundError("No user found");
