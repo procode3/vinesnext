@@ -1,4 +1,4 @@
-GET http://localhost:3000/api/v1/users?isArchived=true
+GET http://localhost:3000/api/v1/users
 
 
 ###
@@ -20,3 +20,6 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3000/api/v1/users/clrqcqfxd0004dufcq43dp0p5
+
+###
+GET http://localhost:3000/api/v1/orders

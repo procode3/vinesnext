@@ -87,7 +87,7 @@ export default async function handler(
   if (req.method === "GET") {
     try {
       // const {id} = params;
-      const id = "10";
+      // const id = "10";
       const orders = await prisma.order.findMany();
       if (!orders) {
         throw new NotFoundError("Order not found");

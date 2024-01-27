@@ -1,0 +1,5 @@
+1. Show error if email is taken before submitting new user
+Status: Open
+
+2. Do not send API request to /submissions/orderId if order.status == "NEW"
+Status: Open
