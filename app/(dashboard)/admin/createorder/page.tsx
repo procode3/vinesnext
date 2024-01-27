@@ -242,7 +242,7 @@ const nextStep = () => {
 
           <div className=' flex flex-wrap justify-evenly text-md gap-[10px] w-full  '>
           {step === 1 && (        
-          <div className="first flex flex-col justify-center  w-full lg:w-2/3 p-10 h-[90vh]  bg-white rounded ">
+          <div className="first flex flex-col justify-between  w-full lg:w-2/3 p-10 h-full  bg-white rounded ">
               <h3 className="font-semibold text-lg mb-5">Order Details</h3>
               <div className='w-full lg:w-full  flex flex-col gap-y-[22px]'>
                 <FormField
@@ -375,7 +375,9 @@ const nextStep = () => {
                   )}
                 />
               </div>
-              <Button  onClick={nextStep} variant='secondary' className="m-3">Next</Button>
+              <div className="w-full flex justify-center items-center">
+                <Button  onClick={nextStep} variant='secondary' className="m-3">Next</Button>
+              </div>
             </div>
         
       )}
@@ -385,9 +387,9 @@ const nextStep = () => {
 
        {step === 2 && (        
           
-            <div className=" second flex flex-col  justify-center items-center  h-[90vh] w-full lg:w-2/3  bg-white rounded overflow-hidden p-10 ">
+            <div className=" second flex flex-col  justify-between   h-full w-full lg:w-2/3  bg-white rounded overflow-hidden p-10 ">
               <h3 className="font-semibold text-lg mb-5">Description and Attachments</h3> 
-              <div className='w-full h-4/5  flex flex-col justify-between space-y-3 '>
+              <div className='w-full  flex flex-col justify-between space-y-3 '>
                 <FormField
                   control={form.control}
                   name="topic"
@@ -407,7 +409,7 @@ const nextStep = () => {
                   name="description"
 
                   render={({ field }) => (
-                    <FormItem className='flex flex-col gap-y-2 h-full'>
+                    <FormItem className='flex flex-col gap-y-2 h-[30vh]'>
                       <FormLabel>Detailed Description</FormLabel>
                       <FormControl>
                         <Textarea {...field} />
@@ -427,7 +429,7 @@ const nextStep = () => {
                         <Input type="file" onChange={handleFileChange} multiple placeholder="Select file(s)..." />
 
                       </FormControl>
-                      <ul className=" h-[20vh] overflow-auto">
+                      <ul className="max-h-[15vh] overflow-auto">
                         {files.map((file, i) => (
                           <li key={i} className='flex justify-between gap-x-4  my-1 hover:bg-slate-150  rounded border-b'>
 
@@ -444,7 +446,7 @@ const nextStep = () => {
                 />
                
               </div>
-              <div className="w-full h-1/5 flex justify-evenly ">
+              <div className="w-full  flex justify-evenly ">
                 <Button  onClick={prevStep} variant='secondary' className="m-3">Prev</Button>
                 <Button  onClick={nextStep} variant='secondary' className="m-3">Next</Button>
               </div>
@@ -458,9 +460,9 @@ const nextStep = () => {
 
 
       {step === 3 && (
-        <div className=" third flex flex-col justify-center items-center h-[90vh] w-full lg:w-2/3 bg-white rounded p-10 ">
+        <div className=" third flex flex-col justify-center h-full w-full lg:w-2/3 bg-white rounded p-10 ">
               <h3 className="font-semibold text-lg mb-5"> Writer Details</h3>
-              <div className=" w-full flex flex-col bg-white space-y-4">
+              <div className=" w-full flex flex-col   bg-white space-y-4">
 
                 <FormField
                   control={form.control}
@@ -502,7 +504,7 @@ const nextStep = () => {
                                 <FormItem>
                                   <FormLabel>Writer Proficiency</FormLabel>
                                   <FormControl>
-                                    <RadioGroup defaultValue="intermidiate" className='grid grid-cols-2'>
+                                    <RadioGroup defaultValue="intermidiate" className='grid grid-cols-3'>
                                       <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="beginner" id="r1" />
                                         <Label htmlFor="r1">Beginner</Label>
