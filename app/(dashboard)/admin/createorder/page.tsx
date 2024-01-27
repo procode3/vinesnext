@@ -43,27 +43,29 @@ import {
 } from "@/components/ui/tabs"
 
 
-interface order {
+interface Order {
   name: string,
   orderType: string,
   clientDeadline: string,
   writerDeadline: string,
   pages: string,
-  cpp: string,
+  words: number,
   subject: string,
   topic: string,
-  instructions: string,
-  clientFiles?: string,
+  description: string,
+  writerFee: number,
+  amountReceived: number,
   educationLevel: string[] | string,
   writerLevel: string,
-  amount: number,
-  writerFee: number,
-  writerId: string,
-  assignedBy?: string,
-  writerRating: number,
-  clientId?: string,
-  orderNumber: string,
   orderStatus: string,
+  userId: string,
+   writerId: string,
+  assignedById?: string,
+  orderNumber: string,
+  clientId?: string,
+  citationStyle: string,
+  sources: number,
+  spacing: string,
 }
 
 const items = [
@@ -98,31 +100,30 @@ const formItems = [
 const formSchema = z.object({
   // id: z.string().min(2,).max(50),
   name: z.string().min(2).max(50),
-  orderType: z.string().min(2, {
-    message: "Please choose atleast one ordertype",
-  }).max(50),
-  clientDeadline: z.string().min(2, { message: "Required" }).max(50),
-  writerDeadline: z.string().min(2, { message: "Required" }).max(50),
+  orderType: z.string().min(2).max(50),
+  clientDeadline: z.string().min(2).max(50),
+  writerDeadline: z.string().min(2).max(50),
   pages: z.string(),
-  cpp: z.string(),
-  subject: z.string().min(2, {
-    message: "Please choose atleast one option subject",
-  }).max(50),
-  topic: z.string().min(2, { message: "Required topic" }).max(50),
-  instructions: z.string().min(0).max(1024),
+  words: z.number(),
+  subject: z.string().min(2).max(50),
+  orderNumber: z.string().min(2).max(50),
+  topic: z.string().min(2).max(50),
+  description: z.string().min(0).max(1024),
+  writerFee: z.number(),
+  writerLevel: z.string(),
+  writerId: z.string().nullable(),
+  amountReceived: z.number(),
   clientFiles: z.array(z.string()).nullable(),
   educationLevel: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to select at least one item.",
   }),
-  writerLevel: z.string(),
-  amount: z.number(),
-  writerFee: z.number(),
-  writerId: z.string().nullable(),
-  assignedBy: z.string().nullable(),
-  writerRating: z.number(),
-  clientId: z.string(),
-  orderNumber: z.string().min(2).max(50),
   orderStatus: z.string(),
+  userId: z.string(),
+  assignedById: z.string(),
+  clientId: z.string(),
+  citationStyle: z.string(),
+  sources: z.number(),
+  spacing: z.string(),
 }).superRefine(({writerDeadline, clientDeadline}, ctx) => {
   if(writerDeadline > clientDeadline){
     ctx.addIssue({
@@ -137,33 +138,34 @@ function CreateOrder() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // id: v4(),
-      name: "",
-      orderType: "",
-      clientDeadline: "",
-      writerDeadline: "",
-      pages: "0.5",
-      cpp: "300",
-      subject: "",
-      topic: "",
-      instructions: "",
-      clientFiles: null,
-      educationLevel: [],
-      writerLevel: "",
-      amount: 50,
-      writerFee: 50,
-      writerId: "4",
-      assignedBy: null,
-      writerRating: 5,
-      clientId: "",
-      orderNumber: "",
-      orderStatus: "new",
+      name: '',
+      orderType: '',
+      clientDeadline: '',
+      writerDeadline: '',
+      pages: '0.5',
+      words: 1500,
+      subject: '',
+      topic: '',
+      description: '',
+      writerFee: 100.0,
+      amountReceived: 50.0,
+      educationLevel: ['UNDERGRADUATE'],
+      writerLevel: '', // Add this line for the missing writerLevel field
+      orderStatus: 'INPROGRESS',
+      userId: 'user123',
+      writerId: 'writer123', // Add this line for the missing writerId field
+      assignedById: 'admin456',
+      clientId: 'client789',
+      citationStyle: 'APA7',
+      sources: 5,
+      spacing: 'DOUBLE',
     },
   });
 
-  const { data: session }: any = useSession();
 
+  const { data: session }: any = useSession();
   const [orderName, setOrderName] = useState('');
+  const [step, setStep] = useState(1);
   const [isloading, setIsloading] = useState(false);
   const { toast } = useToast()
 
@@ -193,6 +195,18 @@ function CreateOrder() {
     const updatedFiles = [...files] as any;
     updatedFiles.splice(index, 1); 
     setFileList(updatedFiles); 
+  };
+  
+const nextStep = () => {
+    if (step < 3) {
+      setStep(step + 1);
+    }
+  };
+
+  const prevStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    }
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
@@ -227,13 +241,12 @@ function CreateOrder() {
           </div>
 
           <div className=' flex flex-wrap justify-evenly text-md gap-[10px] w-full  '>
-            <div className=" flex flex-col justify-center items-center p-10 h-[80vh]  bg-white rounded ">
-              <h3 className="font-semibold text-lg mb-5">Order Details</h3> 
-
-              <div className='w-full xl:w-[350px]  flex flex-col gap-y-[22px]'>
-
+          {step === 1 && (        
+          <div className="first flex flex-col justify-center  w-full lg:w-2/3 p-10 h-[90vh]  bg-white rounded ">
+              <h3 className="font-semibold text-lg mb-5">Order Details</h3>
+              <div className='w-full lg:w-full  flex flex-col gap-y-[22px]'>
                 <FormField
-                  control={form.control}
+                  control={form.control}   
                   name="orderType"
 
                   render={({ field }) => (
@@ -346,9 +359,6 @@ function CreateOrder() {
 
                                           )
                                       }}
-
-
-
                                     />
                                   </FormControl>
                                   <FormLabel className={field.value?.includes(item.id) ? "font-normal cursor-pointer " : "font-normal  cursor-pointer "} >
@@ -365,10 +375,19 @@ function CreateOrder() {
                   )}
                 />
               </div>
+              <Button  onClick={nextStep} variant='secondary' className="m-3">Next</Button>
             </div>
-            <div className=" flex flex-col  justify-center items-center  h-[80vh]  bg-white rounded overflow-hidden p-10 ">
-              <h3 className="font-semibold text-lg mb-5">Instructions and Attachments</h3> 
-              <div className='w-full h-full xl:w-[350px] flex flex-col justify-between space-y-3 '>
+        
+      )}
+
+
+
+
+       {step === 2 && (        
+          
+            <div className=" second flex flex-col  justify-center items-center  h-[90vh] w-full lg:w-2/3  bg-white rounded overflow-hidden p-10 ">
+              <h3 className="font-semibold text-lg mb-5">Description and Attachments</h3> 
+              <div className='w-full h-4/5  flex flex-col justify-between space-y-3 '>
                 <FormField
                   control={form.control}
                   name="topic"
@@ -385,11 +404,11 @@ function CreateOrder() {
                 />
                 <FormField
                   control={form.control}
-                  name="instructions"
+                  name="description"
 
                   render={({ field }) => (
                     <FormItem className='flex flex-col gap-y-2 h-full'>
-                      <FormLabel>Detailed Instructions</FormLabel>
+                      <FormLabel>Detailed Description</FormLabel>
                       <FormControl>
                         <Textarea {...field} />
                       </FormControl>
@@ -423,11 +442,25 @@ function CreateOrder() {
 
                   )}
                 />
+               
               </div>
+              <div className="w-full h-1/5 flex justify-evenly ">
+                <Button  onClick={prevStep} variant='secondary' className="m-3">Prev</Button>
+                <Button  onClick={nextStep} variant='secondary' className="m-3">Next</Button>
+              </div>
+               
             </div>
-            <div className=" flex flex-col justify-center items-center h-[80vh]  bg-white rounded p-10 ">
+         
+        
+      )}
+           
+
+
+
+      {step === 3 && (
+        <div className=" third flex flex-col justify-center items-center h-[90vh] w-full lg:w-2/3 bg-white rounded p-10 ">
               <h3 className="font-semibold text-lg mb-5"> Writer Details</h3>
-              <div className=" w-full xl:w-[350px] flex flex-col bg-white space-y-4">
+              <div className=" w-full flex flex-col bg-white space-y-4">
 
                 <FormField
                   control={form.control}
@@ -532,7 +565,7 @@ function CreateOrder() {
                 />
                 <FormField
                   control={form.control}
-                  name="cpp"
+                  name="writerFee"
 
                   render={({ field }) => (
                     <FormItem>
@@ -577,13 +610,21 @@ function CreateOrder() {
                   )}
                 />
               </div>
+              <div className="w-full flex justify-evenly items-center">
+              <Button  onClick={prevStep} variant='secondary' className="m-3">Prev</Button>
+              <Button variant='default' type="submit">               
+                {isloading ? 'Loading...' : 'Submit'}
+              </Button>
+              </div>
             </div>
+      )}
+
+
+
+
+            
           </div>
-          <div className="flex place-content-center py-4 mt-3 px-12 md:px-0">
-            <Button variant='default' type="submit"> {
-              isloading ? 'Loading...' : 'Submit'
-            }</Button>
-          </div>
+          
         </form>
       </Form>
     </div>
