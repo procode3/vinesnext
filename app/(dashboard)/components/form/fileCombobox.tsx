@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -63,18 +63,19 @@ export default function FileCombobox({ value, setValue }: any) {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className=" justify-between"
+                    size={"sm"}
+                    className=" justify-between bg-transparent hover:bg-transparent focus:bg-transparent rounded-md"
+
                 >
                     {value
                         ? frameworks.find((framework) => framework.value === value)?.label || "Other"
                         : "Other"}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search type..." />
-                    <CommandEmpty>Not found.</CommandEmpty>
+
                     <CommandGroup className='h-48 overflow-y-auto'>
                         {frameworks.map((framework) => (
                             <CommandItem
