@@ -5,12 +5,13 @@ import { useSession } from 'next-auth/react'
 import { v4 } from 'uuid'
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
+import FileCombobox from "@/app/(dashboard)/components/form/fileCombobox"
 import SubjectCombobox from "@/app/(dashboard)/components/form/subjectCombobox"
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
@@ -29,7 +30,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,      
+  FormMessage,
 } from "@/components/ui/form"
 
 
@@ -64,6 +65,7 @@ interface order {
   clientId?: string,
   orderNumber: string,
   orderStatus: string,
+  fileType: String[] | string,
 }
 
 const items = [
@@ -123,8 +125,11 @@ const formSchema = z.object({
   clientId: z.string(),
   orderNumber: z.string().min(2).max(50),
   orderStatus: z.string(),
-}).superRefine(({writerDeadline, clientDeadline}, ctx) => {
-  if(writerDeadline > clientDeadline){
+  fileType: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "You have to select at least one item.",
+  }),
+}).superRefine(({ writerDeadline, clientDeadline }, ctx) => {
+  if (writerDeadline > clientDeadline) {
     ctx.addIssue({
       message: "Writer deadline must be sooner than or equal to the client deadline.",
       code: 'custom',
@@ -158,6 +163,7 @@ function CreateOrder() {
       clientId: "",
       orderNumber: "",
       orderStatus: "new",
+      fileType: [],
     },
   });
 
@@ -187,13 +193,22 @@ function CreateOrder() {
 
 
   let files = fileList ? [...fileList] : [];
-  console.log(files);
+
 
   const removeFileHandler = (index: number) => {
     const updatedFiles = [...files] as any;
-    updatedFiles.splice(index, 1); 
-    setFileList(updatedFiles); 
+    updatedFiles.splice(index, 1);
+    setFileList(updatedFiles);
   };
+
+  const updateFiletype = (file: any, fileType: String | null) => {
+    file.fileType = fileType || 'other';
+    console.log(files);
+    console.log(file);
+  }
+
+
+
 
   async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
 
@@ -203,7 +218,7 @@ function CreateOrder() {
 
       values.educationLevel = values.educationLevel[0] as any;
 
-      console.log(values);
+
       const res = await httpCreateOrder(values, session, toast, files);
       if (res) {
         form.reset();
@@ -214,7 +229,7 @@ function CreateOrder() {
       setIsloading(false);
     }
 
-    console.log(values);
+
   }
 
   return (
@@ -228,7 +243,7 @@ function CreateOrder() {
 
           <div className=' flex flex-wrap justify-evenly text-md gap-[10px] w-full  '>
             <div className=" flex flex-col justify-center items-center p-10 h-[80vh]  bg-white rounded ">
-              <h3 className="font-semibold text-lg mb-5">Order Details</h3> 
+              <h3 className="font-semibold text-lg mb-5">Order Details</h3>
 
               <div className='w-full xl:w-[350px]  flex flex-col gap-y-[22px]'>
 
@@ -366,8 +381,8 @@ function CreateOrder() {
                 />
               </div>
             </div>
-            <div className=" flex flex-col  justify-center items-center  h-[80vh]  bg-white rounded overflow-hidden p-10 ">
-              <h3 className="font-semibold text-lg mb-5">Instructions and Attachments</h3> 
+            <div className=" flex flex-col  justify-center items-center  h-[80vh]  bg-white rounded  p-10 overflow-auto ">
+              <h3 className="font-semibold text-lg mb-5">Instructions and Attachments</h3>
               <div className='w-full h-full xl:w-[350px] flex flex-col justify-between space-y-3 '>
                 <FormField
                   control={form.control}
@@ -404,10 +419,14 @@ function CreateOrder() {
                   render={({ field }) => (
                     <FormItem className='flex flex-col gap-y-2 '>
                       <FormLabel>Upload attachments</FormLabel>
-                      <FormControl>
-                        <Input type="file" onChange={handleFileChange} multiple placeholder="Select file(s)..." />
+                      <div className="flex space-x-2">
 
-                      </FormControl>
+                        <FormControl>
+                          <Input type="file" onChange={handleFileChange} multiple placeholder="Select file(s)..." />
+
+                        </FormControl>
+
+                      </div>
                       <ul className=" h-[20vh] overflow-auto">
                         {files.map((file, i) => (
                           <li key={i} className='flex justify-between gap-x-4  my-1 hover:bg-slate-150  rounded border-b'>
@@ -415,6 +434,24 @@ function CreateOrder() {
                             <p className='truncate hover:underline hover:cursor-pointer opacity-70 hover:opacity-80'>
                               {file.name}
                             </p>
+                            {/* <FormField
+                              control={form.control}
+                              name="fileType"
+                              render={({ field }) => (
+                                <FormControl>
+                                  <FileCombobox value={field.value} setValue={field.onChange} onChange={updateFiletype(file, field.value)} />
+                                </FormControl>)}
+                            /> */}
+                            <Controller
+                              control={form.control}
+                              name={`fileType.${i}`} // Use dynamic field names based on the index
+                              defaultValue="" // Set the initial value for each field
+                              render={({ field }) => (
+                                <FormControl>
+                                  <FileCombobox value={field.value} setValue={(value: any) => { field.onChange(value); updateFiletype(file, value); }} />
+                                </FormControl>
+                              )}
+                            />
                             <CloseRoundedIcon className='cursor-pointer opacity-85' onClick={() => removeFileHandler(i)} />
                           </li>
                         ))}

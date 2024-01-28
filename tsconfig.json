@@ -30,5 +30,6 @@
     ".next/types/**/*.ts",
     "app/admin/createorder/AcademicLevel.tsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "types": ["node", "next", "./types/next.d.ts"]
 }
