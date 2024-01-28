@@ -23,33 +23,41 @@ import {
 const frameworks = [
     {
         "value": "instructions",
-        "label": "Instructions"
+        "label": "Instructions",
+        "color": "#3498db"
     },
     {
         "value": "rubric",
-        "label": "Rubric"
+        "label": "Rubric",
+        "color": "#2ecc71"
     },
     {
         "value": "order_document",
-        "label": "Order Document"
+        "label": "Order Document",
+        "color": "#e74c3c"
     },
     {
         "value": "revision",
-        "label": "Revision"
+        "label": "Revision",
+        "color": "#f39c12"
     },
     {
         "value": "grammarly_report",
-        "label": "Grammarly Report"
+        "label": "Grammarly Report",
+        "color": "#9b59b6"
     },
     {
         "value": "turnitin_report",
-        "label": "Turnitin Report"
+        "label": "Turnitin Report",
+        "color": "#34495e"
     },
     {
         "value": "other",
-        "label": "Other"
+        "label": "Other",
+        "color": "#95a5a6"
     }
-]
+];
+
 
 
 export default function FileCombobox({ value, setValue }: any) {
@@ -58,14 +66,12 @@ export default function FileCombobox({ value, setValue }: any) {
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
+            <PopoverTrigger asChild className='bg-red'>
                 <Button
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
                     size={"sm"}
-                    className=" justify-between bg-transparent hover:bg-transparent focus:bg-transparent rounded-md"
-
                 >
                     {value
                         ? frameworks.find((framework) => framework.value === value)?.label || "Other"
