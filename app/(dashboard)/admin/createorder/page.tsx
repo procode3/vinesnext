@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
 import FileCombobox from "@/app/(dashboard)/components/form/fileCombobox"
-import { FileTypePicker } from "@/app/(dashboard)/components/form/fileTypePicker"
 import SubjectCombobox from "@/app/(dashboard)/components/form/subjectCombobox"
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import UsersCombobox from "@/app/(dashboard)/components/form/usersCombobox"
