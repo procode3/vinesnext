@@ -44,28 +44,29 @@ import {
 } from "@/components/ui/tabs"
 
 
-interface order {
+interface Order {
   name: string,
   orderType: string,
   clientDeadline: string,
   writerDeadline: string,
   pages: string,
-  cpp: string,
+  words: number,
   subject: string,
   topic: string,
-  instructions: string,
-  clientFiles?: string,
+  description: string,
+  writerFee: number,
+  amountReceived: number,
   educationLevel: string[] | string,
   writerLevel: string,
-  amount: number,
-  writerFee: number,
-  writerId: string,
-  assignedBy?: string,
-  writerRating: number,
-  clientId?: string,
-  orderNumber: string,
   orderStatus: string,
-  fileType: String[] | string,
+  userId: string,
+  writerId: string,
+  assignedById?: string,
+  orderNumber: string,
+  clientId?: string,
+  citationStyle: string,
+  sources: number,
+  spacing: string,
 }
 
 const items = [
@@ -100,34 +101,30 @@ const formItems = [
 const formSchema = z.object({
   // id: z.string().min(2,).max(50),
   name: z.string().min(2).max(50),
-  orderType: z.string().min(2, {
-    message: "Please choose atleast one ordertype",
-  }).max(50),
-  clientDeadline: z.string().min(2, { message: "Required" }).max(50),
-  writerDeadline: z.string().min(2, { message: "Required" }).max(50),
+  orderType: z.string().min(2).max(50),
+  clientDeadline: z.string().min(2).max(50),
+  writerDeadline: z.string().min(2).max(50),
   pages: z.string(),
-  cpp: z.string(),
-  subject: z.string().min(2, {
-    message: "Please choose atleast one option subject",
-  }).max(50),
-  topic: z.string().min(2, { message: "Required topic" }).max(50),
-  instructions: z.string().min(0).max(1024),
+  words: z.number(),
+  subject: z.string().min(2).max(50),
+  orderNumber: z.string().min(2).max(50),
+  topic: z.string().min(2).max(50),
+  description: z.string().min(0).max(1024),
+  writerFee: z.number(),
+  writerLevel: z.string(),
+  writerId: z.string().nullable(),
+  amountReceived: z.number(),
   clientFiles: z.array(z.string()).nullable(),
   educationLevel: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to select at least one item.",
   }),
-  writerLevel: z.string(),
-  amount: z.number(),
-  writerFee: z.number(),
-  writerId: z.string().nullable(),
-  assignedBy: z.string().nullable(),
-  writerRating: z.number(),
-  clientId: z.string(),
-  orderNumber: z.string().min(2).max(50),
   orderStatus: z.string(),
-  fileType: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
-  }),
+  userId: z.string(),
+  assignedById: z.string(),
+  clientId: z.string(),
+  citationStyle: z.string(),
+  sources: z.number(),
+  spacing: z.string(),
 }).superRefine(({ writerDeadline, clientDeadline }, ctx) => {
   if (writerDeadline > clientDeadline) {
     ctx.addIssue({
@@ -142,34 +139,34 @@ function CreateOrder() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // id: v4(),
-      name: "",
-      orderType: "",
-      clientDeadline: "",
-      writerDeadline: "",
-      pages: "0.5",
-      cpp: "300",
-      subject: "",
-      topic: "",
-      instructions: "",
-      clientFiles: null,
-      educationLevel: [],
-      writerLevel: "",
-      amount: 50,
-      writerFee: 50,
-      writerId: "4",
-      assignedBy: null,
-      writerRating: 5,
-      clientId: "",
-      orderNumber: "",
-      orderStatus: "new",
-      fileType: [],
+      name: '',
+      orderType: '',
+      clientDeadline: '',
+      writerDeadline: '',
+      pages: '0.5',
+      words: 1500,
+      subject: '',
+      topic: '',
+      description: '',
+      writerFee: 100.0,
+      amountReceived: 50.0,
+      educationLevel: ['UNDERGRADUATE'],
+      writerLevel: '', // Add this line for the missing writerLevel field
+      orderStatus: 'INPROGRESS',
+      userId: 'user123',
+      writerId: 'writer123', // Add this line for the missing writerId field
+      assignedById: 'admin456',
+      clientId: 'client789',
+      citationStyle: 'APA7',
+      sources: 5,
+      spacing: 'DOUBLE',
     },
   });
 
-  const { data: session }: any = useSession();
 
+  const { data: session }: any = useSession();
   const [orderName, setOrderName] = useState('');
+  const [step, setStep] = useState(1);
   const [isloading, setIsloading] = useState(false);
   const { toast } = useToast()
 
@@ -201,14 +198,17 @@ function CreateOrder() {
     setFileList(updatedFiles);
   };
 
-  const updateFiletype = (file: any, fileType: String | null) => {
-    file.fileType = fileType || 'other';
-    console.log(files);
-    console.log(file);
-  }
+  const nextStep = () => {
+    if (step < 3) {
+      setStep(step + 1);
+    }
+  };
 
-
-
+  const prevStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    }
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
 
@@ -242,385 +242,392 @@ function CreateOrder() {
           </div>
 
           <div className=' flex flex-wrap justify-evenly text-md gap-[10px] w-full  '>
-            <div className=" flex flex-col justify-center items-center p-10 h-[80vh]  bg-white rounded ">
-              <h3 className="font-semibold text-lg mb-5">Order Details</h3>
+            {step === 1 && (
+              <div className="first flex flex-col justify-between  w-full lg:w-2/3 p-10 h-full  bg-white rounded ">
+                <h3 className="font-semibold text-lg mb-5">Order Details</h3>
+                <div className='w-full lg:w-full  flex flex-col gap-y-[22px]'>
+                  <FormField
+                    control={form.control}
+                    name="orderType"
 
-              <div className='w-full xl:w-[350px]  flex flex-col gap-y-[22px]'>
+                    render={({ field }) => (
 
-                <FormField
-                  control={form.control}
-                  name="orderType"
+                      <FormItem>
+                        <FormLabel>Order Type</FormLabel>
 
-                  render={({ field }) => (
-
-                    <FormItem>
-                      <FormLabel>Order Type</FormLabel>
-
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="grid max-w-md grid-cols-3 gap-2 "
-                      >
-                        {formItems.map((item) => (
-                          <FormItem key={item.value}>
-                            <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
-                              <FormControl>
-                                <RadioGroupItem value={item.value} className="sr-only" />
-                              </FormControl>
-                              <div className="items-center rounded-md border-2 border-muted cursor-pointer p-1 hover:border-accent">
-                                <span className="md:w-8 block w-full p-2 text-center font-normal">
-                                  {item.label}
-                                </span>
-                              </div>
-                            </FormLabel>
-                          </FormItem>
-                        ))}
-                      </RadioGroup>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Separator />
-                <FormField
-                  control={form.control}
-                  name="clientDeadline"
-
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Deadline:{`10 days to go`}</FormLabel>
-                      <FormControl>
-                        <Input type="datetime-local"  {...field} />
-                      </FormControl>
-                      <FormMessage />
-
-                    </FormItem>
-
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="pages"
-
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Pages</FormLabel>
-                      <FormControl>
-                        <Input type="number" placeholder='number of pages' {...field} />
-                      </FormControl>
-                    </FormItem>
-
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="subject"
-
-                  render={({ field }) => (
-                    <FormItem className='flex flex-col gap-y-2'>
-                      <FormLabel>Subject</FormLabel>
-                      <FormControl>
-                        <SubjectCombobox value={field.value} setValue={field.onChange} />
-                      </FormControl>
-                    </FormItem>
-
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="educationLevel"
-                  render={() => (
-                    <FormItem >
-                      <div className="mb-4">
-                        <FormLabel className="text-base">Academic Level</FormLabel>
-
-                      </div>
-                      <div className="grid grid-cols-3  gap-2">
-                        {items.map((item) => (
-                          <FormField
-                            key={item.id}
-                            control={form.control}
-                            name="educationLevel"
-                            render={({ field }) => {
-                              return (
-                                <FormItem
-                                  key={item.id}
-                                  className="flex flex-row items-start space-x-2 space-y-0"
-                                >
-                                  <FormControl>
-                                    <Checkbox
-                                      checked={field.value?.includes(item.id)}
-                                      onCheckedChange={(checked: any) => {
-                                        return checked
-                                          ? field.onChange([item.id])
-                                          : field.onChange(
-                                            field.value?.filter(
-                                              (value: any) => value !== item.id
-                                            )
-
-
-                                          )
-                                      }}
-
-
-
-                                    />
-                                  </FormControl>
-                                  <FormLabel className={field.value?.includes(item.id) ? "font-normal cursor-pointer " : "font-normal  cursor-pointer "} >
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="grid max-w-md grid-cols-3 gap-2 "
+                        >
+                          {formItems.map((item) => (
+                            <FormItem key={item.value}>
+                              <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
+                                <FormControl>
+                                  <RadioGroupItem value={item.value} className="sr-only" />
+                                </FormControl>
+                                <div className="items-center rounded-md border-2 border-muted cursor-pointer p-1 hover:border-accent">
+                                  <span className="md:w-8 block w-full p-2 text-center font-normal">
                                     {item.label}
-                                  </FormLabel>
-                                </FormItem>
-                              )
-                            }}
-                          />
-                        ))}
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                                  </span>
+                                </div>
+                              </FormLabel>
+                            </FormItem>
+                          ))}
+                        </RadioGroup>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Separator />
+                  <FormField
+                    control={form.control}
+                    name="clientDeadline"
+
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Deadline:{`10 days to go`}</FormLabel>
+                        <FormControl>
+                          <Input type="datetime-local"  {...field} />
+                        </FormControl>
+                        <FormMessage />
+
+                      </FormItem>
+
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="pages"
+
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Pages</FormLabel>
+                        <FormControl>
+                          <Input type="number" placeholder='number of pages' {...field} />
+                        </FormControl>
+                      </FormItem>
+
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="subject"
+
+                    render={({ field }) => (
+                      <FormItem className='flex flex-col gap-y-2'>
+                        <FormLabel>Subject</FormLabel>
+                        <FormControl>
+                          <SubjectCombobox value={field.value} setValue={field.onChange} />
+                        </FormControl>
+                      </FormItem>
+
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="educationLevel"
+                    render={() => (
+                      <FormItem >
+                        <div className="mb-4">
+                          <FormLabel className="text-base">Academic Level</FormLabel>
+
+                        </div>
+                        <div className="grid grid-cols-3  gap-2">
+                          {items.map((item) => (
+                            <FormField
+                              key={item.id}
+                              control={form.control}
+                              name="educationLevel"
+                              render={({ field }) => {
+                                return (
+                                  <FormItem
+                                    key={item.id}
+                                    className="flex flex-row items-start space-x-2 space-y-0"
+                                  >
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(item.id)}
+                                        onCheckedChange={(checked: any) => {
+                                          return checked
+                                            ? field.onChange([item.id])
+                                            : field.onChange(
+                                              field.value?.filter(
+                                                (value: any) => value !== item.id
+                                              )
+
+
+                                            )
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className={field.value?.includes(item.id) ? "font-normal cursor-pointer " : "font-normal  cursor-pointer "} >
+                                      {item.label}
+                                    </FormLabel>
+                                  </FormItem>
+                                )
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-full flex justify-center items-center">
+                  <Button onClick={nextStep} variant='secondary' className="m-3">Next</Button>
+                </div>
               </div>
-            </div>
-            <div className=" flex flex-col  justify-center items-center  h-[80vh]  bg-white rounded  p-10 overflow-auto ">
-              <h3 className="font-semibold text-lg mb-5">Instructions and Attachments</h3>
-              <div className='w-full h-full xl:w-[350px] flex flex-col justify-between space-y-3 '>
-                <FormField
-                  control={form.control}
-                  name="topic"
 
-                  render={({ field }) => (
-                    <FormItem className='flex flex-col gap-y-2'>
-                      <FormLabel>Topic</FormLabel>
-                      <FormControl>
-                        <Input type="text" placeholder="Enter topic..." {...field} />
-                      </FormControl>
-                    </FormItem>
+            )}
 
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="instructions"
 
-                  render={({ field }) => (
-                    <FormItem className='flex flex-col gap-y-2 h-full'>
-                      <FormLabel>Detailed Instructions</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} />
-                      </FormControl>
-                    </FormItem>
 
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="clientFiles"
 
-                  render={({ field }) => (
-                    <FormItem className='flex flex-col gap-y-2 '>
-                      <FormLabel>Upload attachments</FormLabel>
-                      <div className="flex space-x-2">
+            {step === 2 && (
 
+              <div className=" second flex flex-col  justify-between   h-full w-full lg:w-2/3  bg-white rounded overflow-hidden p-10 ">
+                <h3 className="font-semibold text-lg mb-5">Description and Attachments</h3>
+                <div className='w-full  flex flex-col justify-between space-y-3 '>
+                  <FormField
+                    control={form.control}
+                    name="topic"
+
+                    render={({ field }) => (
+                      <FormItem className='flex flex-col gap-y-2'>
+                        <FormLabel>Topic</FormLabel>
+                        <FormControl>
+                          <Input type="text" placeholder="Enter topic..." {...field} />
+                        </FormControl>
+                      </FormItem>
+
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="description"
+
+                    render={({ field }) => (
+                      <FormItem className='flex flex-col gap-y-2 h-[30vh]'>
+                        <FormLabel>Detailed Description</FormLabel>
+                        <FormControl>
+                          <Textarea {...field} />
+                        </FormControl>
+                      </FormItem>
+
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="clientFiles"
+
+                    render={({ field }) => (
+                      <FormItem className='flex flex-col gap-y-2 '>
+                        <FormLabel>Upload attachments</FormLabel>
                         <FormControl>
                           <Input type="file" onChange={handleFileChange} multiple placeholder="Select file(s)..." />
 
                         </FormControl>
+                        <ul className="max-h-[15vh] overflow-auto">
+                          {files.map((file, i) => (
+                            <li key={i} className='flex justify-between gap-x-4  my-1 hover:bg-slate-150  rounded border-b'>
 
-                      </div>
-                      <ul className=" h-[20vh] overflow-auto">
-                        {files.map((file, i) => (
-                          <li key={i} className='flex justify-between gap-x-4  my-1 hover:bg-slate-150  rounded border-b'>
+                              <p className='truncate hover:underline hover:cursor-pointer opacity-70 hover:opacity-80'>
+                                {file.name}
+                              </p>
+                              <CloseRoundedIcon className='cursor-pointer opacity-85' onClick={() => removeFileHandler(i)} />
+                            </li>
+                          ))}
+                        </ul>
+                      </FormItem>
 
-                            <p className='truncate hover:underline hover:cursor-pointer opacity-70 hover:opacity-80'>
-                              {file.name}
-                            </p>
-                            {/* <FormField
-                              control={form.control}
-                              name="fileType"
-                              render={({ field }) => (
-                                <FormControl>
-                                  <FileCombobox value={field.value} setValue={field.onChange} onChange={updateFiletype(file, field.value)} />
-                                </FormControl>)}
-                            /> */}
-                            <Controller
-                              control={form.control}
-                              name={`fileType.${i}`} // Use dynamic field names based on the index
-                              defaultValue="" // Set the initial value for each field
-                              render={({ field }) => (
-                                <FormControl>
-                                  <FileCombobox value={field.value} setValue={(value: any) => { field.onChange(value); updateFiletype(file, value); }} />
-                                </FormControl>
-                              )}
-                            />
-                            <CloseRoundedIcon className='cursor-pointer opacity-85' onClick={() => removeFileHandler(i)} />
-                          </li>
-                        ))}
-                      </ul>
-                    </FormItem>
+                    )}
+                  />
 
-                  )}
-                />
+                </div>
+                <div className="w-full  flex justify-evenly ">
+                  <Button onClick={prevStep} variant='secondary' className="m-3">Prev</Button>
+                  <Button onClick={nextStep} variant='secondary' className="m-3">Next</Button>
+                </div>
+
               </div>
-            </div>
-            <div className=" flex flex-col justify-center items-center h-[80vh]  bg-white rounded p-10 ">
-              <h3 className="font-semibold text-lg mb-5"> Writer Details</h3>
-              <div className=" w-full xl:w-[350px] flex flex-col bg-white space-y-4">
-
-                <FormField
-                  control={form.control}
-                  name="writerDeadline"
-
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Writer Deadline:{`10 days to go`}</FormLabel>
-                      <FormControl>
-                        <Input type="datetime-local" placeholder="" {...field} />
-                      </FormControl>
-                    </FormItem>
-
-                  )}
-                />
 
 
-                <FormField
-                  control={form.control}
-                  name="writerId"
-
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Choose Action</FormLabel>
-
-                      <FormControl>
-                        <Tabs defaultValue="isAvailable" className="max-w-md ">
-                          <TabsList className="grid w-full grid-cols-3 ">
-                            <TabsTrigger value="isAvailable">Make Available</TabsTrigger>
-                            <TabsTrigger value="writer">Assign Writer</TabsTrigger>
-                            <TabsTrigger value="new">Add to New</TabsTrigger>
-                          </TabsList>
-                          <TabsContent value="isAvailable">
-                            <FormField
-                              control={form.control}
-                              name="writerLevel"
-
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Writer Proficiency</FormLabel>
-                                  <FormControl>
-                                    <RadioGroup defaultValue="intermidiate" className='grid grid-cols-2'>
-                                      <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="beginner" id="r1" />
-                                        <Label htmlFor="r1">Beginner</Label>
-                                      </div>
-                                      <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="intermidiate" id="r2" />
-                                        <Label htmlFor="r2">Intermidiate</Label>
-                                      </div>
-                                      <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="pro" id="r3" />
-                                        <Label htmlFor="r3">Pro</Label>
-                                      </div>
-
-                                    </RadioGroup>
-                                  </FormControl>
-                                </FormItem>
-
-                              )}
-                            />
-                          </TabsContent>
-                          <TabsContent value="writer">
-                            <div >
-
-                              <UsersCombobox httpHook={httpGetWriters} form={form} formField={`writerId`} />
-                            </div>
-                          </TabsContent>
-                          <TabsContent value="new">
-                            <div >
-                              <p className='opacity-80 py-3'>Add to New order list</p>
-
-                            </div>
-                          </TabsContent>
-                        </Tabs>
-
-                      </FormControl>
+            )}
 
 
-                    </FormItem>
-
-                  )}
 
 
-                />
+            {step === 3 && (
+              <div className=" third flex flex-col justify-center h-full w-full lg:w-2/3 bg-white rounded p-10 ">
+                <h3 className="font-semibold text-lg mb-5"> Writer Details</h3>
+                <div className=" w-full flex flex-col   bg-white space-y-4">
 
-                <FormField
-                  control={form.control}
-                  name="clientId"
+                  <FormField
+                    control={form.control}
+                    name="writerDeadline"
 
-                  render={({ field }) => (
-                    <FormItem className='flex flex-col'>
-                      <FormLabel>Select Client</FormLabel>
-                      <FormControl>
-                        <Fragment >
-                          <UsersCombobox httpHook={httpGetClients} form={form} formField={`clientId`} />
-                        </Fragment>
-                      </FormControl>
-                    </FormItem>
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Writer Deadline:{`10 days to go`}</FormLabel>
+                        <FormControl>
+                          <Input type="datetime-local" placeholder="" {...field} />
+                        </FormControl>
+                      </FormItem>
 
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="cpp"
+                    )}
+                  />
 
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>CPP</FormLabel>
-                      <FormControl>
-                        <Input type="text"  {...field} />
-                      </FormControl>
-                    </FormItem>
 
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="writerId"
 
-                <FormField
-                  control={form.control}
-                  name="orderNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Choose Action</FormLabel>
 
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Order Number</FormLabel>
-                      <FormControl>
-                        <Input type="text" placeholder="Order Number" {...field} onChange={(e) => {
-                          field.onChange(e);
-                          handleOrderNumberChange(e);
-                        }} />
-                      </FormControl>
-                    </FormItem>
+                        <FormControl>
+                          <Tabs defaultValue="isAvailable" className="max-w-md ">
+                            <TabsList className="grid w-full grid-cols-3 ">
+                              <TabsTrigger value="isAvailable">Make Available</TabsTrigger>
+                              <TabsTrigger value="writer">Assign Writer</TabsTrigger>
+                              <TabsTrigger value="new">Add to New</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="isAvailable">
+                              <FormField
+                                control={form.control}
+                                name="writerLevel"
 
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="name"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Writer Proficiency</FormLabel>
+                                    <FormControl>
+                                      <RadioGroup defaultValue="intermidiate" className='grid grid-cols-3'>
+                                        <div className="flex items-center space-x-2">
+                                          <RadioGroupItem value="beginner" id="r1" />
+                                          <Label htmlFor="r1">Beginner</Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                          <RadioGroupItem value="intermidiate" id="r2" />
+                                          <Label htmlFor="r2">Intermidiate</Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                          <RadioGroupItem value="pro" id="r3" />
+                                          <Label htmlFor="r3">Pro</Label>
+                                        </div>
 
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className='italic '>Order Name: {orderName}</FormLabel>
-                      <FormControl>
-                        <Input type="hidden" readOnly={true} value={orderName} placeholder="Order Name" />
-                      </FormControl>
-                    </FormItem>
+                                      </RadioGroup>
+                                    </FormControl>
+                                  </FormItem>
 
-                  )}
-                />
+                                )}
+                              />
+                            </TabsContent>
+                            <TabsContent value="writer">
+                              <div >
+
+                                <UsersCombobox httpHook={httpGetWriters} form={form} formField={`writerId`} />
+                              </div>
+                            </TabsContent>
+                            <TabsContent value="new">
+                              <div >
+                                <p className='opacity-80 py-3'>Add to New order list</p>
+
+                              </div>
+                            </TabsContent>
+                          </Tabs>
+
+                        </FormControl>
+
+
+                      </FormItem>
+
+                    )}
+
+
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="clientId"
+
+                    render={({ field }) => (
+                      <FormItem className='flex flex-col'>
+                        <FormLabel>Select Client</FormLabel>
+                        <FormControl>
+                          <Fragment >
+                            <UsersCombobox httpHook={httpGetClients} form={form} formField={`clientId`} />
+                          </Fragment>
+                        </FormControl>
+                      </FormItem>
+
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="writerFee"
+
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>CPP</FormLabel>
+                        <FormControl>
+                          <Input type="text"  {...field} />
+                        </FormControl>
+                      </FormItem>
+
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="orderNumber"
+
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Order Number</FormLabel>
+                        <FormControl>
+                          <Input type="text" placeholder="Order Number" {...field} onChange={(e) => {
+                            field.onChange(e);
+                            handleOrderNumberChange(e);
+                          }} />
+                        </FormControl>
+                      </FormItem>
+
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="name"
+
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className='italic '>Order Name: {orderName}</FormLabel>
+                        <FormControl>
+                          <Input type="hidden" readOnly={true} value={orderName} placeholder="Order Name" />
+                        </FormControl>
+                      </FormItem>
+
+                    )}
+                  />
+                </div>
+                <div className="w-full flex justify-evenly items-center">
+                  <Button onClick={prevStep} variant='secondary' className="m-3">Prev</Button>
+                  <Button variant='default' type="submit">
+                    {isloading ? 'Loading...' : 'Submit'}
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
+
+
+
+
+
           </div>
-          <div className="flex place-content-center py-4 mt-3 px-12 md:px-0">
-            <Button variant='default' type="submit"> {
-              isloading ? 'Loading...' : 'Submit'
-            }</Button>
-          </div>
+
         </form>
       </Form>
     </div>
