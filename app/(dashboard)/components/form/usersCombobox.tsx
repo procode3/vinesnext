@@ -49,10 +49,10 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
 
   useEffect(() => {
     httpHook(session)
-      .then((data: []) => {
-        setWriters(data);
+      .then((res: []) => {
+        setWriters(res);
       });
-  }, []);
+  }, [httpHook, session]);
 
 
   if (selectedUser) {
@@ -81,7 +81,7 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
           <CommandInput placeholder="Search..." />
           <CommandEmpty>No subject found.</CommandEmpty>
           <CommandGroup className="h-48 overflow-y-auto">
-            {writers && writers.map((writer) => (
+            {writers && writers?.map((writer) => (
               <CommandItem
                 key={writer.id}
                 onSelect={() => {

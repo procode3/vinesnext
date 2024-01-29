@@ -6,7 +6,7 @@ const PORT = 3000;
 const httpGetWriters = async (session: any) => {
     try {
         const res = await fetch(
-            `http://${HOST}:${PORT}/api/users?populate=*&filters[role][name][$in]=Writer`, {
+            `http://${HOST}:${PORT}/api/v1/users?role=WRITER`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -32,7 +32,7 @@ async function httpGetClients(session: any) {
     try {
 
         const res = await fetch(
-            `http://${HOST}:${PORT}/api/users?populate=*&filters[role][name][$in]=Client`, {
+            `http://${HOST}:${PORT}/api/v1/users?role=CLIENT`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -50,7 +50,7 @@ async function httpGetClients(session: any) {
 async function httpGetOrders(session: any) {
     try {
         const res = await fetch(
-            `http://${HOST}:${PORT}/api/orders?populate=*&filters[status][$in]=New&sort[0]=createdAt:desc`)
+            `http://${HOST}:${PORT}/api/v1/orders`)
         return res.status == 200 ? await res.json() : [];
     }
     catch (err) {
@@ -61,7 +61,7 @@ async function httpGetOrders(session: any) {
 const httpGetOrder = async (id: string) => {
     try {
         const res = await fetch(
-            `http://${HOST}:${PORT}/api/orders/${id}?populate=*&filters[status][$in]=New&sort[0]=createdAt:desc`)
+            `http://${HOST}:${PORT}/api/v1/orders/${id}?populate=writer`)
         return res.status == 200 ? await res.json() : {};
     }
     catch (err) {
