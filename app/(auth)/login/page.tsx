@@ -46,6 +46,7 @@ export default function LoginForm() {
       username: data.username,
       password: data.password,
       redirect: true,
+
       callbackUrl: `http://localhost:3000/`,
     });
     if (response) {

@@ -56,6 +56,7 @@ interface Order {
   amountReceived: number,
   educationLevel: string[] | string,
   writerLevel: string,
+  clientFiles: string[] | string,
   orderStatus: string,
   userId: string,
   writerId: string,
@@ -154,6 +155,7 @@ function CreateOrder() {
       writerLevel: '', // Add this line for the missing writerLevel field
       orderStatus: 'INPROGRESS',
       userId: 'user123',
+      clientFiles: ['null'],
       writerId: 'writer123', // Add this line for the missing writerId field
       assignedById: 'admin456',
       clientId: 'client789',

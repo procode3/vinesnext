@@ -88,7 +88,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
             }
         }
 
-        const res = await fetch(`http://${HOST}:5000/api/orders`, {
+        const res = await fetch(`http://${HOST}:3000/api/v1/orders`, {
             method: 'POST',
             headers: {
                 'authorization': 'Bearer ' + session.user.jwt,

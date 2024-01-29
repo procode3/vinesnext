@@ -1,11 +1,14 @@
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from "next-auth/providers/google";
-import jwt from "jsonwebtoken"
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { Adapter } from "next-auth/adapters";
+import { prisma } from '@/lib/prisma';
 
 
 export const options: NextAuthOptions = {
-
+    secret: process.env.AUTH_SECRET,
+    adapter: PrismaAdapter(prisma) as Adapter,
     providers: [
         CredentialsProvider({
 
@@ -55,4 +58,11 @@ export const options: NextAuthOptions = {
     session: {
         strategy: "jwt",
     },
+    pages: {
+        signIn: '/login',
+        signOut: '/auth/signout',
+        error: '/auth/error', // Error code passed in query string as ?error=
+        verifyRequest: '/auth/verify-request', // (used for check email message)
+        newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+    }
 }

@@ -1,6 +1,6 @@
 // handler.ts
 import { NextApiRequest, NextApiResponse } from 'next';
-import {processUploads } from '../middlewares/upload';
+import { processUploads } from '../middlewares/upload';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
