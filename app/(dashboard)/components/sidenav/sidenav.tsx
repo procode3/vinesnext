@@ -43,7 +43,7 @@ export default function Sidenav({ toggleSidenav }: SideNavProps) {
         {session?.user ? (
 
           <div className="flex flex-col gap-3 items-center h-full justify-evenly">
-            <h2 className="text-xl"><span className="hidden xl:block">Hello </span>{session?.user?.email} </h2>
+            <h2 className="text-xl"><span className="hidden xl:block">Hello </span>{session?.user?.name} </h2>
 
             <Avatar className="w-[50px] xl:w-[80px] h-[50px] xl:h-[80px]">
               <AvatarFallback>CN</AvatarFallback>
