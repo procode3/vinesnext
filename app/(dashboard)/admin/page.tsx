@@ -13,6 +13,9 @@ import DashCard from "../components/dashcard"
 import Overview from "../components/overview/overview"
 import RankingItem from "../components/rankingItem"
 import Header from '../components/Header'
+import { useSession, signIn } from 'next-auth/react'
+import Loader from '../loading'
+
 
 const cardProps = [
   // {
@@ -110,7 +113,12 @@ const rankingData = [
 
 
 function Dashboard() {
+  const { data: session } = useSession()
 
+  if (!session) {
+     signIn()
+     return null
+  }
   return (
     <div className="w-full flex flex-col">
       <Header name={'Erick'} notificationCount={5}/>

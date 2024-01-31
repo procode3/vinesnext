@@ -8,10 +8,8 @@ type SettingsLayoutProps = {
 
 function LoginLayout({ children }: SettingsLayoutProps) {
   return (
-    <div className='bg-white w-screen h-screen flex flex-col gap-4 px-4'>           
-        <div className="flex container items-center justify-center w-full">
-          {children}
-        </div>
+    <div className='bg-white w-screen h-screen flex flex-col items-center justify-center gap-4'>           
+          {children}        
     </div>
   )
 }
