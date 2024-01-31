@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { successResponse, failureResponse } from '../middlewares/response';
 import { BadRequestError, NotFoundError } from '../middlewares/errorhandler';
 import bcrypt from 'bcrypt';
+import EnumUser_typeFilter from '@prisma/client';
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,6 +33,10 @@ export default async function handler(
                 .join(', ')} are required`;
         throw new BadRequestError(errorMessage);
       }
+      const userExists = await prisma.user.findUnique({
+        where: { email },
+      });
+      if (userExists) throw new BadRequestError('User already exists');
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const user: any = await prisma.user.create({
@@ -46,7 +51,10 @@ export default async function handler(
   if (req.method === 'GET') {
     try {
       const isArchived = req?.query.isArchived == 'true' ? true : false;
-      const users = await prisma.user.findMany({ where: { isArchived } });
+      const role = req?.query.role as EnumUser_typeFilter.$Enums.User_type;
+      const users = await prisma.user.findMany({
+        where: { isArchived, userType: role },
+      });
       if (!users) {
         throw new NotFoundError('No user found');
       }

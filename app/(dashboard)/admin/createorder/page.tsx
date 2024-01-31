@@ -56,6 +56,7 @@ interface Order {
   amountReceived: number,
   educationLevel: string[] | string,
   writerLevel: string,
+  clientFiles: string[] | string,
   orderStatus: string,
   userId: string,
   writerId: string,
@@ -154,6 +155,7 @@ function CreateOrder() {
       writerLevel: '', // Add this line for the missing writerLevel field
       orderStatus: 'INPROGRESS',
       userId: 'user123',
+      clientFiles: ['null'],
       writerId: 'writer123', // Add this line for the missing writerId field
       assignedById: 'admin456',
       clientId: 'client789',
@@ -435,14 +437,14 @@ function CreateOrder() {
                           <Input type="file" onChange={handleFileChange} multiple placeholder="Select file(s)..." />
 
                         </FormControl>
-                        <ul className="max-h-[35vh] overflow-auto">
+                        <ul className="max-h-[35vh] overflow-scroll">
                           {files.map((file, i) => (
-                            <li key={i} className='flex justify-between gap-x-4  my-1 hover:bg-slate-150  rounded border-b'>
+                            <li key={i} className='flex justify-between gap-x-4  my-1 hover:bg-slate-150  rounded border-b w-full '>
                               <div className='flex justify-between border-[1px] w-full rounded'>
                                 <div className="flex  px-2 py-1 text-xs justify-center items-center space-x-4 rounded ">
                                   <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2C3.22386 2 3 2.22386 3 2.5V12.5C3 12.7761 3.22386 13 3.5 13H11.5C11.7761 13 12 12.7761 12 12.5V6H8.5C8.22386 6 8 5.77614 8 5.5V2H3.5ZM9 2.70711L11.2929 5H9V2.70711ZM2 2.5C2 1.67157 2.67157 1 3.5 1H8.5C8.63261 1 8.75979 1.05268 8.85355 1.14645L12.8536 5.14645C12.9473 5.24021 13 5.36739 13 5.5V12.5C13 13.3284 12.3284 14 11.5 14H3.5C2.67157 14 2 13.3284 2 12.5V2.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                  <div className='flex flex-col max-w-52 '>
-                                    <p className='max-w-52 whitespace-nowrap text-ellipsis'> {file.name}</p>
+                                  <div className='flex flex-col w-full '>
+                                    <p className='w-full whitespace-nowrap text-ellipsis'> {file.name}</p>
                                     <p>Size: {(file.size < 1024 ? file.size + ' b' : file.size < 1048576 ? (file.size / 1024).toFixed(2) + ' kb' : file.size < 1073741824 ? (file.size / 1048576).toFixed(2) + ' mb' : (file.size / 1073741824).toFixed(2) + ' gb')}</p>
 
                                   </div>

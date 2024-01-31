@@ -22,7 +22,7 @@ import {
 
 interface Writer {
   id: number,
-  username: string,
+  name: string,
   email: string,
   role: {
     id: number,
@@ -49,10 +49,10 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
 
   useEffect(() => {
     httpHook(session)
-      .then((data: []) => {
-        setWriters(data);
+      .then((res: any) => {
+        setWriters(res?.data);
       });
-  }, []);
+  }, [httpHook, session]);
 
 
   if (selectedUser) {
@@ -71,7 +71,7 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
           onChange={form.setValue(formField, selectedUser)}
         >
           {writers && writers.length > 0 && selectedUser
-            ? writers.find((writer) => writer.username === selectedUser)?.username
+            ? writers.find((writer) => writer.name === selectedUser)?.name
             : "Select one..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -81,12 +81,12 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
           <CommandInput placeholder="Search..." />
           <CommandEmpty>No subject found.</CommandEmpty>
           <CommandGroup className="h-48 overflow-y-auto">
-            {writers && writers.map((writer) => (
+            {writers && writers?.map((writer) => (
               <CommandItem
                 key={writer.id}
                 onSelect={() => {
                   setSelectedUser((prevWriter) => (
-                    prevWriter === writer.username ? "Loading..." : writer.username
+                    prevWriter === writer.name ? "Loading..." : writer.name
                   ));
                   setOpen(false);
                 }}
@@ -94,10 +94,10 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    selectedUser === writer.username ? "opacity-100" : "opacity-0"
+                    selectedUser === writer.name ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {writer.username}
+                {writer.name}
 
               </CommandItem>
             ))}

@@ -20,12 +20,12 @@ model User {
   phone          String?
   userType       User_type    @default(WRITER)
   isArchived     Boolean      @default(false)
-  Account        Account[]
+  accounts       Account[]
   assignedOrders Order[]      @relation("assignedOrders")
   clientOrders   Order[]      @relation("clientOrders")
   createdOrders  Order[]      @relation("createdOrders")
   writerOrders   Order[]      @relation("writerOrders")
-  Session        Session[]
+  sessions       Session[]
   submission     submission[]
 }
 

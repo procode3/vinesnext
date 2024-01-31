@@ -6,6 +6,7 @@ import { DataTable } from '../(dashboard)/admin/orders/data-table';
 import { Heading } from "@/components/ui/heading";
 import { useRouter } from "next/navigation"
 import DashCard from ".././(dashboard)/components/dashcard"
+import { useSession, signIn } from 'next-auth/react'
 
 
 
@@ -16,6 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import Header from "./components/Header";
+import Loader from "./loading";
 
 
 
@@ -296,7 +298,13 @@ export default function Home() {
     router.push(`/admin/orders/${row.orderId}`);
   };
 
-
+   const { data: session, status } = useSession()
+    if (status === 'loading') return null
+    
+    if (!session) {
+       signIn()
+       return null
+    }
   return (
     <div className="flex flex-col w-full gap-y-8">
       <Header name={'Erick'} notificationCount={5}/>
