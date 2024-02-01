@@ -2,6 +2,13 @@ import { prisma } from '@/lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { successResponse, failureResponse } from '../middlewares/response';
 import { BadRequestError, NotFoundError } from '../middlewares/errorhandler';
+import { fileUploader, saveFilesToDB } from '../middlewares/fileUploader';
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,6 +16,10 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     try {
+      const { fields, uploadedFiles } = await fileUploader(req);
+
+      const data = JSON.parse(fields.jsonData[0]);
+
       const {
         name,
         orderType,
@@ -23,13 +34,13 @@ export default async function handler(
         amountReceived,
         educationLevel,
         orderStatus,
-        userId,
-        assignedById,
-        clientId,
+        // userId,
+        // assignedById,
+        // clientId,
         citationStyle,
         sources,
         spacing,
-      } = req.body;
+      } = data;
 
       const requiredFields = [
         'name',
@@ -63,7 +74,7 @@ export default async function handler(
         spacing: 'Spacing',
       };
 
-      const missingFields = requiredFields.filter((field) => !req.body[field]);
+      const missingFields = requiredFields.filter((field) => !data[field]);
 
       if (missingFields.length > 0) {
         const errorMessage =
@@ -77,7 +88,7 @@ export default async function handler(
 
       const order: any = await prisma.order.create({
         data: {
-          name,
+          name: name,
           orderType,
           topic,
           description,
@@ -102,8 +113,23 @@ export default async function handler(
       if (!order) {
         throw new NotFoundError('Order not created');
       }
-      successResponse(res, order, 201);
+      const savedFiles = await saveFilesToDB(uploadedFiles, order.id);
+
+      const savedOrder = await prisma.order.update({
+        where: { id: order.id },
+        data: {
+          File: {
+            connect: savedFiles.map((file) => ({ id: file.id })),
+          },
+        },
+        include: {
+          File: true,
+        },
+      });
+
+      successResponse(res, savedOrder, 201);
     } catch (error: any) {
+      console.log(error);
       failureResponse(res, error.message);
     }
   }

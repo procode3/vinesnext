@@ -48,11 +48,11 @@ export default function RootLayout({ children, session }: IProps) {
       <body className={`${inter.className} flex flex-col h-full `}>
         <SessionProvider session={session}>
           <ThemeProvider theme={theme}>
-             <div className="flex flex-col w-full  bg-gray-100 min-h-screen relative pl-[70px] xl:pl-[260px] ">
+            <div className="flex flex-col w-full  bg-gray-100 min-h-screen relative pl-[70px] xl:pl-[260px] ">
               {isSidenavVisible && <Sidenav toggleSidenav={toggleSidenav} />}
               <div className="flex w-full justify-center py-4 px-4 xl:px-10">{children}</div>
               <Toaster />
-            </div>            
+            </div>
           </ThemeProvider>
         </SessionProvider>
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.js" />
