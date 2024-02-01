@@ -11,7 +11,7 @@ import Sidenav from './components/sidenav/sidenav'
 import { createTheme } from '@mui/material/styles';
 import Script from 'next/script'
 import Unauthorized from './components/Unauthorized'
-
+import NextProgress from "next-progress";
 
 const inter = DM_Sans({ weight: '400', subsets: ['latin'] })
 
@@ -50,7 +50,9 @@ export default function RootLayout({ children, session }: IProps) {
           <ThemeProvider theme={theme}>
              <div className="flex flex-col w-full  bg-gray-100 min-h-screen relative pl-[70px] xl:pl-[260px] ">
               {isSidenavVisible && <Sidenav toggleSidenav={toggleSidenav} />}
-              <div className="flex w-full justify-center py-4 px-4 xl:px-10">{children}</div>
+              <div className="flex w-full justify-center py-4 px-4 xl:px-10">
+                <NextProgress delay={300} options={{ showSpinner: false }} />
+                {children}</div>
               <Toaster />
             </div>            
           </ThemeProvider>
