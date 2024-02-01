@@ -50,8 +50,7 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
   useEffect(() => {
     httpHook(session)
       .then((res: any) => {
-        console.log(res);
-        setWriters(res.data);
+        setWriters(res?.data);
       });
   }, []);
 
@@ -87,7 +86,7 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
                 key={writer.id}
                 onSelect={() => {
                   setSelectedUser((prevWriter) => (
-                    prevWriter === writer.email ? "Loading..." : writer.name
+                    prevWriter === writer.name ? "Loading..." : writer.name
                   ));
                   setOpen(false);
                 }}

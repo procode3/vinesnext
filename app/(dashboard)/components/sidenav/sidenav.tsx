@@ -51,8 +51,7 @@ export default function Sidenav({ toggleSidenav }: SideNavProps) {
           </div>
         ) : (
 
-          <Button variant="default" onClick={() => signIn()}>Sign In</Button>
-
+          null
         )
         }
       </div>
