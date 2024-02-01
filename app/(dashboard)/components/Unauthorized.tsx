@@ -15,10 +15,10 @@ export default function Unauthorized() {
             </div>
             <div className="w-1/2 h-full flex items-center justify-center relative bg-slate-200  ">
                 <div className="relative h-3/4 w-full">
-                  <Image
-                    src="/images/writervector.svg"
-                    fill={true}
-                    alt="Picture of the author"
+                    <Image
+                        src="/images/writervector.svg"
+                        fill={true}
+                        alt="Picture of the author"
                     />
                 </div>
             </div>

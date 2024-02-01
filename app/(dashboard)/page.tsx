@@ -298,17 +298,17 @@ export default function Home() {
     router.push(`/admin/orders/${row.orderId}`);
   };
 
-   const { data: session, status } = useSession()
-    if (status === 'loading') return null
-    
-    if (!session) {
-       signIn()
-       return null
-    }
+  const { data: session, status } = useSession()
+  // if (status === 'loading') return null
+
+  if (!session && status !== 'loading') {
+    signIn()
+    return null
+  }
   return (
     <div className="flex flex-col w-full gap-y-8">
-      <Header name={'Erick'} notificationCount={5}/>
-      
+      <Header name={'Erick'} notificationCount={5} />
+
       <div className="flex   ">
         <div className="grid gap-2 md:gap-4 grid-cols-2 lg:grid-cols-4 w-full">
           {cardProps.map((props, index) => (
