@@ -10,8 +10,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useSession, signIn } from 'next-auth/react'
 
-export default function page() {
+export default function Page() {
+  const { data: session, status } = useSession()
+
+  if (!session && status !== 'loading') {
+    signIn()
+    return null
+  }
   return (
     <div className="container w-full p-4 flex flex-col gap-12">
       <div className=" flex justify-between">

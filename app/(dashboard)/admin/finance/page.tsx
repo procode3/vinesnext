@@ -1,6 +1,8 @@
+'use client'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import DashCard from "../../components/dashcard"
+import { useSession, signIn } from 'next-auth/react'
 
 
 import {
@@ -104,12 +106,16 @@ const getStatusColorClass = (status: string) => {
       return '';
   }};
 
+const { data: session, status } = useSession()
 
+  if (!session && status !== 'loading') {
+    signIn()
+    return null
+  }
 
   return (
     <div className="flex flex-col w-full gap-y-8">
     <div className="flex flex-col sm:flex-row w-full items-center justify-between gap-[10px] ">
-      {/* change to dynamic after design */}
       {cardProps.map((props, index) => (
             <DashCard
               key={index}
@@ -119,79 +125,6 @@ const getStatusColorClass = (status: string) => {
               changeText={props.changeText}
             />
         ))} 
-       {/* <Card className="w-screen sm:w-1/3">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Revenue
-            </CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$750</div>
-            <p className="text-xs text-muted-foreground">
-              Earned in the last 30 days
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="w-screen sm:w-1/3">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Pending payments
-            </CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$250</div>
-            <p className="text-xs text-muted-foreground">
-              In progress orders
-            </p>
-          </CardContent>
-        </Card >
-        <Card className="w-screen sm:w-1/3">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Available Balance</CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$500</div>
-            <p className="text-xs text-muted-foreground">
-              Available for withdrawal
-            </p>
-          </CardContent>
-        </Card> */}
     </div>
     <div className=" flex w-full px-4 justify-between">
       <Select>

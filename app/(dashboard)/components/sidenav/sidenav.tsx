@@ -1,33 +1,30 @@
-"use client"
+'use client'
 import React, { Fragment } from 'react'
 import { getAdminRoutes, Route } from '../../data/appRoutes/routes'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
 import { useMediaQuery } from '@mui/material';
-import { signOut, signIn, useSession } from 'next-auth/react'
+import { signOut, signIn } from 'next-auth/react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Button } from "@/components/ui/button"
-
-
-
-type SideNavProps = {
-  toggleSidenav: () => void;
-};
-
-export default function Sidenav({ toggleSidenav }: SideNavProps) {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const toogle = () => setIsOpen(!isOpen);
-  const pathname = usePathname();
-  const { data: session }: any = useSession();
+import { useSession } from "next-auth/react"
+import { options } from './../../../../pages/api/auth/options';
 
 
 
 
+export default function Sidenav() {
+  const pathname = '/dashboard'
   const appRoutes: Route[] = getAdminRoutes()
-  const isSmallScreen = useMediaQuery((theme: any) => theme.breakpoints.down('xl'));
+   const {data: session, status} = useSession()
+  // if (status === 'loading') return null
+
+  if (!session && status !== 'loading') {
+    signIn()
+    return null
+  }
+
   return (
     <div id="sidenav" className="flex-col  h-screen w-[70px] xl:w-[260px]  p-4 dark:border-gray-600  fixed  left-0  bg-slate-800 z-10  opacity-[100%] text-md items-center">
 
@@ -43,11 +40,14 @@ export default function Sidenav({ toggleSidenav }: SideNavProps) {
         {session?.user ? (
 
           <div className="flex flex-col gap-3 items-center h-full justify-evenly">
-            <h2 className="text-xl"><span className="hidden xl:block">Hello </span>{session?.user?.name} </h2>
-
             <Avatar className="w-[50px] xl:w-[80px] h-[50px] xl:h-[80px]">
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
+            <h2 className="text-xl text-center">
+              {/* <span className="hidden xl:block">Hello </span> */}
+              {session?.user?.name} 
+            </h2>
+
           </div>
         ) : (
 
@@ -67,7 +67,7 @@ export default function Sidenav({ toggleSidenav }: SideNavProps) {
                 {/* <KeyboardArrowDownOutlinedIcon onClick={toogle} className={`transform ${isOpen ? 'rotate-180' : 'rotate-0'} w-1/8 border-gray-700 rounded-lg  mx-2 transition-transform duration-300 hover:scale-110`} /> */}
               </Link>
             </div>
-            <div className={!isOpen ? 'block' : 'block'}>
+            <div className='block'>
               <div className="flex flex-col pl-4  gap-[10px]  " key={idx}>
                 {route.sidebarProps.child.map((child, idx) => (
                   <Link href={child.path!} key={`P-${idx}`} className={`flex py-2 pl-[20px] rounded-full gap-x-2 text-gray-100 hover:bg-white hover:text-black items-center font-medium  transition ease-in-out duration-400

@@ -3,11 +3,8 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { SessionProvider } from 'next-auth/react'
-
 import { Toaster } from "@/components/ui/toaster"
-import { Fragment, useState, useEffect } from 'react'
-import { ThemeProvider } from '@mui/material/styles'
+import NextTopLoader from 'nextjs-toploader';
 
 
 
@@ -23,7 +20,10 @@ export default function AuthLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} flex flex-col`}>
-        <div className="flex w-full justify-center">{children}</div>
+        <div className="flex w-full justify-center">
+          <NextTopLoader />
+          {children}
+        </div>
         <Toaster />
       </body>
     </html>

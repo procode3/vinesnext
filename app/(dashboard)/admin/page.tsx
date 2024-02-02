@@ -14,17 +14,9 @@ import Overview from "../components/overview/overview"
 import RankingItem from "../components/rankingItem"
 import Header from '../components/Header'
 import { useSession, signIn } from 'next-auth/react'
-import Loader from '../loading'
 
 
 const cardProps = [
-  // {
-  //   title: "Total revenue",
-  //   value: "$45000",
-  //   changeValue: 1,
-  //   changeText: "from last month",
-  //   iconName: "revenue",
-  // },
   {
     title: "All Orders",
     value: "2100",
@@ -113,15 +105,15 @@ const rankingData = [
 
 
 function Dashboard() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
 
-  if (!session) {
-     signIn()
-     return null
+  if (!session && status !== 'loading') {
+    signIn()
+    return null
   }
   return (
     <div className="w-full flex flex-col">
-      <Header name={'Erick'} notificationCount={5}/>
+      <Header notificationCount={5}/>
       <div className="  w-full space-y-4">
         <div className="grid gap-4 grid-cols-3">
   <Card className="col-span-3 md:col-span-2 rounded-xl bg-[#1F4A57]">

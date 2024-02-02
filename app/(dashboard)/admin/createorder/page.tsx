@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { ChangeEvent, useState, useEffect, Fragment } from 'react';
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, Controller } from "react-hook-form"
@@ -239,8 +239,15 @@ function CreateOrder() {
 
   }
 
+   if (typeof window !== 'undefined') {
+    if (!session) {
+      signIn()
+      return null
+      }
+  }
+  
   return (
-    <div className='w-screen'>
+    <div className='w-full'>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className=' text-black'>
