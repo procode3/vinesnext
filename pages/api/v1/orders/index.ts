@@ -17,8 +17,10 @@ export default async function handler(
   if (req.method === 'POST') {
     try {
       const { fields, uploadedFiles } = await fileUploader(req);
+      // console.log(uploadedFiles, 'Files uploadd successfully');
 
-      const data = JSON.parse(fields.jsonData[0]);
+      console.log(fields);
+      const data = JSON.parse(fields.data[0]);
 
       const {
         name,
@@ -34,9 +36,10 @@ export default async function handler(
         amountReceived,
         educationLevel,
         orderStatus,
-        // userId,
-        // assignedById,
-        // clientId,
+        userId,
+        writerId,
+        assignedById,
+        clientId,
         citationStyle,
         sources,
         spacing,
@@ -52,7 +55,6 @@ export default async function handler(
         'clientDeadline',
         'educationLevel',
         'userId',
-        'clientId',
         'citationStyle',
         'sources',
         'spacing',
@@ -89,21 +91,22 @@ export default async function handler(
       const order: any = await prisma.order.create({
         data: {
           name: name,
-          orderType,
+          orderType: orderType.toUpperCase(),
           topic,
           description,
-          subject,
-          pages,
+          subject: subject.toUpperCase(),
+          pages: parseInt(pages),
           words,
-          clientDeadline,
-          writerDeadline,
+          clientDeadline: new Date(clientDeadline).toISOString(),
+          writerDeadline: new Date(writerDeadline).toISOString(),
           writerFee,
           amountReceived,
-          educationLevel,
-          orderStatus,
-          // userId,
-          // assignedById,
-          // clientId,
+          educationLevel: educationLevel.toUpperCase(),
+          orderStatus: orderStatus.toUpperCase(),
+          writerId,
+          userId,
+          assignedById: writerId ? assignedById : null,
+          clientId,
           citationStyle,
           sources,
           spacing,

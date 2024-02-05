@@ -85,7 +85,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
         // Append files, if available
         if (files) {
             for (let i = 0; i < files.length; i++) {
-                formData.append(`files.clientFiles`, files[i]);
+                formData.append(`files`, files[i]);
             }
         }
 

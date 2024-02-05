@@ -137,6 +137,12 @@ const formSchema = z.object({
 });
 
 function CreateOrder() {
+  const { data: session }: any = useSession();
+  const [orderName, setOrderName] = useState('');
+  const [step, setStep] = useState(1);
+  const [isloading, setIsloading] = useState(false);
+  const { toast } = useToast()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -154,11 +160,11 @@ function CreateOrder() {
       educationLevel: ['UNDERGRADUATE'],
       writerLevel: '', // Add this line for the missing writerLevel field
       orderStatus: 'INPROGRESS',
-      userId: 'user123',
+      userId: session?.user?.id,
       clientFiles: ['null'],
-      writerId: 'writer123', // Add this line for the missing writerId field
-      assignedById: 'admin456',
-      clientId: 'client789',
+      writerId: '', // Add this line for the missing writerId field
+      assignedById: '',
+      clientId: '',
       citationStyle: 'APA7',
       sources: 5,
       spacing: 'DOUBLE',
@@ -166,11 +172,7 @@ function CreateOrder() {
   });
 
 
-  const { data: session }: any = useSession();
-  const [orderName, setOrderName] = useState('');
-  const [step, setStep] = useState(1);
-  const [isloading, setIsloading] = useState(false);
-  const { toast } = useToast()
+
 
   const handleOrderNumberChange = (event: any) => {
 
@@ -224,6 +226,8 @@ function CreateOrder() {
       e.preventDefault();
 
       values.educationLevel = values.educationLevel[0] as any;
+      console.log("Session userID", session, session?.user, session?.user?.id);
+      values.userId = session?.user?.id;
 
 
       const res = await httpCreateOrder(values, session, toast, files);
@@ -239,13 +243,13 @@ function CreateOrder() {
 
   }
 
-   if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined') {
     if (!session) {
       signIn()
       return null
-      }
+    }
   }
-  
+
   return (
     <div className='w-full'>
 

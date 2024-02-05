@@ -17,7 +17,7 @@ import { options } from './../../../../pages/api/auth/options';
 export default function Sidenav() {
   const pathname = '/dashboard'
   const appRoutes: Route[] = getAdminRoutes()
-   const {data: session, status} = useSession()
+  const { data: session, status } = useSession()
   // if (status === 'loading') return null
 
   if (!session && status !== 'loading') {
@@ -45,7 +45,7 @@ export default function Sidenav() {
             </Avatar>
             <h2 className="text-xl text-center">
               {/* <span className="hidden xl:block">Hello </span> */}
-              {session?.user?.name} 
+              {session?.user?.name}
             </h2>
 
           </div>

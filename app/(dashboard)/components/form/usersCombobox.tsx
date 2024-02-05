@@ -55,11 +55,6 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
   }, []);
 
 
-  if (selectedUser) {
-    form.setValue(formField, selectedUser);
-  }
-
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -68,7 +63,7 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
           role="combobox"
           aria-expanded={open}
           className="justify-between"
-          onChange={form.setValue(formField, selectedUser)}
+          onChange={form.setValue(formField, writers.find((writer) => writer.name === selectedUser)?.id)}
         >
           {writers && writers.length > 0 && selectedUser
             ? writers.find((writer) => writer.name === selectedUser)?.name

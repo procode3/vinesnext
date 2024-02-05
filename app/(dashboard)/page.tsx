@@ -286,12 +286,12 @@ export default function Home() {
     router.push(`/admin/orders/${row.orderId}`);
   };
 
-  const { data: session, status } = useSession()
+  // const { data: session, status } = useSession()
 
-  if (!session && status !== 'loading') {
-    signIn()
-    return null
-  }
+  // if (!session && status !== 'loading') {
+  //   signIn()
+  //   return null
+  // }
   return (
     <div className="flex flex-col w-full gap-y-8">
       <Header notificationCount={5} />
