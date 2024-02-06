@@ -19,230 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-async function getData(): Promise<Order[]> {
-  return [
-    {
-      orderId: 'GW020',
-      name: "Lab report",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Other',
-      cpp: 3,
-      amount: 25.00,
-      writerDeadline: 'Oct 25, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW021',
-      name: "Bio Essay",
-      topic: "Science",
-      status: 'completed',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW022',
-      name: "Civil Eng",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW023',
-      name: "Bio Hack",
-      topic: "Science",
-      status: 'pending',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW020',
-      name: "Lab report",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Other',
-      cpp: 3,
-      amount: 25.00,
-      writerDeadline: 'Oct 25, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW021',
-      name: "Bio Essay",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW022',
-      name: "Civil Eng",
-      topic: "Science",
-      status: 'active',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW023',
-      name: "Bio Hack",
-      topic: "Science",
-      status: 'active',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW020',
-      name: "Lab report",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Other',
-      cpp: 3,
-      amount: 25.00,
-      writerDeadline: 'Oct 25, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW021',
-      name: "Bio Essay",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW022',
-      name: "Civil Eng",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW023',
-      name: "Bio Hack",
-      topic: "Science",
-      status: 'completed',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW020',
-      name: "Lab report",
-      topic: "Science",
-      status: 'pending',
-      orderType: 'Other',
-      cpp: 3,
-      amount: 25.00,
-      writerDeadline: 'Oct 25, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW021',
-      name: "Bio Essay",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW022',
-      name: "Civil Eng",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 24, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW023',
-      name: "Bio Hack",
-      topic: "Science",
-      status: 'pending',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW020',
-      name: "Lab report",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Other',
-      cpp: 3,
-      amount: 25.00,
-      writerDeadline: 'Oct 25, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW021',
-      name: "Bio Essay",
-      topic: "Science",
-      status: 'available',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW022',
-      name: "Civil Eng",
-      topic: "Science",
-      status: 'active',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-    {
-      orderId: 'GW023',
-      name: "Bio Hack",
-      topic: "Science",
-      status: 'completed',
-      orderType: 'Writing',
-      cpp: 2.5,
-      amount: 25.00,
-      writerDeadline: 'Oct 29, 2023',
-      educationLevel: 'college'
-    },
-  ]
-}
+import { httpGetOrders } from '../../hooks/requests';
 
 const items = [
   {
@@ -294,8 +71,8 @@ export default function Orders() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const initialData = await getData();
-      setData(initialData);
+      const initialData = await httpGetOrders();
+      setData(initialData?.data);
     };
 
     fetchData();
@@ -387,8 +164,8 @@ export default function Orders() {
           </div>
         </div>
       </div>
-      
-        <DataTable searchKey="orderId" columns={columns} data={filteredOrders} onRowClick={(row) => handleRowClick(row, row.orderId)} orderId={''} />
+
+      <DataTable searchKey="orderId" columns={columns} data={filteredOrders} onRowClick={(row) => handleRowClick(row, row.orderId)} orderId={''} />
     </div>
 
   )
