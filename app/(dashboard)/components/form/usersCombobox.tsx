@@ -63,10 +63,10 @@ export default function UsersCombobox({ httpHook, form, formField }: any) {
           role="combobox"
           aria-expanded={open}
           className="justify-between"
-          onChange={form.setValue(formField, writers.find((writer) => writer.name === selectedUser)?.id)}
+          onChange={form.setValue(formField, writers?.find((writer) => writer.name === selectedUser)?.id)}
         >
-          {writers && writers.length > 0 && selectedUser
-            ? writers.find((writer) => writer.name === selectedUser)?.name
+          {writers && writers?.length > 0 && selectedUser
+            ? writers?.find((writer) => writer.name === selectedUser)?.name
             : "Select one..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

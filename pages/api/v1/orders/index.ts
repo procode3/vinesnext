@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { successResponse, failureResponse } from '../middlewares/response';
 import { BadRequestError, NotFoundError } from '../middlewares/errorhandler';
 import { fileUploader, saveFilesToDB } from '../middlewares/fileUploader';
+import { Order_status } from '@prisma/client';
 
 export const config = {
   api: {
@@ -87,7 +88,7 @@ export default async function handler(
                 .join(', ')} are required`;
         throw new BadRequestError(errorMessage);
       }
-
+      const status :any = !!writerId ? "INPROGRESS" :  !!assignedById  ? "AVAILABLE" :  "NEW";
       const order: any = await prisma.order.create({
         data: {
           name: name,
@@ -102,10 +103,10 @@ export default async function handler(
           writerFee,
           amountReceived,
           educationLevel: educationLevel.toUpperCase(),
-          orderStatus: orderStatus.toUpperCase(),
+          orderStatus: status.toUpperCase(),
           writerId,
           userId,
-          assignedById: writerId ? assignedById : null,
+          assignedById: writerId ? userId : null,
           clientId,
           citationStyle,
           sources,

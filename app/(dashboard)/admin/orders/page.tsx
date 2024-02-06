@@ -18,6 +18,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { httpGetOrders } from '../../hooks/requests';
+import { useSession, signIn } from 'next-auth/react'
+
 
 async function getData(): Promise<Order[]> {
   return [
@@ -284,7 +287,7 @@ const FormSchema = z.object({
 export default function Orders() {
   const [data, setData] = useState<Order[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-
+  const { data: session } = useSession();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -294,8 +297,8 @@ export default function Orders() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const initialData = await getData();
-      setData(initialData);
+      const initialData = await httpGetOrders(session);
+      setData(initialData.data);
     };
 
     fetchData();
@@ -317,7 +320,7 @@ export default function Orders() {
   };
 
 
-  const filteredOrders = data.filter((order) =>
+  const filteredOrders = data?.filter((order) =>
     selectedStatuses.length > 0 ? selectedStatuses.includes(order.status) : true
   );
   return (

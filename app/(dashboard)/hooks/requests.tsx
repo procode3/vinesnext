@@ -100,7 +100,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
         const data = await res.json();
         console.log(data);
 
-        if (res.status === 200) {
+        if (res.status === 201) {
             toast({
                 title: "Success!!",
                 description: "Order Created Successfully",
@@ -110,7 +110,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
             console.log(res);
             toast({
                 title: "Failed",
-                description: "Order Creation Failed",
+                description: "Order Creation Failed1",
             });
             return false;
         }
@@ -118,7 +118,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
         console.error('Error:', err);
         toast({
             title: "Failed",
-            description: "Order Creation Failed",
+            description: "Order Creation Failed2",
         });
         return false;
     }
