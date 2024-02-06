@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
- 
+
 import { Button } from "@/components/ui/button"
 // import {
 //   DropdownMenu,
@@ -15,33 +15,27 @@ import { Button } from "@/components/ui/button"
 
 
 export type Order = {
-    orderId: string
-    orderType: string
-    cpp:number
-    name: string
-    topic: string
-    status: "pending" | "available" | "completed" | "active" | "disputed" | "revision"
-    writerDeadline: string
-    amount: number
-    educationLevel: string
+  orderId: string
+  orderType: string
+  cpp: number
+  name: string
+  topic: string
+  status: "pending" | "available" | "completed" | "active" | "disputed" | "revision"
+  writerDeadline: string
+  amount: number
+  educationLevel: string
 }
 
 export const columns: ColumnDef<Order>[] = [
 
   {
-    accessorKey: "orderId",
+    accessorKey: "name",
     header: "Order Number",
   },
   {
     accessorKey: "orderType",
     header: "Order Type",
   },
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-   
-   
   {
     accessorKey: "topic",
     header: "Topic",
@@ -74,15 +68,15 @@ export const columns: ColumnDef<Order>[] = [
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: "orderStatus",
     header: "Status",
   },
-  
+
   // {
   //   id: "actions",
   //   cell: ({ row }) => {
   //     const od = row.original
- 
+
   //     return (
   //       <DropdownMenu>
   //         <DropdownMenuTrigger asChild>

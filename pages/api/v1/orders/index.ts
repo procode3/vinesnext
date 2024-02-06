@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { successResponse, failureResponse } from '../middlewares/response';
 import { BadRequestError, NotFoundError } from '../middlewares/errorhandler';
 import { fileUploader, saveFilesToDB } from '../middlewares/fileUploader';
-import { Order_status } from '@prisma/client';
+import { FileType, Order_status } from '@prisma/client';
 
 export const config = {
   api: {
@@ -20,7 +20,6 @@ export default async function handler(
       const { fields, uploadedFiles } = await fileUploader(req);
       // console.log(uploadedFiles, 'Files uploadd successfully');
 
-      console.log(fields);
       const data = JSON.parse(fields.data[0]);
 
       const {
@@ -46,6 +45,7 @@ export default async function handler(
         spacing,
       } = data;
 
+      console.log(userId, writerId);
       const requiredFields = [
         'name',
         'orderType',
@@ -88,7 +88,26 @@ export default async function handler(
                 .join(', ')} are required`;
         throw new BadRequestError(errorMessage);
       }
-      const status :any = !!writerId ? "INPROGRESS" :  !!assignedById  ? "AVAILABLE" :  "NEW";
+
+      let files: {
+        name: string;
+        type: FileType;
+        url: string;
+      }[] = [];
+      for (let i = 0; i < uploadedFiles.length; i++) {
+        const { tags, public_id, secure_url } = uploadedFiles[i];
+        files.push({
+          name: public_id,
+          type: tags[0].toUpperCase(),
+          url: secure_url,
+        });
+      }
+      const status: Order_status = !!writerId
+        ? 'INPROGRESS'
+        : !!assignedById
+        ? 'AVAILABLE'
+        : 'NEW';
+
       const order: any = await prisma.order.create({
         data: {
           name: name,
@@ -103,40 +122,31 @@ export default async function handler(
           writerFee,
           amountReceived,
           educationLevel: educationLevel.toUpperCase(),
-          orderStatus: status.toUpperCase(),
-          writerId,
+          orderStatus: status,
+          writerId: writerId ? writerId : undefined,
           userId,
-          assignedById: writerId ? userId : null,
-          clientId,
+          assignedById: writerId ? userId : undefined,
+          clientId: clientId ? clientId : undefined,
           citationStyle,
           sources,
           spacing,
+          File: {
+            create: files,
+          },
         },
       });
 
       if (!order) {
         throw new NotFoundError('Order not created');
       }
-      const savedFiles = await saveFilesToDB(uploadedFiles, order.id);
 
-      const savedOrder = await prisma.order.update({
-        where: { id: order.id },
-        data: {
-          File: {
-            connect: savedFiles.map((file) => ({ id: file.id })),
-          },
-        },
-        include: {
-          File: true,
-        },
-      });
-
-      successResponse(res, savedOrder, 201);
+      successResponse(res, order, 201);
     } catch (error: any) {
       console.log(error);
       failureResponse(res, error.message);
     }
   }
+
   if (req.method === 'GET') {
     try {
       const isArchived = req?.query.isArchived == 'true' ? true : false;

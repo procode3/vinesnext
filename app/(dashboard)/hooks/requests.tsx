@@ -47,7 +47,7 @@ async function httpGetClients(session: any) {
     }
 }
 
-async function httpGetOrders(session: any) {
+async function httpGetOrders(session: any = null) {
     try {
         const res = await fetch(
             `http://${HOST}:${PORT}/api/v1/orders`)
@@ -98,7 +98,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
         });
 
         const data = await res.json();
-        console.log(data);
+        console.log(res);
 
         if (res.status === 201) {
             toast({

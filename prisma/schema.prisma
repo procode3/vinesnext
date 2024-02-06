@@ -86,14 +86,14 @@ model Order {
   userId         String?
   assignedById   String?
   clientId       String?
-  writerFee      Float?   
+  writerFee      Float?
   isArchived     Boolean         @default(false)
-  File           File[]          
+  File           File[]
   assigner       User?           @relation("assignedOrders", fields: [assignedById], references: [id])
   client         User?           @relation("clientOrders", fields: [clientId], references: [id])
   createdBy      User?           @relation("createdOrders", fields: [userId], references: [id])
   writer         User?           @relation("writerOrders", fields: [writerId], references: [id])
-  submission     submission?    
+  submission     submission?
 
   @@index([writerId], map: "writerId")
 }
