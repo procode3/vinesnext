@@ -77,7 +77,7 @@ export default function Orders() {
     fetchData();
   }, []);
 
-
+console.log(data);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (data.items.length > 0 && !data.items.includes("all")) {
