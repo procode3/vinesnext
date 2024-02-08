@@ -61,7 +61,7 @@ async function httpGetOrders(session: any = null) {
 const httpGetOrder = async (id: string) => {
     try {
         const res = await fetch(
-            `http://${HOST}:${PORT}/api/v1/orders/${id}?populate=writer`)
+            `http://${HOST}:${PORT}/api/v1/orders/${id}`)
         return res.status == 200 ? await res.json() : {};
     }
     catch (err) {
@@ -110,7 +110,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
             console.log(res);
             toast({
                 title: "Failed",
-                description: "Order Creation Failed1",
+                description: "Order Creation Failed",
             });
             return false;
         }
@@ -118,7 +118,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
         console.error('Error:', err);
         toast({
             title: "Failed",
-            description: "Order Creation Failed2",
+            description: "Order Creation Failed",
         });
         return false;
     }

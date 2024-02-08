@@ -40,37 +40,38 @@ export default function Page({ params }: { params: { orderId: string } }) {
     useEffect(() => {
         httpGetOrder(params.orderId)
             .then((data) => {
-                setOrder(data?.data.attributes)
-                console.log(data?.data.attributes)
+                setOrder(data?.data)
+                console.log(data.data)
             })
     }, [params.orderId])
+    console.log(order);
 
     return (
         <div className='pt-4 w-4/5 text-black space-y-4'>
-            <Card>
+            <Card className="bg-gray-100">
                 <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
                     <CardTitle>
-                        <span className='bg-slate-200 rounded py-2 px-4 '>Topic</span>
+                        <span className='bg-slate-200 rounded py-2 px-4 '>{order.topic}</span>
                     </CardTitle>
-                        <span className='text-md text-slate-600 px-2'>Deadline</span>
                     <CardDescription className="text-md" >
-                        John Doe
+                       
                     </CardDescription>
                 </CardHeader>
             </Card>
-            <Card>
+            <Card className="bg-gray-100">
                 <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
                     <CardTitle>
-                        <span className='bg-green-200 rounded py-2 px-4 text-lg'>Available</span>
+                        <span className='bg-green-200 rounded py-2 px-4 text-lg'>{order.orderStatus}</span>
                     </CardTitle>
-                        <span className='text-md text-slate-600 px-2'><span className='font-light'>Order Name:</span> {params.orderId}</span>
+                        <span className='text-md text-slate-600 px-2'>{order.writerDeadline}</span>
+                        <span className='text-md text-slate-600 px-2'></span>
                     <CardDescription className="text-md">
                         Total: Ksh. <span className='text-green-600 font-bold'>{`500`}</span>
                     </CardDescription>
                 </CardHeader>
             </Card>
 
-            <Card>
+            <Card className="bg-gray-100">
                 <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
                     <CardTitle>
                         Order Details
@@ -106,7 +107,7 @@ export default function Page({ params }: { params: { orderId: string } }) {
                     </div>
                 </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-gray-100">
                 <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
                     <CardTitle>
                         Attachments
@@ -138,7 +139,7 @@ export default function Page({ params }: { params: { orderId: string } }) {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-gray-100">
                 <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
                     <CardTitle>
                         Submisions
