@@ -2,6 +2,14 @@ import { prisma } from '@/lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { successResponse, failureResponse } from '../middlewares/response';
 import { BadRequestError, NotFoundError } from '../middlewares/errorhandler';
+import { fileUploader, saveFilesToDB } from '../middlewares/fileUploader';
+import { FileType, Order_status } from '@prisma/client';
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,6 +17,11 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     try {
+      const { fields, uploadedFiles } = await fileUploader(req);
+      // console.log(uploadedFiles, 'Files uploadd successfully');
+
+      const data = JSON.parse(fields.data[0]);
+
       const {
         name,
         orderType,
@@ -24,13 +37,15 @@ export default async function handler(
         educationLevel,
         orderStatus,
         userId,
+        writerId,
         assignedById,
         clientId,
         citationStyle,
         sources,
         spacing,
-      } = req.body;
+      } = data;
 
+      console.log(userId, writerId);
       const requiredFields = [
         'name',
         'orderType',
@@ -41,7 +56,6 @@ export default async function handler(
         'clientDeadline',
         'educationLevel',
         'userId',
-        'clientId',
         'citationStyle',
         'sources',
         'spacing',
@@ -63,7 +77,7 @@ export default async function handler(
         spacing: 'Spacing',
       };
 
-      const missingFields = requiredFields.filter((field) => !req.body[field]);
+      const missingFields = requiredFields.filter((field) => !data[field]);
 
       if (missingFields.length > 0) {
         const errorMessage =
@@ -75,38 +89,64 @@ export default async function handler(
         throw new BadRequestError(errorMessage);
       }
 
+      let files: {
+        name: string;
+        type: FileType;
+        url: string;
+      }[] = [];
+      for (let i = 0; i < uploadedFiles.length; i++) {
+        const { tags, public_id, secure_url } = uploadedFiles[i];
+        files.push({
+          name: public_id,
+          type: tags[0].toUpperCase(),
+          url: secure_url,
+        });
+      }
+      const status: Order_status = !!writerId
+        ? 'INPROGRESS'
+        : !!assignedById
+        ? 'AVAILABLE'
+        : 'NEW';
+
       const order: any = await prisma.order.create({
         data: {
-          name,
-          orderType,
+          name: name,
+          orderType: orderType.toUpperCase(),
           topic,
           description,
-          subject,
-          pages,
+          subject: subject.toUpperCase(),
+          pages: parseInt(pages),
           words,
-          clientDeadline,
-          writerDeadline,
+          clientDeadline: new Date(clientDeadline).toISOString(),
+          writerDeadline: new Date(writerDeadline).toISOString(),
           writerFee,
           amountReceived,
-          educationLevel,
-          orderStatus,
-          // userId,
-          // assignedById,
-          // clientId,
+          educationLevel: educationLevel.toUpperCase(),
+          orderStatus: status,
+          writerId: writerId ? writerId : undefined,
+          userId,
+          assignedById: writerId ? userId : undefined,
+          clientId: clientId ? clientId : undefined,
           citationStyle,
           sources,
           spacing,
+          File: {
+            create: files,
+          },
         },
       });
 
       if (!order) {
         throw new NotFoundError('Order not created');
       }
+
       successResponse(res, order, 201);
     } catch (error: any) {
+      console.log(error);
       failureResponse(res, error.message);
     }
   }
+
   if (req.method === 'GET') {
     try {
       const isArchived = req?.query.isArchived == 'true' ? true : false;

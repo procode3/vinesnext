@@ -1,4 +1,4 @@
-'use client'
+
 import React from 'react'
 import {
   Card,
@@ -6,25 +6,19 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
 
-import DashCard from "../components/dashcard"
-import Overview from "../components/overview/overview"
-import RankingItem from "../components/rankingItem"
-import Header from '../components/Header'
-import { useSession, signIn } from 'next-auth/react'
-import Loader from '../loading'
+import DashCard from "@/components/dashcard";
+import Overview from "@/components/overview/overview";
+import RankingItem from "@/components/rankingItem";
+import Header from '@/components/Header';
+import { redirect } from "next/navigation"
+import { getServerSession } from 'next-auth';
+import { options } from '@/pages/api/auth/options';
 
 
 const cardProps = [
-  // {
-  //   title: "Total revenue",
-  //   value: "$45000",
-  //   changeValue: 1,
-  //   changeText: "from last month",
-  //   iconName: "revenue",
-  // },
   {
     title: "All Orders",
     value: "2100",
@@ -112,45 +106,45 @@ const rankingData = [
 ]
 
 
-function Dashboard() {
-  const { data: session } = useSession()
+export default async function Dashboard() {
+  const session = await getServerSession(options);
 
-  if (!session) {
-     signIn()
-     return null
+  if (!session?.user) {
+    redirect("/signin")
+
   }
   return (
-    <div className="w-full flex flex-col">
-      <Header name={'Erick'} notificationCount={5}/>
-      <div className="  w-full space-y-4">
+    <div className="w-full flex flex-col justify-between ">
+      <Header notificationCount={5} session={session} />
+      <div className="lg:max-w-5xl lg:w-full  w-full space-y-4">
         <div className="grid gap-4 grid-cols-3">
-  <Card className="col-span-3 md:col-span-2 rounded-xl bg-[#1F4A57]">
-    <CardHeader className='top-0 w-full'>
-      <CardTitle className="leading-wide text-gray-100 tracking-tight flex items-center justify-between">
-        <p className="text-lg md:text-3xl">Overview</p>
-        <p className="text-lg md:text-3xl text-green-400">$4500</p>
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="px-0 w-full h-full">
-      <Overview />
-    </CardContent>
-  </Card>
-  <div className="col-span-3 md:col-span-1 space-y-4">
-    {cardProps.map((props, index) => (
-      <DashCard
-        key={index}
-        title={props.title}
-        value={props.value}
-        iconUrl={`/images/${props.iconName}.svg`}
-        changeValue={props.changeValue}
-        changeText={props.changeText}
-      />
-    ))}
-  </div>
-</div>
+          <Card className="col-span-3 md:col-span-2 rounded-xl bg-[#1F4A57]">
+            <CardHeader className='top-0 w-full'>
+              <CardTitle className="leading-wide text-gray-100 tracking-tight flex items-center justify-between">
+                <p className="text-lg md:text-3xl">Overview</p>
+                <p className="text-lg md:text-3xl text-green-400">$4500</p>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-0 w-full h-full">
+              <Overview />
+            </CardContent>
+          </Card>
+          <div className="col-span-3 md:col-span-1 space-y-4">
+            {cardProps.map((props, index) => (
+              <DashCard
+                key={index}
+                title={props.title}
+                value={props.value}
+                iconUrl={`/images/${props.iconName}.svg`}
+                changeValue={props.changeValue}
+                changeText={props.changeText}
+              />
+            ))}
+          </div>
+        </div>
 
         <div className="grid gap-4 grid-cols-2">
-           <Card className="col-span-2 md:col-span-1 rounded-xl">
+          <Card className="col-span-2 md:col-span-1 rounded-xl">
             <CardHeader>
               <CardTitle>Writer Ranking</CardTitle>
               <CardDescription>
@@ -179,4 +173,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+

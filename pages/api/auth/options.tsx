@@ -4,11 +4,11 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import { prisma } from '@/lib/prisma';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 
 export const options: NextAuthOptions = {
-    secret: process.env.AUTH_SECRET,
+
     adapter: PrismaAdapter(prisma) as Adapter,
     providers: [
         CredentialsProvider({
@@ -19,6 +19,8 @@ export const options: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
+
+
 
                 //find user in db
 
@@ -33,7 +35,9 @@ export const options: NextAuthOptions = {
 
                 const isPasswordValid = await bcrypt.compare(credentials?.password as string, user?.password as string);
 
+
                 if (isPasswordValid) {
+
                     return user
                 } else {
                     return null
@@ -49,10 +53,37 @@ export const options: NextAuthOptions = {
         strategy: "jwt",
     },
     pages: {
-        signIn: '/login',
-        signOut: '/auth/signout',
-        error: '/auth/error', // Error code passed in query string as ?error=
-        verifyRequest: '/auth/verify-request', // (used for check email message)
-        newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+        signIn: '/signin',
+        //     signOut: '/auth/signout',
+        //     error: '/auth/error', // Error code passed in query string as ?error=
+        //     verifyRequest: '/auth/verify-request', // (used for check email message)
+        //     newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+    },
+    secret: "L9ck37e4ppVxZEwCESP7wp2NYEhzlpgZ9EMG/zAImAw=",
+    callbacks: {
+        async redirect({ url, baseUrl }) {
+            // Allows relative callback URLs
+            if (url.startsWith("/")) return `${baseUrl}${url}`
+            // Allows callback URLs on the same origin
+            else if (new URL(url).origin === baseUrl) return url
+            return baseUrl
+        },
+        async jwt({ token, user }) {
+            if (user) {
+                return { ...token, id: user?.id, userType: user?.userType }
+            }
+            return token
+        },
+        async session({ session, token, user }) {
+            return {
+                ...session, user: {
+                    ...session.user,
+                    id: token.id,
+                    userType: token.userType
+                }
+            };
+
+
+        }
     }
 }

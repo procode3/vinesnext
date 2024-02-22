@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { ChangeEvent, useState, useEffect, Fragment } from 'react';
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, Controller } from "react-hook-form"
@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
-import FileCombobox from "@/app/(dashboard)/components/form/fileCombobox"
-import SubjectCombobox from "@/app/(dashboard)/components/form/subjectCombobox"
+import FileCombobox from "@/components/form/fileCombobox"
+import SubjectCombobox from "@/components/form/subjectCombobox"
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import UsersCombobox from "@/app/(dashboard)/components/form/usersCombobox"
+import UsersCombobox from "@/components/form/usersCombobox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useToast } from "@/components/ui/use-toast"
 
@@ -137,6 +137,12 @@ const formSchema = z.object({
 });
 
 function CreateOrder() {
+  const { data: session }: any = useSession();
+  const [orderName, setOrderName] = useState('');
+  const [step, setStep] = useState(1);
+  const [isloading, setIsloading] = useState(false);
+  const { toast } = useToast()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -154,11 +160,11 @@ function CreateOrder() {
       educationLevel: ['UNDERGRADUATE'],
       writerLevel: '', // Add this line for the missing writerLevel field
       orderStatus: 'INPROGRESS',
-      userId: 'user123',
-      clientFiles: ['null'],
-      writerId: 'writer123', // Add this line for the missing writerId field
-      assignedById: 'admin456',
-      clientId: 'client789',
+      userId: session?.user?.id,
+      clientFiles: [],
+      writerId: '', // Add this line for the missing writerId field
+      assignedById: '',
+      clientId: '',
       citationStyle: 'APA7',
       sources: 5,
       spacing: 'DOUBLE',
@@ -166,11 +172,7 @@ function CreateOrder() {
   });
 
 
-  const { data: session }: any = useSession();
-  const [orderName, setOrderName] = useState('');
-  const [step, setStep] = useState(1);
-  const [isloading, setIsloading] = useState(false);
-  const { toast } = useToast()
+
 
   const handleOrderNumberChange = (event: any) => {
 
@@ -191,7 +193,7 @@ function CreateOrder() {
 
 
 
-  let files = fileList ? [...fileList] : [];
+  let files = fileList ? fileList : [];
 
   const updateFiletype = (file: any, value: any) => {
     file.fileType = value;
@@ -224,6 +226,8 @@ function CreateOrder() {
       e.preventDefault();
 
       values.educationLevel = values.educationLevel[0] as any;
+      console.log("Session userID", session, session?.user, session?.user?.id);
+      values.userId = session?.user?.id;
 
 
       const res = await httpCreateOrder(values, session, toast, files);
@@ -239,8 +243,15 @@ function CreateOrder() {
 
   }
 
+  if (typeof window !== 'undefined') {
+    if (!session) {
+      signIn()
+      return null
+    }
+  }
+
   return (
-    <div className='w-screen'>
+    <div className='w-full'>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className=' text-black'>

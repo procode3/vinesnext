@@ -40,68 +40,74 @@ export default function Page({ params }: { params: { orderId: string } }) {
     useEffect(() => {
         httpGetOrder(params.orderId)
             .then((data) => {
-                setOrder(data?.data.attributes)
-                console.log(data?.data.attributes)
+                setOrder(data?.data)
+                console.log(data.data)
             })
     }, [params.orderId])
+    console.log(order);
 
     return (
         <div className='pt-4 w-4/5 text-black space-y-4'>
-            <Card>
+            <Card className="bg-gray-100">
                 <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
                     <CardTitle>
-                        <span className='bg-slate-200 rounded py-2 px-4 '>Available</span>
-                        <span className='text-sm text-slate-600 px-2'><span className='font-light'>Order ID:</span> {params.orderId}</span>
+                        <span className='bg-slate-200 rounded py-2 px-4 '>{order.topic}</span>
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-md" >
+                       
+                    </CardDescription>
+                </CardHeader>
+            </Card>
+            <Card className="bg-gray-100">
+                <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
+                    <CardTitle>
+                        <span className='bg-green-200 rounded py-2 px-4 text-lg'>{order.orderStatus}</span>
+                    </CardTitle>
+                        <span className='text-md text-slate-600 px-2'>{order.writerDeadline}</span>
+                        <span className='text-md text-slate-600 px-2'></span>
+                    <CardDescription className="text-md">
                         Total: Ksh. <span className='text-green-600 font-bold'>{`500`}</span>
                     </CardDescription>
                 </CardHeader>
             </Card>
 
-            <Card>
+            <Card className="bg-gray-100">
                 <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
                     <CardTitle>
                         Order Details
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className='flex flex-row justify-between items-center space-y-0 border-inherit '>
-                        <div className='flex flex-col  place-items-end space-y-1 w-60 font-light text-sm'>
-                            <p> Order Number</p>
-                            <p>Order Name</p>
-                            <p> Topic</p>
-                            <p> Subject</p>
-                            <p> Pages</p>
-                            <p> Deadline</p>
-                            <p> Order Type</p>
-                            <p> Writer Level</p>
-                            <p> Education Level</p>
-                            <p> Amount</p>
-                            <p> Writer Fee</p>
-                            <p> Writer Rating</p>
+                    <div className='flex flex-row w-full justify-center items-center space-y-0 border-inherit '>
+                        <div className='flex flex-col  justify-left space-y-1 w-60 font-semibold text-md'>
+                            {/* <p> Order Number:</p> */}
+                            <p> Subject:</p>
+                            <p> Pages:</p>
+                            <p> Order Type:</p>
+                            <p> Writer Level:</p>
+                            <p> Education Level:</p>
+                            <p> Amount:</p>
+                            {/* <p> Writer Fee</p>
+                            <p> Writer Rating</p> */}
 
 
                         </div>
-                        <div className='flex flex-col  place-items-start space-y-1 w-full px-4 font-light text-sm '>
-                            <p> Order Number</p>
-                            <p>Order Name</p>
-                            <p> Topic</p>
+                        <div className='flex flex-col  place-items-start space-y-1  px-4 font-light text-md '>
+                            {/* <p> Order Number</p> */}
                             <p> Subject</p>
                             <p> Pages</p>
-                            <p> Deadline</p>
                             <p> Order Type</p>
                             <p> Writer Level</p>
                             <p> Education Level</p>
                             <p> Amount</p>
-                            <p> Writer Fee</p>
-                            <p> Writer Rating</p>
+                            {/* <p> Writer Fee</p>
+                            <p> Writer Rating</p> */}
                         </div>
 
                     </div>
                 </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-gray-100">
                 <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
                     <CardTitle>
                         Attachments
@@ -133,7 +139,7 @@ export default function Page({ params }: { params: { orderId: string } }) {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-gray-100">
                 <CardHeader className='flex flex-row justify-between items-center space-y-0 '>
                     <CardTitle>
                         Submisions
