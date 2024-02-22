@@ -7,28 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id             String       @id @default(cuid())
-  name           String
-  email          String       @unique
-  password       String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  rating         Int          @default(0)
-  emailVerified  DateTime?
-  image          String?
-  phone          String?
-  userType       User_type    @default(WRITER)
-  isArchived     Boolean      @default(false)
-  accounts       Account[]
-  assignedOrders Order[]      @relation("assignedOrders")
-  clientOrders   Order[]      @relation("clientOrders")
-  createdOrders  Order[]      @relation("createdOrders")
-  writerOrders   Order[]      @relation("writerOrders")
-  sessions       Session[]
-  submission     submission[]
-}
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -63,39 +41,49 @@ model File {
 }
 
 model Order {
-  id             String          @id @default(cuid())
-  orderType      Order_type
-  writerId       String?
-  name           String
-  topic          String
-  description    String
-  subject        Subject
-  pages          Int
-  words          Int?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  clientDeadline DateTime
-  writerDeadline DateTime?
-  amountReceived Float?
-  educationLevel Education_level
-  orderStatus    Order_status    @default(NEW)
-  writerRating   Int?
-  citationStyle  Citation_style? @default(MLA)
-  spacing        Spacing?        @default(DOUBLE)
-  sources        Int?
-  userId         String?
-  assignedById   String?
-  clientId       String?
-  writerFee      Float?
-  isArchived     Boolean         @default(false)
-  File           File[]
-  assigner       User?           @relation("assignedOrders", fields: [assignedById], references: [id])
-  client         User?           @relation("clientOrders", fields: [clientId], references: [id])
-  createdBy      User?           @relation("createdOrders", fields: [userId], references: [id])
-  writer         User?           @relation("writerOrders", fields: [writerId], references: [id])
-  submission     submission?
+  id                            String          @id @default(cuid())
+  orderType                     Order_type
+  writerId                      String?
+  name                          String
+  topic                         String
+  description                   String
+  subject                       Subject
+  pages                         Int
+  words                         Int?
+  createdAt                     DateTime        @default(now())
+  updatedAt                     DateTime        @updatedAt
+  clientDeadline                DateTime
+  writerDeadline                DateTime?
+  amountReceived                Float?
+  educationLevel                Education_level
+  orderStatus                   Order_status    @default(NEW)
+  writerRating                  Int?
+  citationStyle                 Citation_style? @default(MLA)
+  spacing                       Spacing?        @default(DOUBLE)
+  sources                       Int?
+  userId                        String?
+  assignedById                  String?
+  clientId                      String?
+  writerFee                     Float?
+  isArchived                    Boolean         @default(false)
+  File                          File[]
+  User_Order_assignedByIdToUser User?           @relation("Order_assignedByIdToUser", fields: [assignedById], references: [id])
+  User_Order_clientIdToUser     User?           @relation("Order_clientIdToUser", fields: [clientId], references: [id])
+  User_Order_userIdToUser       User?           @relation("Order_userIdToUser", fields: [userId], references: [id])
+  User_Order_writerIdToUser     User?           @relation("Order_writerIdToUser", fields: [writerId], references: [id])
+  submission                    submission?
 
   @@index([writerId], map: "writerId")
+}
+
+model Rating {
+  id         String    @id @default(cuid())
+  level      String
+  limit      Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  settingsId String?
+  Settings   Settings? @relation(fields: [settingsId], references: [id])
 }
 
 model Session {
@@ -104,6 +92,37 @@ model Session {
   userId       String
   expires      DateTime
   User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id        String   @id @default(cuid())
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ratingId  String?
+  Rating    Rating[]
+}
+
+model User {
+  id                             String       @id @default(cuid())
+  name                           String
+  email                          String       @unique
+  password                       String?
+  createdAt                      DateTime     @default(now())
+  updatedAt                      DateTime     @updatedAt
+  rating                         Int          @default(0)
+  emailVerified                  DateTime?
+  image                          String?
+  phone                          String?
+  userType                       User_type    @default(WRITER)
+  isArchived                     Boolean      @default(false)
+  Account                        Account[]
+  Order_Order_assignedByIdToUser Order[]      @relation("Order_assignedByIdToUser")
+  Order_Order_clientIdToUser     Order[]      @relation("Order_clientIdToUser")
+  Order_Order_userIdToUser       Order[]      @relation("Order_userIdToUser")
+  Order_Order_writerIdToUser     Order[]      @relation("Order_writerIdToUser")
+  Session                        Session[]
+  submission                     submission[]
 }
 
 model VerificationToken {
@@ -126,31 +145,6 @@ model submission {
   User       User?    @relation(fields: [userId], references: [id])
 
   @@index([userId], map: "userId")
-}
-
-model Settings {
-  id         String   @id @default(cuid())
-  value      String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  ratingId   String?
-  ratingConf Rating[]
-}
-
-model Rating {
-  id         String    @id @default(cuid())
-  level      String
-  limit      Int
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  settingsId String?
-  Settings   Settings? @relation(fields: [settingsId], references: [id])
-}
-
-enum Spacing {
-  SINGLE
-  DOUBLE
-  ONEANDHALF
 }
 
 enum Citation_style {
@@ -243,6 +237,12 @@ enum Order_type {
   CV
   COVER_LETTER
   OTHER
+}
+
+enum Spacing {
+  SINGLE
+  DOUBLE
+  ONEANDHALF
 }
 
 enum Subject {

@@ -1,11 +1,37 @@
 import { withAuth } from 'next-auth/middleware';
+import { NextRequestWithAuth } from 'next-auth/middleware';
+import { NextResponse } from 'next/server';
 
-export default withAuth({
-  pages: {
-    signIn: '/login',
+export default withAuth(
+  function middleware(req: NextRequestWithAuth) {
+    console.log(req.nextUrl.pathname);
+    console.log(req.nextauth.token);
+    if (
+      req.nextUrl.pathname.startsWith('/admin') &&
+      req.nextauth.token!.userType !== 'ADMIN'
+    ) {
+      return NextResponse.rewrite(new URL('/denied', req.url));
+    }
+
+    if (
+      req.nextUrl.pathname.startsWith('/client') &&
+      req.nextauth.token!.userType !== 'CLIENT' &&
+      req.nextauth.token!.userType !== 'ADMIN' &&
+      req.nextauth.token!.userType !== 'MANAGER'
+    ) {
+      return NextResponse.rewrite(new URL('/denied', req.url));
+    }
   },
-});
+  {
+    pages: {
+      signIn: '/signin',
+    },
+    callbacks: {
+      authorized: ({ token }) => !!token,
+    },
+  }
+);
 
 export const config = {
-  matcher: ['/favicon.ico', '/((?!^/api/v1).)*'],
+  matcher: ['/admin/:path*', '/client/:path*'],
 };

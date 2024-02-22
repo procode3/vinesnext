@@ -50,7 +50,10 @@ async function httpGetClients(session: any) {
 async function httpGetOrders(session: any = null) {
     try {
         const res = await fetch(
-            `http://${HOST}:${PORT}/api/v1/orders`)
+            `http://${HOST}:${PORT}/api/v1/orders`, {
+
+            next: { revalidate: 60 },
+        })
         return res.status == 200 ? await res.json() : [];
     }
     catch (err) {
@@ -63,6 +66,7 @@ const httpGetOrder = async (id: string) => {
         const res = await fetch(
             `http://${HOST}:${PORT}/api/v1/orders/${id}?populate=writer`)
         return res.status == 200 ? await res.json() : {};
+
     }
     catch (err) {
         console.error(err)
@@ -71,7 +75,7 @@ const httpGetOrder = async (id: string) => {
 
 
 
-const httpCreateOrder = async (values: any, session: any, toast: any, files: any[]) => {
+const httpCreateOrder = async (values: any, session: any, toast: any, files: FileList | null) => {
     try {
         const formData = new FormData();
 
@@ -84,7 +88,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
 
         // Append files, if available
         if (files) {
-            for (let i = 0; i < files.length; i++) {
+            for (let i = 0; i < files?.length; i++) {
                 formData.append(`files`, files[i]);
             }
         }
@@ -98,7 +102,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: any
         });
 
         const data = await res.json();
-        console.log(res);
+
 
         if (res.status === 201) {
             toast({

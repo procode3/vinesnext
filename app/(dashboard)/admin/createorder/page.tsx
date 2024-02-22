@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
-import FileCombobox from "@/app/(dashboard)/components/form/fileCombobox"
-import SubjectCombobox from "@/app/(dashboard)/components/form/subjectCombobox"
+import FileCombobox from "@/components/form/fileCombobox"
+import SubjectCombobox from "@/components/form/subjectCombobox"
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import UsersCombobox from "@/app/(dashboard)/components/form/usersCombobox"
+import UsersCombobox from "@/components/form/usersCombobox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useToast } from "@/components/ui/use-toast"
 
@@ -161,7 +161,7 @@ function CreateOrder() {
       writerLevel: '', // Add this line for the missing writerLevel field
       orderStatus: 'INPROGRESS',
       userId: session?.user?.id,
-      clientFiles: ['null'],
+      clientFiles: [],
       writerId: '', // Add this line for the missing writerId field
       assignedById: '',
       clientId: '',
@@ -193,7 +193,7 @@ function CreateOrder() {
 
 
 
-  let files = fileList ? [...fileList] : [];
+  let files = fileList ? fileList : [];
 
   const updateFiletype = (file: any, value: any) => {
     file.fileType = value;
