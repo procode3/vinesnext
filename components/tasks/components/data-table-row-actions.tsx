@@ -101,7 +101,7 @@ export function DataTableRowActions<TData>({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DialogContent className={`sm:max-w-${modal === 'edit' ? '[825px] h-full overflow-scroll' : '[425px]'} `}>
+      <DialogContent className={`sm:max-w-${modal === 'edit' ? '[825px] h-80vh overflow-scroll' : '[425px]'} `}>
         {
           modal === "edit" ?
             <>
