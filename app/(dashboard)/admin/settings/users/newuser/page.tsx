@@ -34,16 +34,12 @@ const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
   confirmPassword: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
-  role: z.enum(['superadmin','admin', 'manager', 'writer']).optional(),
+  role: z.enum(['client','admin', 'manager', 'writer']).optional(),
   avatar: z.string().optional(),
-}).superRefine(({ confirmPassword, password }, ctx) => {
-  if (confirmPassword !== password) {
-    ctx.addIssue({
-      code: "custom",
-      message: "The passwords did not match"
+}).refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords don't match",
+        path: ["confirmPassword"],
     });
-  }
-});
 
 
 function CreateUser() {
@@ -70,41 +66,24 @@ function CreateUser() {
     form.reset()
   }
   return (
-    <div className="flex flex-col gap-4 w-full sm:w-2/3 lg:w-1/2">
+    <div className="flex flex-col gap-4 w-full sm:w-2/3 my-0 p-5">
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center justify-center p-2 mb-2">
         <p className=" font-bold text-xl">Register a new user</p>
       </div>
       <div className="flex flex-col gap-6">
-      <FormField
-        name="username"
-        control={form.control}
-        render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>username</FormLabel>
-            <FormControl>
-                <Input placeholder="jamesbond" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-
-          </FormItem>
-        )}
-      />
-
-      <FormField
+      <div className="flex items-center gap-5">
+        <FormField
         name="firstName"
         control={form.control}
         render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>firstname</FormLabel>
+          <FormItem className="flex flex-col w-full">
+            <FormLabel className="text-xs">firstname</FormLabel>
             <FormControl>
-                <Input placeholder="james" {...field} />
+                <Input className="bg-slate-100 placeholder-text-xs" placeholder="james" {...field} />
               </FormControl>              
-              <FormMessage />
+              <FormMessage className="text-xs m-0" />
 
           </FormItem>
         )}
@@ -114,57 +93,78 @@ function CreateUser() {
         name="lastName"
         control={form.control}
         render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>lastname</FormLabel>
+          <FormItem className="flex flex-col w-full">
+            <FormLabel className="text-xs">lastname</FormLabel>
             <FormControl>
-                <Input placeholder="bond" {...field} />
+                <Input className="bg-slate-100 text-xs" placeholder="bond" {...field} />
               </FormControl>              
-              <FormMessage />
+              <FormMessage className="text-xs m-0" />
 
           </FormItem>
         )}
       />
+      </div>
+      <div className="flex justify-centeritems-center gap-[20px]">
+         <FormField
+        name="username"
+        control={form.control}
+        render={({field}) => (
+          <FormItem className="flex flex-col w-full">
+            <FormLabel className="text-xs">username</FormLabel>
+            <FormControl>
+                <Input className="bg-slate-100 text-xs" placeholder="jamesbond" {...field} />
+              </FormControl>
+              <FormMessage className="text-xs m-0" />
+
+          </FormItem>
+        )}
+      />
+
+
+      
 
       <FormField
         name="phone"
         control={form.control}
         render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>phone number</FormLabel>
+          <FormItem className="flex flex-col w-full">
+            <FormLabel className="text-xs">phone number</FormLabel>
             <FormControl>
-              <Input placeholder='+0123456789' {...field} />
+              <Input className="bg-slate-100 text-xs" placeholder='+0123456789' {...field} />
               </FormControl>              
-              <FormMessage />
+              <FormMessage className="text-xs m-0" />
 
           </FormItem>
         )}
       />
 
+      </div>
+     
        <FormField
         name="email"
         control={form.control}
         render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>email address</FormLabel>
+          <FormItem className="flex flex-col w-full">
+            <FormLabel className="text-xs">email address</FormLabel>
             <FormControl>
-              <Input placeholder="email address" {...field} />
+              <Input className="bg-slate-100 text-xs" placeholder="email address" {...field} />
               </FormControl>              
-              <FormMessage />
+              <FormMessage className="text-xs m-0" />
 
           </FormItem>
         )}
       />
-
-       <FormField
+        <div className="flex items-center gap-5">
+           <FormField
         name="password"
         control={form.control}
         render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>password</FormLabel>
+          <FormItem className="flex flex-col w-full">
+            <FormLabel className="text-xs">password</FormLabel>
             <FormControl>
-              <Input type="password" placeholder="Enter password" {...field} />
+              <Input className="bg-slate-100 text-xs" type="password" placeholder="Enter password" {...field} />
               </FormControl>              
-              <FormMessage />
+              <FormMessage className="text-xs m-0" />
 
           </FormItem>
         )}
@@ -174,52 +174,41 @@ function CreateUser() {
         name="confirmPassword"
         control={form.control}
         render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>confirm password</FormLabel>
+          <FormItem className="flex flex-col w-full">
+            <FormLabel className="text-xs">confirm password</FormLabel>
             <FormControl>
-              <Input type="password" placeholder="confirm password" {...field} />
+              <Input className="bg-slate-100 text-xs" type="password" placeholder="confirm password" {...field} />
               </FormControl>              
-              <FormMessage />
+              <FormMessage className="text-xs m-0" />
 
           </FormItem>
         )}
       />
+        </div>
+        
+
+      
 
     <FormField
         name="role"
         control={form.control}
         render={({field}) => (
           <FormItem className="flex flex-col w-full">
-            <FormLabel>set user role</FormLabel>
+            <FormLabel className="text-xs">set user role</FormLabel>
             <FormControl>
-              <Select {...field}>
+              <Select onValueChange={field.onChange}>
                 <SelectTrigger className="w-[180px] bg-white opacity-100 border-gray-200">
                   <SelectValue placeholder="user's role" />
                 </SelectTrigger>
                 <SelectContent className="bg-white opacity-100 z-10">
-                  <SelectItem value="superadmin">superadmin</SelectItem>
+                  <SelectItem value="client">client</SelectItem>
                   <SelectItem value="admin">admin</SelectItem>
-                  <SelectItem value="manager">manager</SelectItem>
                   <SelectItem value="writer">writer</SelectItem>
+                  <SelectItem value="manager">manager</SelectItem>
                 </SelectContent>
               </Select>
               </FormControl>              
-              <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        name="avatar"
-        control={form.control}
-        render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>confirm password</FormLabel>
-            <FormControl>
-              <Input type="file"  {...field} />
-              </FormControl>              
-              <FormMessage />
-
+              <FormMessage className="text-xs m-0" />
           </FormItem>
         )}
       />

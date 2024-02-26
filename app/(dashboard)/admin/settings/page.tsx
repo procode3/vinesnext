@@ -20,7 +20,7 @@ export default function Page() {
     return null
   }
   return (
-    <div className="container w-full p-4 flex flex-col gap-12">
+    <div className="container w-full p-4 flex flex-col gap-8">
       <div className=" flex justify-between">
       <div className="dp flex items-center gap-2 py-4">        
         <Avatar className="w-[60px] h-[60px] md:w-[100px] md:h-[100px]">
@@ -48,7 +48,7 @@ export default function Page() {
       </div>
           
       </div>
-      <div className="personal-info py-4 flex flex-col gap-6 border p-4 rounded-xl border-gray-100">
+      <div className="personal-info py-4 flex flex-col gap-5 border p-4 rounded-xl border-gray-100">
         <h1 className="font-semibold text-md sm:text-lg">Personal information</h1>
         <div className="flex w-full">
           <div className="w-1/2 flex flex-col gap-2">
@@ -78,7 +78,7 @@ export default function Page() {
           
         </div>
       </div>
-      <div className="personal-info py-4 flex flex-col gap-6 border p-4 rounded-xl border-gray-100">
+      <div className="personal-info py-4 flex flex-col gap-5 border p-4 rounded-xl border-gray-100">
         <h1 className="font-semibold text-sm sm:text-[12px]">Billing Address</h1>
         <div className="flex w-full">
           <div className="w-1/2 flex flex-col gap-2">

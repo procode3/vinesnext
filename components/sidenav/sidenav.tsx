@@ -27,7 +27,7 @@ export default async function Sidenav() {
 
 
   return (
-    <div id="sidenav" className="flex-col space-between h-screen min-w-[280px]   dark:border-gray-600  bg-slate-800 z-10  opacity-[100%] text-md items-center">
+    <div id="sidenav" className="flex-col space-between h-screen max-w-[70px] xl:min-w-[280px]   dark:border-gray-600  bg-slate-800 z-10  opacity-[100%] text-md items-center">
 
 
       {/* <Link href="/" className='flex justify-center w-full py-5 text-4xl md:text-4xl text-center font-semibold cursor-pointer hover:scale-110 transition-transform'>
@@ -36,7 +36,7 @@ export default async function Sidenav() {
       </Link> */}
 
 
-      <div className="flex space-x-4  min-w-full  bg-slate-700  my-auto py-5 px-3 text-gray-200 " >
+      <div className="flex space-x-4 justify-center xl:justify-start min-w-full  bg-slate-700  my-auto py-5 px-3 text-gray-200 " >
 
         {session?.user ? (
 
@@ -45,7 +45,7 @@ export default async function Sidenav() {
               <AvatarFallback>{(session?.user?.name!.split(" ") || []).slice(0, 2).map((word: string) => word[0]).join("")
               }</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col text-l text-left text-nowrap">
+            <div className=" hidden xl:flex flex-col text-l text-left text-nowrap">
               <h2 >
                 {session?.user?.name}
               </h2>
@@ -96,7 +96,7 @@ export default async function Sidenav() {
 
         ) :
           (
-            <Link key={idx} href={route.path!} className={`flex font-light p-2 md:py-2 m-5 text-sm  hover:border-gray-50 hover:bg-white    hover:text-black flex-col xl:flex-row rounded-full justify-center md:justify-start xl:px-4 items-center  active:bg-white  active:text-black md:gap-x-5   hover:font-normal transition ease-in-out duration-400 
+            <Link key={idx} href={route.path!} className={`flex font-light p-2 mx-0 my-5 xl:m-5 text-sm min-w-[40px] min-h-[40px]  hover:border-gray-50 hover:bg-white    hover:text-black flex-col xl:flex-row rounded-full justify-center md:justify-start xl:px-4 items-center  active:bg-white  active:text-black md:gap-x-5   hover:font-normal transition ease-in-out duration-400 
             ${pathname === route.path ? 'bg-white text-black' : 'text-white'}
             `}
 
