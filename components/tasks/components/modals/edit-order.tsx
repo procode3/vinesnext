@@ -27,54 +27,60 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 
-const profileFormSchema = z.object({
-    username: z
-        .string()
-        .min(2, {
-            message: "Username must be at least 2 characters.",
-        })
-        .max(30, {
-            message: "Username must not be longer than 30 characters.",
-        }),
-    email: z
-        .string({
-            required_error: "Please select an email to display.",
-        })
-        .email(),
-    bio: z.string().max(160).min(4),
-    urls: z
-        .array(
-            z.object({
-                value: z.string().url({ message: "Please enter a valid URL." }),
-            })
-        )
-        .optional(),
-})
+import { formSchema as orderFormSchema } from '@/app/(dashboard)/admin/createorder/schema'
+import { OrderForm as Order } from '@/app/(dashboard)/admin/createorder/interfaces'
+import React from 'react'
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>
+
+type OrderFormValues = z.infer<typeof orderFormSchema>
 
 // This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-    bio: "I own a computer.",
-    urls: [
-        { value: "https://shadcn.com" },
-        { value: "http://twitter.com/shadcn" },
-    ],
-}
 
-export function EditOrderForm() {
-    const form = useForm<ProfileFormValues>({
-        resolver: zodResolver(profileFormSchema),
+
+export function EditOrderForm({ order }: any) {
+    const { name, orderType, clientDeadline, writerDeadline, pages, words, subject, topic, description, writerFee, amountReceived, educationLevel, writerLevel, orderStatus, userId, clientFiles, writerId, assignedById, clientId, citationStyle, sources, spacing, fileType } = order
+    const defaultValues: Partial<OrderFormValues> = {
+        name: name,
+        orderType: orderType,
+        clientDeadline: clientDeadline,
+        writerDeadline: writerDeadline,
+        pages: pages,
+        words: words,
+        subject: subject,
+        topic,
+        description,
+        writerFee,
+        amountReceived,
+        educationLevel,
+        writerLevel, // Add this line for the missing writerLevel field
+        orderStatus,
+        userId,
+        clientFiles,
+        writerId, // Add this line for the missing writerId field
+        assignedById,
+        clientId,
+        citationStyle,
+        sources,
+        spacing,
+    }
+
+    const form = useForm<OrderFormValues>({
+        resolver: zodResolver(orderFormSchema),
         defaultValues,
         mode: "onChange",
     })
 
+
     const { fields, append } = useFieldArray({
-        name: "urls",
+        clientFiles: [],
         control: form.control,
     })
 
-    function onSubmit(data: ProfileFormValues) {
+
+
+    console.log(order)
+
+    function onSubmit(data: OrderFormValues) {
         toast({
             title: "You submitted the following values:",
             description: (
@@ -86,32 +92,39 @@ export function EditOrderForm() {
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
+        <Form {...form} >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-4  h-full overflow-auto">
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="topic"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Topic</FormLabel>
                             <FormControl>
                                 <Input placeholder="shadcn" {...field} />
                             </FormControl>
                             <FormDescription>
-                                This is your public display name. It can be your real name or a
-                                pseudonym. You can only change this once every 30 days.
+                                Change the topic of the order
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <div className="flex gap-4 justify-between w-full">
+                    <FormField
+                        control={form.control}
+                        name="words"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Words</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="word count..." {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    Change the total number of words
+                                </FormDescription>
+
+                                {/* <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select a verified email to display" />
@@ -122,21 +135,38 @@ export function EditOrderForm() {
                                     <SelectItem value="m@google.com">m@google.com</SelectItem>
                                     <SelectItem value="m@support.com">m@support.com</SelectItem>
                                 </SelectContent>
-                            </Select>
+                            </Select> 
                             <FormDescription>
                                 You can manage verified email addresses in your{" "}
                                 <Link href="/examples/forms">email settings</Link>.
                             </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                            <FormMessage />*/}
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="pages"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Pages</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="page count..." {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    Change the total number of pages
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
                 <FormField
                     control={form.control}
-                    name="bio"
+                    name="description"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Bio</FormLabel>
+                            <FormLabel>Description</FormLabel>
                             <FormControl>
                                 <Textarea
                                     placeholder="Tell us a little bit about yourself"
@@ -145,8 +175,7 @@ export function EditOrderForm() {
                                 />
                             </FormControl>
                             <FormDescription>
-                                You can <span>@mention</span> other users and organizations to
-                                link to them.
+                                Order description and other details
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -157,7 +186,7 @@ export function EditOrderForm() {
                         <FormField
                             control={form.control}
                             key={field.id}
-                            name={`urls.${index}.value`}
+                            name={`clientFiles.${index}.value`}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className={cn(index !== 0 && "sr-only")}>
@@ -184,7 +213,7 @@ export function EditOrderForm() {
                         Add URL
                     </Button>
                 </div>
-                <Button type="submit">Update profile</Button>
+                <Button type="submit">Update Order</Button>
             </form>
         </Form>
     )

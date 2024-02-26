@@ -101,17 +101,17 @@ export function DataTableRowActions<TData>({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DialogContent className={`sm:max-w-${modal === 'edit' ? '[825px] h-80vh overflow-scroll' : '[425px]'} `}>
+      <DialogContent className={modal === "edit" ? `sm:max-w-[825px]  h-4/5 ` : `sm:max-w-[425px]`}>
         {
           modal === "edit" ?
             <>
-              <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
+              <DialogHeader className='sticky	'>
+                <DialogTitle>Edit Order {`#${order.name}`}</DialogTitle>
                 <DialogDescription>
-                  Make changes to your profile here. Click save when you are done.
+                  Make changes to the Order. Click save when you are done.
                 </DialogDescription>
               </DialogHeader>
-              <EditOrderForm />
+              <EditOrderForm order={order} />
             </>
             :
             <>

@@ -75,7 +75,7 @@ const httpGetOrder = async (id: string) => {
 
 
 
-const httpCreateOrder = async (values: any, session: any, toast: any, files: FileList | null) => {
+const httpCreateOrder = async (values: any, session: any, toast: any, files: File[]) => {
     try {
         const formData = new FormData();
 
