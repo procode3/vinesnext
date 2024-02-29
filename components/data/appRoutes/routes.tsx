@@ -6,6 +6,7 @@ import React from 'react'
 import { FilePlus2 } from 'lucide-react';
 
 
+type UserType = 'ADMIN' | 'CLIENT' | 'MANAGER' | 'WRITER' | "SUPER_ADMIN";
 
 
 interface Route {
@@ -74,15 +75,147 @@ const adminRoutes: Route[] = [
 ]
 
 //routes for Manager
+const managerRoutes: Route[] = [
+  {
+    "path": "/manager",
+    "sidebarProps": {
+      "displayText": "Dashboard",
+      "icon": <LayoutDashboard strokeWidth={0.75} />,
 
+    },
+    "active": false,
+  },
+  {
+    "path": "/manager/createorder",
+    "sidebarProps": {
+      "displayText": "Create Order",
+      "icon": <FilePlus2 strokeWidth={0.75} />,
+    },
+    "active": false,
+  },
+  {
+    "path": "/manager/orders",
+    "active": false,
+    "sidebarProps": {
+      "displayText": "Orders",
+      "icon": <LayoutList strokeWidth={0.75} />,
+    }
+  },
+  {
+    "path": "/manager/finance",
+    "sidebarProps": {
+      "displayText": "Finances",
+      "icon": <Wallet strokeWidth={0.75} />,
+    },
+    "active": false,
+  },
+  {
+    "path": "/manager/settings",
+    "sidebarProps": {
+      "displayText": "Settings",
+      "icon": <Settings strokeWidth={0.75} />,
+    },
+    "active": false,
+  },
+
+]
 
 //routes for Writer
+const writerRoutes: Route[] = [
+  {
+    "path": "/",
+    "sidebarProps": {
+      "displayText": "Dashboard",
+      "icon": <LayoutDashboard strokeWidth={0.75} />,
+
+    },
+    "active": false,
+  },
+  {
+    "path": "/orders",
+    "active": false,
+    "sidebarProps": {
+      "displayText": "Orders",
+      "icon": <LayoutList strokeWidth={0.75} />,
+    }
+  },
+  {
+    "path": "/finance",
+    "sidebarProps": {
+      "displayText": "Finances",
+      "icon": <Wallet strokeWidth={0.75} />,
+    },
+    "active": false,
+  },
+  {
+    "path": "/settings",
+    "sidebarProps": {
+      "displayText": "Settings",
+      "icon": <Settings strokeWidth={0.75} />,
+    },
+    "active": false,
+  },
+]
 
 
 //routes for Clients
+const clientRoutes: Route[] = [
+  {
+    "path": "/dashboard",
+    "sidebarProps": {
+      "displayText": "Dashboard",
+      "icon": <LayoutDashboard strokeWidth={0.75} />,
 
+    },
+    "active": false,
+  },
+  {
+    "path": "/createorder",
+    "sidebarProps": {
+      "displayText": "Create Order",
+      "icon": <FilePlus2 strokeWidth={0.75} />,
+    },
+    "active": false,
+  },
+  {
+    "path": "/myorders",
+    "active": false,
+    "sidebarProps": {
+      "displayText": "Orders",
+      "icon": <LayoutList strokeWidth={0.75} />,
+    }
+  },
+  {
+    "path": "/profile",
+    "sidebarProps": {
+      "displayText": "Settings",
+      "icon": <Settings strokeWidth={0.75} />,
+    },
+    "active": false,
+  },
+
+]
 
 
 const getAdminRoutes = () => adminRoutes;
+const getManagerRoutes = () => managerRoutes;
+const getWriterRoutes = () => writerRoutes;
+const getClientRoutes = () => clientRoutes;
 
-export { getAdminRoutes, type Route }
+
+function getRoutesByUserType(userType: UserType): Route[] {
+  switch (userType) {
+    case 'ADMIN':
+      return getAdminRoutes();
+    case 'CLIENT':
+      return getClientRoutes();
+    case 'MANAGER':
+      return getManagerRoutes();
+    case 'WRITER':
+      return getWriterRoutes();
+    default:
+      throw new Error('Invalid user type');
+  }
+}
+
+export { getRoutesByUserType, getAdminRoutes, type Route }

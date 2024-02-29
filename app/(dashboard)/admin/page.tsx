@@ -10,7 +10,7 @@ import {
 
 
 import DashCard from "@/components/dashcard";
-import Overview from "@/components/overview/overview";
+import Overview from "@/components/sidenav/overview/overview";
 import RankingItem from "@/components/rankingItem";
 import Header from '@/components/Header';
 import { redirect } from "next/navigation"

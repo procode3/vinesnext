@@ -60,7 +60,7 @@ const adminRoutes: Route[] = [
     "path": "/admin",
     "sidebarProps": {
       "displayText": "Dashboard",
-      "icon": <SpaceDashboardSharpIcon  />,
+      "icon": <SpaceDashboardSharpIcon />,
 
     },
     "active": false,
@@ -69,7 +69,7 @@ const adminRoutes: Route[] = [
     "path": "/admin/createorder",
     "sidebarProps": {
       "displayText": "Create Order",
-      "icon": <LibraryAddIcon  />,
+      "icon": <LibraryAddIcon />,
     },
     "active": false,
   },
@@ -78,7 +78,7 @@ const adminRoutes: Route[] = [
     "active": false,
     "sidebarProps": {
       "displayText": "Orders",
-      "icon": <ViewListIcon  />,
+      "icon": <ViewListIcon />,
       // "child": [
       //   // {
       //   //   "path": "/admin/orders/new",
@@ -143,7 +143,7 @@ const adminRoutes: Route[] = [
     "path": "/admin/settings",
     "sidebarProps": {
       "displayText": "Settings",
-      "icon": <SettingsSharpIcon/>,
+      "icon": <SettingsSharpIcon />,
     },
     "active": false,
   },

@@ -121,7 +121,7 @@ export function DataTableRowActions<TData>({
                   Directly assign this order to a writer.
                 </DialogDescription>
               </DialogHeader>
-              <AssignOrder writerId={writerId} orderId={id} />
+              <AssignOrder order={order} />
             </>
         }
 

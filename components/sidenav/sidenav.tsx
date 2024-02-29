@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
-import { getAdminRoutes, Route } from '../data/appRoutes/routes';
+import { Route, getRoutesByUserType } from '../data/appRoutes/routes';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getServerSession } from "next-auth";
 import { options } from '@/pages/api/auth/options';
 import { redirect } from 'next/navigation';
 import { Skeleton } from "@/components/ui/skeleton";
+import { headers } from 'next/headers';
 import { MoreVertical } from 'lucide-react';
 
 
@@ -13,17 +14,19 @@ import LoginStatus from './loginstatus'
 
 export default async function Sidenav() {
   const pathname = '/dashboard'
-  const appRoutes: Route[] = getAdminRoutes()
+
   const session = await getServerSession(options)
-  // if (status === 'loading') return null
+
 
   if (!session?.user) {
     redirect('/signin')
     return null
   }
 
+  const appRoutes: Route[] = getRoutesByUserType(session?.user?.userType)
+  const headersList = headers();
+  const fullUrl = headersList.get('referer') || "";
 
-  //create initials from name
 
 
   return (
@@ -97,7 +100,7 @@ export default async function Sidenav() {
         ) :
           (
             <Link key={idx} href={route.path!} className={`flex font-light p-2 mx-0 my-5 xl:m-5 text-sm min-w-[40px] min-h-[40px]  hover:border-gray-50 hover:bg-white    hover:text-black flex-col xl:flex-row rounded-full justify-center md:justify-start xl:px-4 items-center  active:bg-white  active:text-black md:gap-x-5   hover:font-normal transition ease-in-out duration-400 
-            ${pathname === route.path ? 'bg-white text-black' : 'text-white'}
+            ${pathname === route?.path ? 'bg-white text-black' : 'text-white'}
             `}
 
             >

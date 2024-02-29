@@ -3,10 +3,10 @@ require('dotenv').config();
 const HOST = process.env.HOST || 'localhost';
 const PORT = 3000;
 
-const httpGetWriters = async (session: any) => {
+const httpGetWriters = async (session: any = null) => {
     try {
         const res = await fetch(
-            `/api/v1/users?role=WRITER`, {
+            `http://${HOST}:${PORT}/api/v1/users?role=WRITER`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -32,7 +32,7 @@ async function httpGetClients(session: any) {
     try {
 
         const res = await fetch(
-            `/api/v1/users?role=CLIENT`, {
+            `http://${HOST}:${PORT}/api/v1/users?role=CLIENT`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -50,7 +50,7 @@ async function httpGetClients(session: any) {
 async function httpGetOrders(session: any = null) {
     try {
         const res = await fetch(
-            `/api/v1/orders`, {
+            `http://${HOST}:${PORT}/api/v1/orders`, {
 
             next: { revalidate: 60 },
         })
@@ -64,7 +64,7 @@ async function httpGetOrders(session: any = null) {
 const httpGetOrder = async (id: string) => {
     try {
         const res = await fetch(
-            `/api/v1/orders/${id}`)
+            `http://${HOST}:${PORT}/api/v1/orders/${id}`)
         return res.status == 200 ? await res.json() : {};
 
     }
@@ -75,7 +75,7 @@ const httpGetOrder = async (id: string) => {
 
 
 
-const httpCreateOrder = async (values: any, session: any, toast: any, files: File[]) => {
+const httpCreateOrder = async (values: any, session: any, toast: any, files: FileList | null) => {
     try {
         const formData = new FormData();
 
@@ -93,7 +93,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: Fil
             }
         }
 
-        const res = await fetch(`/api/v1/orders`, {
+        const res = await fetch(`http://${HOST}:${PORT}/api/v1/orders`, {
             method: 'POST',
             headers: {
                 'authorization': 'Bearer ' + session.user.jwt,
@@ -127,5 +127,39 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: Fil
         return false;
     }
 };
+
+const httpUpdateWriter = async (id: string, writerId: string, session: any, toast: any) => {
+    try {
+        const res = await fetch(`http://${HOST}:${PORT}/api/v1/orders/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + session.user.jwt,
+            },
+            body: JSON.stringify({ writer: writerId }),
+        });
+
+        if (res.status === 200) {
+            toast({
+                title: "Success!!",
+                description: "Order Updated Successfully",
+            });
+            return true;
+        } else {
+            toast({
+                title: "Failed",
+                description: "Order Update Failed",
+            });
+            return false;
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        toast({
+            title: "Failed",
+            description: "Order Update Failed",
+        });
+        return false;
+    }
+}
 
 export { httpGetWriters, httpGetClients, httpCreateOrder, httpGetOrders, httpGetOrder };
