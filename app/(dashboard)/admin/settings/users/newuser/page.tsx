@@ -37,22 +37,13 @@ const formSchema = z.object({
   phone: z.string().min(10, { message: 'Phone number must be at least 10 characters long' }),
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
-  confirmPassword: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
+  confirmPassword: z.string(),
   role: z.enum(['client','admin', 'manager', 'writer']).optional(),
   avatar: z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
         message: "Passwords don't match",
         path: ["confirmPassword"],
     });
-  role: z.enum(['superadmin', 'admin', 'manager', 'writer', 'client']).optional(),
-}).superRefine(({ confirmPassword, password }, ctx) => {
-  if (confirmPassword !== password) {
-    ctx.addIssue({
-      code: "custom",
-      message: "The passwords did not match"
-    });
-  }
-});
 
 
 function CreateUser() {
@@ -157,7 +148,7 @@ function CreateUser() {
         )}
       />
       </div>
-      <div className="flex justify-centeritems-center gap-[20px]">
+      <div className="flex items-center gap-5">
          <FormField
         name="username"
         control={form.control}
@@ -177,10 +168,10 @@ function CreateUser() {
         name="phone"
         control={form.control}
         render={({field}) => (
-          <FormItem className="flex flex-col">
+          <FormItem className="flex flex-col w-full">
             <FormLabel>phone number</FormLabel>
             <FormControl>
-              <Input placeholder='+0123456789' {...field} />
+              <Input className="bg-slate-100 text-xs" placeholder='+0123456789' {...field} />
               </FormControl>              
               <FormMessage />
 
@@ -204,15 +195,16 @@ function CreateUser() {
           </FormItem>
         )}
       />
-
+      <div className="flex items-center gap-5">
+      
        <FormField
         name="password"
         control={form.control}
         render={({field}) => (
-          <FormItem className="flex flex-col">
+          <FormItem className="flex flex-col w-full">
             <FormLabel>password</FormLabel>
             <FormControl>
-              <Input type="password" placeholder="Enter password" {...field} />
+              <Input  className="bg-slate-100 text-xs" type="password" placeholder="Enter password" {...field} />
               </FormControl>              
               <FormMessage />
 
@@ -234,6 +226,7 @@ function CreateUser() {
                 </FormItem>
               )}
             />
+            </div>
         </div>
         
 
@@ -263,24 +256,9 @@ function CreateUser() {
         )}
       />
 
-      <FormField
-        name="avatar"
-        control={form.control}
-        render={({field}) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>confirm password</FormLabel>
-            <FormControl>
-              <Input type="file"  {...field} />
-              </FormControl>              
-              <FormMessage />
-
-          </FormItem>
-        )}
-      />
-
-          </div>
+      
           <div className="py-4">
-            <Button variant="default" type="submit" disabled={isLoading} >
+            <Button variant="default" type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 
               Create User</Button>
