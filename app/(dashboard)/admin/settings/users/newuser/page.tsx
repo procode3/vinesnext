@@ -37,13 +37,17 @@ const formSchema = z.object({
   phone: z.string().min(10, { message: 'Phone number must be at least 10 characters long' }),
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
-  confirmPassword: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
+  confirmPassword: z.string(),
   role: z.enum(['client', 'admin', 'manager', 'writer']).optional(),
   avatar: z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
 });
+        message: "Passwords don't match",
+        path: ["confirmPassword"],
+    });
+
 
 function CreateUser() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -158,53 +162,69 @@ function CreateUser() {
                       <Input className="bg-slate-100 text-xs" placeholder="jamesbond" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs m-0" />
+          </FormItem>
+        )}
+      />
+      </div>
+      <div className="flex items-center gap-5">
+         <FormField
+        name="username"
+        control={form.control}
+        render={({field}) => (
+          <FormItem className="flex flex-col w-full">
+            <FormLabel className="text-xs">username</FormLabel>
+            <FormControl>
+                <Input className="bg-slate-100 text-xs" placeholder="jamesbond" {...field} />
+              </FormControl>
+              <FormMessage className="text-xs m-0" />
 
                   </FormItem>
                 )}
               />
 
-              <FormField
-                name="phone"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>phone number</FormLabel>
-                    <FormControl>
-                      <Input placeholder='+0123456789' {...field} />
-                    </FormControl>
-                    <FormMessage />
-
-                  </FormItem>
-                )}
-              />
-
-            </div>
-
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex flex-col w-full">
-                  <FormLabel className="text-xs">email address</FormLabel>
-                  <FormControl>
-                    <Input className="bg-slate-100 text-xs" placeholder="email address" {...field} />
-                  </FormControl>
-                  <FormMessage className="text-xs m-0" />
+      <FormField
+        name="phone"
+        control={form.control}
+        render={({field}) => (
+          <FormItem className="flex flex-col w-full">
+            <FormLabel>phone number</FormLabel>
+            <FormControl>
+              <Input className="bg-slate-100 text-xs" placeholder='+0123456789' {...field} />
+              </FormControl>              
+              <FormMessage />
 
                 </FormItem>
               )}
             />
 
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="Enter password" {...field} />
-                  </FormControl>
-                  <FormMessage />
+      </div>
+     
+       <FormField
+        name="email"
+        control={form.control}
+        render={({field}) => (
+          <FormItem className="flex flex-col w-full">
+            <FormLabel className="text-xs">email address</FormLabel>
+            <FormControl>
+              <Input className="bg-slate-100 text-xs" placeholder="email address" {...field} />
+              </FormControl>              
+              <FormMessage className="text-xs m-0" />
+
+          </FormItem>
+        )}
+      />
+      <div className="flex items-center gap-5">
+      
+       <FormField
+        name="password"
+        control={form.control}
+        render={({field}) => (
+          <FormItem className="flex flex-col w-full">
+            <FormLabel>password</FormLabel>
+            <FormControl>
+              <Input  className="bg-slate-100 text-xs" type="password" placeholder="Enter password" {...field} />
+              </FormControl>              
+              <FormMessage />
 
                 </FormItem>
               )}
@@ -224,8 +244,9 @@ function CreateUser() {
                 </FormItem>
               )}
             />
-          </div>
-
+            </div>
+        </div>
+        
 
 
 
@@ -253,23 +274,9 @@ function CreateUser() {
             )}
           />
 
-          <FormField
-            name="avatar"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>confirm password</FormLabel>
-                <FormControl>
-                  <Input type="file"  {...field} />
-                </FormControl>
-                <FormMessage />
-
-              </FormItem>
-            )}
-          />
-
+      
           <div className="py-4">
-            <Button variant="default" type="submit" disabled={isLoading} >
+            <Button variant="default" type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 
               Create User</Button>

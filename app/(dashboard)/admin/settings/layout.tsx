@@ -36,21 +36,6 @@ function SettingsLayout({ children }: SettingsLayoutProps) {
               </DialogContent>
             </Dialog>
           </div>
-            {/* <Link href="/admin/settings/" className="text-xs md:text-[12px] px-2 py-2 text-black  hover:bg-orange-600 hover:text-white cursor-pointer transition ease-in-out duration-400 rounded">Profile</Link>
-            <Link href="/admin/settings/security" className="text-xs md:text-[12px] px-2 py-2 text-black hover:bg-orange-600 hover:text-white cursor-pointer transition ease-in-out duration-400 rounded">Security</Link>
-            <Link href="/admin/settings/billing" className="text-xs md:text-[12px] px-2 py-2 text-black hover:bg-orange-600 hover:text-white cursor-pointer transition ease-in-out duration-400 rounded">Billing</Link>
-            <Link href="/admin/settings/users/newuser" className="text-xs md:text-[12px] px-2 py-2 text-black hover:bg-orange-600 hover:text-white cursor-pointer transition ease-in-out duration-400 rounded">Register User</Link>
-            <Link href="/admin/settings/users/manageusers" className="text-xs md:text-[12px] px-2 py-2 text-black hover:bg-orange-600 hover:text-white cursor-pointer transition ease-in-out duration-400 rounded">Manage Users</Link> */}
-            <div className="text-white bg-red-600 text-xs md:text-[12px]   hover:bg-red-400 hover:text-white cursor-pointer transition ease-in-out duration-400 rounded">
-              <Dialog>
-                <DialogTrigger className="px-2 py-2">Delete Account</DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                  </DialogHeader>
-                  <DeleteAccount />
-                </DialogContent>
-              </Dialog>
-            </div>
           </nav>
         </div>
         <div className="settings-display flex justify-center w-full h-full">

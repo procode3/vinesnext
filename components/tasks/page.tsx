@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 
 export default async function TaskPage() {
   const { data: tasks } = await httpGetOrders();
+  console.log(tasks);
 
 
   return (
