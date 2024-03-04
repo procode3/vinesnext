@@ -195,6 +195,7 @@ enum Order_status {
   DISPUTE
   REFUNDED
   EDITING
+  ACCEPTED
 }
 
 enum Order_type {

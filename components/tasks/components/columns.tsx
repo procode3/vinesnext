@@ -98,7 +98,7 @@ export const columns: ColumnDef<Order>[] = [
         label.value === row.original.subject.toLocaleLowerCase())
       return (
         <div className="flex space-x-2">
-          {label && <Badge className='bg-slate-100' variant="outline">{label.label}</Badge>}
+          {label && <Badge className='bg-teal-200 border border-emerald-700' variant="outline">{label.label}</Badge>}
           <span className="max-w-[500px] truncate font-medium">
             {row.getValue("topic")}
           </span>
@@ -106,6 +106,58 @@ export const columns: ColumnDef<Order>[] = [
       )
     },
   },
+  {
+    accessorKey: "words",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Words" />
+    ),
+    cell: ({ row }) => {
+
+      return (
+        <div className="flex space-x-2">
+
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("words")}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: "citationStyle",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Citation" />
+    ),
+    cell: ({ row }) => {
+
+      return (
+        <div className="flex space-x-2">
+
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("citationStyle")}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: "sources",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Sources" />
+    ),
+    cell: ({ row }) => {
+
+      return (
+        <div className="flex space-x-2">
+
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("sources")}
+          </span>
+        </div>
+      )
+    },
+  },
+
   {
     accessorKey: "orderStatus",
     header: ({ column }) => (

@@ -38,8 +38,8 @@ export default function Countdown({ writerDeadline }: CountdownProps) {
 
   // Render remaining time or a loading state
   return (
-    <span className='text-sm text-white px-2'> 
-      Due in: {remainingDays} days, {remainingHours % 24} hrs, {remainingMinutes % 60} mins, {remainingSeconds % 60} secs 
-    </span> 
+    <span className='text-sm px-2'>
+      Due in: {remainingDays} days, {remainingHours % 24} hrs, {remainingMinutes % 60} mins, {remainingSeconds % 60} secs
+    </span>
   );
 }

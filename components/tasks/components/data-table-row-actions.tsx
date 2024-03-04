@@ -111,7 +111,7 @@ export function DataTableRowActions<TData>({
                   Make changes to the Order. Click save when you are done.
                 </DialogDescription>
               </DialogHeader>
-              <EditOrderForm order={order} />
+              <EditOrderForm order={row.original} />
             </>
             :
             <>
@@ -121,7 +121,7 @@ export function DataTableRowActions<TData>({
                   Directly assign this order to a writer.
                 </DialogDescription>
               </DialogHeader>
-              <AssignOrder writerId={writerId} orderId={id} />
+              <AssignOrder order={order} />
             </>
         }
 
