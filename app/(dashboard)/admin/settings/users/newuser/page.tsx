@@ -44,9 +44,6 @@ const formSchema = z.object({
   message: "Passwords don't match",
   path: ["confirmPassword"],
 });
-        message: "Passwords don't match",
-        path: ["confirmPassword"],
-    });
 
 
 function CreateUser() {
@@ -141,7 +138,7 @@ function CreateUser() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel className="text-xs">lastname</FormLabel>
+                    <FormLabel className="text-xs">Lastname</FormLabel>
                     <FormControl>
                       <Input className="bg-slate-100 text-xs" placeholder="bond" {...field} />
                     </FormControl>
@@ -151,102 +148,88 @@ function CreateUser() {
                 )}
               />
             </div>
-            <div className="flex justify-centeritems-center gap-[20px]">
+
+            <div className="flex items-center gap-5">
               <FormField
                 name="username"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel className="text-xs">username</FormLabel>
+                    <FormLabel className="text-xs">Username</FormLabel>
                     <FormControl>
                       <Input className="bg-slate-100 text-xs" placeholder="jamesbond" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs m-0" />
-          </FormItem>
-        )}
-      />
-      </div>
-      <div className="flex items-center gap-5">
-         <FormField
-        name="username"
-        control={form.control}
-        render={({field}) => (
-          <FormItem className="flex flex-col w-full">
-            <FormLabel className="text-xs">username</FormLabel>
-            <FormControl>
-                <Input className="bg-slate-100 text-xs" placeholder="jamesbond" {...field} />
-              </FormControl>
-              <FormMessage className="text-xs m-0" />
 
                   </FormItem>
                 )}
               />
 
-      <FormField
-        name="phone"
-        control={form.control}
-        render={({field}) => (
-          <FormItem className="flex flex-col w-full">
-            <FormLabel>phone number</FormLabel>
-            <FormControl>
-              <Input className="bg-slate-100 text-xs" placeholder='+0123456789' {...field} />
-              </FormControl>              
-              <FormMessage />
+              <FormField
+                name="phone"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel>phone number</FormLabel>
+                    <FormControl>
+                      <Input className="bg-slate-100 text-xs" placeholder='+0123456789' {...field} />
+                    </FormControl>
+                    <FormMessage />
 
-                </FormItem>
-              )}
-            />
+                  </FormItem>
+                )}
+              />
 
-      </div>
-     
-       <FormField
-        name="email"
-        control={form.control}
-        render={({field}) => (
-          <FormItem className="flex flex-col w-full">
-            <FormLabel className="text-xs">email address</FormLabel>
-            <FormControl>
-              <Input className="bg-slate-100 text-xs" placeholder="email address" {...field} />
-              </FormControl>              
-              <FormMessage className="text-xs m-0" />
-
-          </FormItem>
-        )}
-      />
-      <div className="flex items-center gap-5">
-      
-       <FormField
-        name="password"
-        control={form.control}
-        render={({field}) => (
-          <FormItem className="flex flex-col w-full">
-            <FormLabel>password</FormLabel>
-            <FormControl>
-              <Input  className="bg-slate-100 text-xs" type="password" placeholder="Enter password" {...field} />
-              </FormControl>              
-              <FormMessage />
-
-                </FormItem>
-              )}
-            />
+            </div>
 
             <FormField
-              name="confirmPassword"
+              name="email"
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full">
-                  <FormLabel className="text-xs">confirm password</FormLabel>
+                  <FormLabel className="text-xs">email address</FormLabel>
                   <FormControl>
-                    <Input className="bg-slate-100 text-xs" type="password" placeholder="confirm password" {...field} />
+                    <Input className="bg-slate-100 text-xs" placeholder="email address" {...field} />
                   </FormControl>
                   <FormMessage className="text-xs m-0" />
 
                 </FormItem>
               )}
             />
+            <div className="flex items-center gap-5">
+
+              <FormField
+                name="password"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel>password</FormLabel>
+                    <FormControl>
+                      <Input className="bg-slate-100 text-xs" type="password" placeholder="Enter password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                name="confirmPassword"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel className="text-xs">confirm password</FormLabel>
+                    <FormControl>
+                      <Input className="bg-slate-100 text-xs" type="password" placeholder="confirm password" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-xs m-0" />
+
+                  </FormItem>
+                )}
+              />
             </div>
-        </div>
-        
+          </div>
+
 
 
 
@@ -274,7 +257,7 @@ function CreateUser() {
             )}
           />
 
-      
+
           <div className="py-4">
             <Button variant="default" type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

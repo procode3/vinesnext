@@ -106,7 +106,7 @@ function CreateOrder() {
       assignedById: '',
       clientId: '',
       citationStyle: 'APA7',
-      sources:0,
+      sources: 0,
       spacing: 'DOUBLE',
     },
   });
@@ -137,7 +137,7 @@ function CreateOrder() {
 
 
   let files = fileList ? fileList : [];
-  
+
 
   const updateFiletype = (file: any, value: any) => {
     file.fileType = value;
@@ -224,7 +224,7 @@ function CreateOrder() {
                         >
                           {formItems.map((item) => (
                             <FormItem key={item.value}>
-                              <FormLabel className="font-semibold" className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
+                              <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
                                 <FormControl>
                                   <RadioGroupItem value={item.value} className="sr-only" />
                                 </FormControl>
@@ -260,131 +260,131 @@ function CreateOrder() {
                     )}
                   />
                   <div className='flex gap-5 w-full'>
-                
-                  <FormField
-                    control={form.control}
-                    name="subject"
 
-                    render={({ field }) => (
-                      <FormItem className='flex flex-col gap-y-2
+                    <FormField
+                      control={form.control}
+                      name="subject"
+
+                      render={({ field }) => (
+                        <FormItem className='flex flex-col gap-y-2
                       
                       '>
-                        <FormLabel className="font-semibold">Subject</FormLabel>
-                        <FormControl>
-                          <SubjectCombobox value={field.value} setValue={field.onChange} />
-                        </FormControl>
-                      </FormItem>
+                          <FormLabel className="font-semibold">Subject</FormLabel>
+                          <FormControl>
+                            <SubjectCombobox value={field.value} setValue={field.onChange} />
+                          </FormControl>
+                        </FormItem>
 
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="citationStyle"
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="citationStyle"
 
-                    render={({ field }) => (
-                      <FormItem className='flex flex-col gap-y-2
+                      render={({ field }) => (
+                        <FormItem className='flex flex-col gap-y-2
                       
                       '>
-                        <FormLabel className="font-semibold">Style</FormLabel>
-                        <FormControl>
-                          <Select onValueChange={field.onChange}>
-                          <SelectTrigger className="w-[180px] h-full bg-white opacity-100 border-gray-200">
-                            <SelectValue placeholder="APA7" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white opacity-100 z-10">
-                            <SelectItem value="APA7">APA7</SelectItem>
-                            <SelectItem value="APA8">APA8</SelectItem>
-                            <SelectItem value="MLA">MLA</SelectItem>
-                            <SelectItem value="Chicago">Chicago</SelectItem>
-                            <SelectItem value="Harvard">Harvard</SelectItem>
-                            <SelectItem value="Other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        </FormControl>
-                      </FormItem>
+                          <FormLabel className="font-semibold">Style</FormLabel>
+                          <FormControl>
+                            <Select onValueChange={field.onChange}>
+                              <SelectTrigger className="w-[180px] h-full bg-white opacity-100 border-gray-200">
+                                <SelectValue placeholder="APA7" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white opacity-100 z-10">
+                                <SelectItem value="APA7">APA7</SelectItem>
+                                <SelectItem value="APA8">APA8</SelectItem>
+                                <SelectItem value="MLA">MLA</SelectItem>
+                                <SelectItem value="Chicago">Chicago</SelectItem>
+                                <SelectItem value="Harvard">Harvard</SelectItem>
+                                <SelectItem value="Other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                        </FormItem>
 
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="sources"
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="sources"
 
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="font-semibold">Sources</FormLabel>
-                        <FormControl>
-                          <Input min={0} type="number" placeholder='number of sources' {...field} />
-                        </FormControl>
-                      </FormItem>
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="font-semibold">Sources</FormLabel>
+                          <FormControl>
+                            <Input min={0} type="number" placeholder='number of sources' {...field} />
+                          </FormControl>
+                        </FormItem>
 
-                    )}
-                  />
+                      )}
+                    />
                   </div>
 
                   <div className='flex gap-5 w-full'>
                     <FormField
-                    control={form.control}
-                    name="words"
+                      control={form.control}
+                      name="words"
 
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="font-semibold">Words</FormLabel>
-                        <FormControl>
-                          <Input type="number" placeholder='number of words' {...field} />
-                        </FormControl>
-                      </FormItem>
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="font-semibold">Words</FormLabel>
+                          <FormControl>
+                            <Input type="number" placeholder='number of words' {...field} />
+                          </FormControl>
+                        </FormItem>
 
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="pages"
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="pages"
 
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="font-semibold">Pages</FormLabel>
-                        <FormControl>
-                          <Input min={1} type="number" placeholder='number of pages' {...field} />
-                        </FormControl>
-                      </FormItem>
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="font-semibold">Pages</FormLabel>
+                          <FormControl>
+                            <Input min={1} type="number" placeholder='number of pages' {...field} />
+                          </FormControl>
+                        </FormItem>
 
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="spacing"
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="spacing"
 
-                    render={({ field }) => (
-                      <FormItem className='flex flex-col gap-y-2
+                      render={({ field }) => (
+                        <FormItem className='flex flex-col gap-y-2
                       
                       '>
-                        <FormLabel className="font-semibold">spacing</FormLabel>
-                        <FormControl>
-                          <Select onValueChange={field.onChange}>
-                          <SelectTrigger className="w-[180px] h-full bg-white opacity-100 border-gray-200">
-                            <SelectValue placeholder="DOUBLE" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white opacity-100 z-10">
-                            <SelectItem value="double">DOUBLE</SelectItem>
-                            <SelectItem value="single">SINGLE</SelectItem>
-                            <SelectItem value="oneandhalf">1.5</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        </FormControl>
-                      </FormItem>
+                          <FormLabel className="font-semibold">spacing</FormLabel>
+                          <FormControl>
+                            <Select onValueChange={field.onChange}>
+                              <SelectTrigger className="w-[180px] h-full bg-white opacity-100 border-gray-200">
+                                <SelectValue placeholder="DOUBLE" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white opacity-100 z-10">
+                                <SelectItem value="double">DOUBLE</SelectItem>
+                                <SelectItem value="single">SINGLE</SelectItem>
+                                <SelectItem value="oneandhalf">1.5</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                        </FormItem>
 
-                    )}
-                  />
+                      )}
+                    />
                   </div>
 
-                  
+
                   <FormField
                     control={form.control}
                     name="educationLevel"
                     render={() => (
                       <FormItem >
                         <div className="mb-4">
-                          <FormLabel className="font-semibold" className="text-base">Academic Level</FormLabel>
+                          <FormLabel className="text-base">Academic Level</FormLabel>
 
                         </div>
                         <div className="grid grid-cols-3  gap-2">
@@ -415,7 +415,7 @@ function CreateOrder() {
                                         }}
                                       />
                                     </FormControl>
-                                    <FormLabel className="font-semibold" className={field.value?.includes(item.id) ? "font-normal cursor-pointer " : "font-normal  cursor-pointer "} >
+                                    <FormLabel className={field.value?.includes(item.id) ? "font-normal cursor-pointer " : "font-normal  cursor-pointer "} >
                                       {item.label}
                                     </FormLabel>
                                   </FormItem>
@@ -686,7 +686,7 @@ function CreateOrder() {
 
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-semibold" className='italic '>Order Name: {orderName}</FormLabel>
+                        <FormLabel className='italic '>Order Name: {orderName}</FormLabel>
                         <FormControl>
                           <Input type="hidden" readOnly={true} value={orderName} placeholder="Order Name" />
                         </FormControl>

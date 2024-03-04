@@ -7,28 +7,28 @@ import {
 
 import Attachments from "@/components/Attachment";
 
-interface OrderAttachmentProps{
-    file: any
- }
+interface OrderAttachmentProps {
+	file: any
+}
 
 export default function Dashboard({ file }: OrderAttachmentProps) {
-	console.log(file);
+
 	return (
-		
-					<Card className="">
-						<CardHeader className="flex flex-row justify-between items-center space-y-0 ">
-							<CardTitle>Attachments</CardTitle>
-						</CardHeader>
-						<CardContent className="flex flex-col   gap-2">
-							{file?.map((file: any, index: any) => (
-								<Attachments
-									key={index}
-									file={file}
-								/>
-							))}
-						</CardContent>
-					</Card>
-	); 
+
+		<Card className="">
+			<CardHeader className="flex flex-row justify-between items-center space-y-0 ">
+				<CardTitle>Attachments</CardTitle>
+			</CardHeader>
+			<CardContent className="flex flex-col   gap-2">
+				{file?.map((file: any, index: any) => (
+					<Attachments
+						key={index}
+						file={file}
+					/>
+				))}
+			</CardContent>
+		</Card>
+	);
 }
 
 

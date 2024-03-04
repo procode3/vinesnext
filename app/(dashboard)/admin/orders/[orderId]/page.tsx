@@ -1,32 +1,27 @@
-"use client";
-import { useState, useEffect } from "react";
-import { httpGetOrder } from "@/app/(dashboard)/hooks/requests";
+
+
+import { httpGetOrder, httpGetOrders } from "@/app/(dashboard)/hooks/requests";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useSession } from "next-auth/react";
 import OrderHeader from "@/components/OrderHeader";
 import OrderDetails from "@/components/OrderDetails";
 import OrderAttachments from "@/components/OrderAttachments";
 import OrderSubmissions from "@/components/OrderSubmissions";
+import { getServerSession } from "next-auth";
+import { options } from '@/pages/api/auth/options'
 
 
-function Dashboard({ params }: { params: { orderId: string } }) {
-	const [order, setOrder] = useState<any>({});
-	const { data: session } = useSession();
 
-	console.log(session?.user);
+async function Dashboard({ params }: { params: { orderId: string } }) {
 
+	const session = await getServerSession(options);
 
-	useEffect(() => {
+	const { data: order } = await httpGetOrder(params.orderId)
+	if (!order) return null;
 
-    httpGetOrder(params.orderId).then((data) => {
-        setOrder(data?.data);
-        console.log(data.data);
-    }); 
-}, [params.orderId]);
 
 	return (
 		<div className="w-full text-black px-2">
-			<OrderHeader session={session} order={order}/>
+			<OrderHeader session={session} order={order} />
 			<Tabs
 				defaultValue="details"
 				className="w-full"
@@ -36,15 +31,15 @@ function Dashboard({ params }: { params: { orderId: string } }) {
 					<TabsTrigger value="manage">Manage</TabsTrigger>
 				</TabsList>
 				<TabsContent value="details">
-					<OrderDetails session={session} order={order}/>
-					<OrderAttachments file={order?.File}/>
+					<OrderDetails session={session} order={order} />
+					<OrderAttachments file={order?.File} />
 				</TabsContent>
 				<TabsContent value="manage">
 					<OrderSubmissions session={session} />
 				</TabsContent>
 			</Tabs>
 		</div>
-	); 
+	);
 }
 
 export default Dashboard;
