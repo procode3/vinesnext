@@ -224,7 +224,7 @@ function CreateOrder() {
                         >
                           {formItems.map((item) => (
                             <FormItem key={item.value}>
-                              <FormLabel className="font-semibold" className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
+                              <FormLabel className="[&:has([data-state=checked])>div]:bg-orange-600 [&:has([data-state=checked])>div]:text-white">
                                 <FormControl>
                                   <RadioGroupItem value={item.value} className="sr-only" />
                                 </FormControl>
@@ -384,7 +384,7 @@ function CreateOrder() {
                     render={() => (
                       <FormItem >
                         <div className="mb-4">
-                          <FormLabel className="font-semibold" className="text-base">Academic Level</FormLabel>
+                          <FormLabel className="text-base">Academic Level</FormLabel>
 
                         </div>
                         <div className="grid grid-cols-3  gap-2">
@@ -415,7 +415,7 @@ function CreateOrder() {
                                         }}
                                       />
                                     </FormControl>
-                                    <FormLabel className="font-semibold" className={field.value?.includes(item.id) ? "font-normal cursor-pointer " : "font-normal  cursor-pointer "} >
+                                    <FormLabel className={field.value?.includes(item.id) ? "font-normal cursor-pointer " : "font-normal  cursor-pointer "} >
                                       {item.label}
                                     </FormLabel>
                                   </FormItem>
@@ -686,7 +686,7 @@ function CreateOrder() {
 
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-semibold" className='italic '>Order Name: {orderName}</FormLabel>
+                        <FormLabel  className='italic font-semibold'>Order Name: {orderName}</FormLabel>
                         <FormControl>
                           <Input type="hidden" readOnly={true} value={orderName} placeholder="Order Name" />
                         </FormControl>
