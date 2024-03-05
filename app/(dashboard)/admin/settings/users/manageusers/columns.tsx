@@ -15,33 +15,31 @@ import {
 
 
 export type User = {
-  username: string
-  firstname: string
-  lastname: string
+  name: string
   phone: number
   status: "active" | "deactivated" | "suspended" | "deleted"
   email: string
-  role:string
+  userType:string
 }
 
 export const columns: ColumnDef<User>[] = [
   
   {
-    accessorKey: "username",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <span className="font-bold p-0">UserName</span>
+          <span className="font-bold p-0">username</span>
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
   },
   {
-    accessorKey: "role",
+    accessorKey: "userType",
      header: ({ column }) => {
       return (
         <Button
@@ -53,14 +51,6 @@ export const columns: ColumnDef<User>[] = [
         </Button>
       )
     },
-  },
-  {
-    accessorKey: "firstname",
-    header: "First Name",
-  },
-  {
-    accessorKey: "lastname",
-    header: "Last Name",
   },
   {
     accessorKey: "email",
@@ -75,34 +65,34 @@ export const columns: ColumnDef<User>[] = [
     header: "Status",
   },
   
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const user = row.original
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const user = row.original
  
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open menu</span>
-  //             <MoreHorizontal className="h-4 w-4" />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //           <DropdownMenuItem
-  //             onClick={() => navigator.clipboard.writeText(user.username)}
-  //           >
-  //             Copy Username
-  //           </DropdownMenuItem>
-  //           <DropdownMenuSeparator />
-  //           <DropdownMenuItem>Activate</DropdownMenuItem>
-  //           <DropdownMenuItem>Deactivate</DropdownMenuItem>
-  //           <DropdownMenuItem>Suspend</DropdownMenuItem>
-  //           <DropdownMenuItem>Delete</DropdownMenuItem>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     )
-  //   },
-  // },
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(user.name)}
+            >
+              Copy Username
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Activate</DropdownMenuItem>
+            <DropdownMenuItem>Deactivate</DropdownMenuItem>
+            <DropdownMenuItem>Suspend</DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )
+    },
+  },
 ]

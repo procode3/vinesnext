@@ -3,7 +3,7 @@ require('dotenv').config();
 const HOST = process.env.HOST || 'localhost';
 const PORT = 3000;
 
-const httpGetWriters = async (session: any) => {
+const httpGetWriters = async (session: any = null) => {
     try {
         const res = await fetch(
             `http://${HOST}:${PORT}/api/v1/users?role=WRITER`, {
@@ -127,5 +127,39 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: Fil
         return false;
     }
 };
+
+const httpUpdateWriter = async (id: string, writerId: string, session: any, toast: any) => {
+    try {
+        const res = await fetch(`http://${HOST}:${PORT}/api/v1/orders/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + session.user.jwt,
+            },
+            body: JSON.stringify({ writer: writerId }),
+        });
+
+        if (res.status === 200) {
+            toast({
+                title: "Success!!",
+                description: "Order Updated Successfully",
+            });
+            return true;
+        } else {
+            toast({
+                title: "Failed",
+                description: "Order Update Failed",
+            });
+            return false;
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        toast({
+            title: "Failed",
+            description: "Order Update Failed",
+        });
+        return false;
+    }
+}
 
 export { httpGetWriters, httpGetClients, httpCreateOrder, httpGetOrders, httpGetOrder };

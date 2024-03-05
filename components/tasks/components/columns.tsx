@@ -17,6 +17,7 @@ import {
 } from "@radix-ui/react-icons"
 
 import Deadline from './deadline'
+import Link from "next/link";
 
 //return remaining time to deadline in format "1d 4h 20m"
 const formatDate = (date: any) => {
@@ -84,7 +85,7 @@ export const columns: ColumnDef<Order>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Order" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("name")}</div>,
+    cell: ({ row }) => <Link href={`/orders/${row.original.id}`} className="w-[80px] hover:underline">{row.getValue("name")}</Link>,
     enableSorting: false,
     enableHiding: false,
   },
@@ -98,7 +99,7 @@ export const columns: ColumnDef<Order>[] = [
         label.value === row.original.subject.toLocaleLowerCase())
       return (
         <div className="flex space-x-2">
-          {label && <Badge className='bg-slate-100' variant="outline">{label.label}</Badge>}
+          {label && <Badge className='bg-teal-200 border border-emerald-700' variant="outline">{label.label}</Badge>}
           <span className="max-w-[500px] truncate font-medium">
             {row.getValue("topic")}
           </span>
@@ -106,6 +107,58 @@ export const columns: ColumnDef<Order>[] = [
       )
     },
   },
+  {
+    accessorKey: "words",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Words" />
+    ),
+    cell: ({ row }) => {
+
+      return (
+        <div className="flex space-x-2">
+
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("words")}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: "citationStyle",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Citation" />
+    ),
+    cell: ({ row }) => {
+
+      return (
+        <div className="flex space-x-2">
+
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("citationStyle")}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: "sources",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Sources" />
+    ),
+    cell: ({ row }) => {
+
+      return (
+        <div className="flex space-x-2">
+
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("sources")}
+          </span>
+        </div>
+      )
+    },
+  },
+
   {
     accessorKey: "orderStatus",
     header: ({ column }) => (

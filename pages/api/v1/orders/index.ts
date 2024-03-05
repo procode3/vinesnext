@@ -150,7 +150,10 @@ export default async function handler(
   if (req.method === 'GET') {
     try {
       const isArchived = req?.query.isArchived == 'true' ? true : false;
-      const orders = await prisma.order.findMany({ where: { isArchived } });
+      const orders = await prisma.order.findMany({
+        where: { isArchived },
+        include: { File: true },
+      });
       if (!orders) {
         throw new NotFoundError('Order not found');
       }

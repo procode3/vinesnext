@@ -1,6 +1,3 @@
-
-
-
 import { DataTable } from './data-table';
 import { Heading } from "@/components/ui/heading";
 import TaskPage from "@/components/tasks/page"

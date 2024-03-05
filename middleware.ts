@@ -4,15 +4,20 @@ import { NextResponse } from 'next/server';
 
 export default withAuth(
   function middleware(req: NextRequestWithAuth) {
-    console.log(req.nextUrl.pathname);
-    console.log(req.nextauth.token);
     if (
       req.nextUrl.pathname.startsWith('/admin') &&
       req.nextauth.token!.userType !== 'ADMIN'
     ) {
       return NextResponse.rewrite(new URL('/denied', req.url));
     }
+    if(
+      req.nextauth.token!.userType == 'ADMIN' &&
+      req.nextUrl.pathname == '/'
+    ){
+      console.log('logged');
+      return NextResponse.rewrite(new URL('/admin', req.url));
 
+    }
     if (
       req.nextUrl.pathname.startsWith('/client') &&
       req.nextauth.token!.userType !== 'CLIENT' &&
@@ -33,5 +38,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/admin/:path*', '/client/:path*'],
+  matcher: ['/admin/:path*', '/client/:path*', '/'],
 };
