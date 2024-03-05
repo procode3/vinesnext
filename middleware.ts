@@ -10,7 +10,14 @@ export default withAuth(
     ) {
       return NextResponse.rewrite(new URL('/denied', req.url));
     }
+    if(
+      req.nextauth.token!.userType == 'ADMIN' &&
+      req.nextUrl.pathname == '/'
+    ){
+      console.log('logged');
+      return NextResponse.rewrite(new URL('/admin', req.url));
 
+    }
     if (
       req.nextUrl.pathname.startsWith('/client') &&
       req.nextauth.token!.userType !== 'CLIENT' &&
@@ -31,5 +38,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/admin/:path*', '/client/:path*'],
+  matcher: ['/admin/:path*', '/client/:path*', '/'],
 };

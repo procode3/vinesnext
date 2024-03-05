@@ -36,8 +36,8 @@ export default function Attachments({file}:any) {
 
   };
   return (
-    <div  className='flex flex-row justify-center items-center space-y-2 w-full gap-2'>
-        <div className='flex justify-between border-[1px] p-3 w-full rounded'>
+    <div  className='flex flex-row justify-center items-center  w-full gap-1'>
+        <div className='flex justify-between border-[1px]  w-full rounded'>
             <div className="flex  p-3 text-xs justify-start gap-5 items-center w-full rounded ">
                 <div className="relative w-[40px] h-[40px]">
                     <Image

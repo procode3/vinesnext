@@ -29,9 +29,9 @@ export default function OrderSubmissions({ session }: OrderSubmissionsProps) {
 						<Submission />
 						<Submission />
 						<div className="w-full p-5 flex justify-evenly">
-							{session?.user?.userType == "ADMIN" ? <SubmitAnswer /> : null}
-							{session?.user?.userType == "ADMIN" ? <RequestRevision /> : null}
-							{session?.user?.userType == "ADMIN" ? <AcceptAnswer /> : null}
+							{session?.user?.userType == "WRITER" || "ADMIN" ? <SubmitAnswer /> : null}
+							{session?.user?.userType == "CLIENT" ? <RequestRevision /> : null}
+							{session?.user?.userType == "CLIENT" ? <AcceptAnswer /> : null}
 						</div>
 					</div>
 				</CardContent>

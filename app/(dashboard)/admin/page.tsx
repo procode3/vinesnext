@@ -144,7 +144,7 @@ export default async function Dashboard() {
         </div>
 
         <div className="grid gap-4 grid-cols-2">
-          <Card className="col-span-2 md:col-span-1 rounded-xl">
+          <Card className="col-span-2 md:col-span-2 rounded-xl">
             <CardHeader>
               <CardTitle>Writer Ranking</CardTitle>
               <CardDescription>

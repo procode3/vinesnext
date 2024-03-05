@@ -38,8 +38,10 @@ export default function Countdown({ writerDeadline }: CountdownProps) {
 
   // Render remaining time or a loading state
   return (
-    <span className='text-sm px-2'>
-      Due in: {remainingDays} days, {remainingHours % 24} hrs, {remainingMinutes % 60} mins, {remainingSeconds % 60} secs
+    <span className='text-xs px-2' style={{ color: remainingDays < 0 ? 'red' : 'inherit' }}>
+      {remainingDays < 0 ? `Overdue by ${Math.abs(remainingDays)} days, ${remainingHours % 24} hrs, ${remainingMinutes % 60} mins, ${remainingSeconds % 60} secs` : `Due in: ${remainingDays} days, ${remainingHours % 24} hrs, ${remainingMinutes % 60} mins, ${remainingSeconds % 60} secs`}
     </span>
+
+
   );
 }

@@ -6,6 +6,8 @@ import NextTopLoader from 'nextjs-toploader';
 import Sidenav from '@/components/sidenav/sidenav'
 import { Toaster } from "@/components/ui/toaster"
 import AuthProvider from '../context/AuthProvider';
+import { Suspense } from "react";
+import Loading from './../../components/loading';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,10 +30,12 @@ export default function RootLayout({
           <NextTopLoader />
           <div className='flex w-screen  h-screen'>
             <Sidenav />
+          <Suspense fallback={<Loading/>}>
             <div className="flex w-full justify-center bg-slate-100 overflow-y-scroll py-12 px-4 md:px-10">
               {children}
               <Toaster />
             </div>
+          </Suspense>
           </div>
           <Script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.js" />
         </AuthProvider>

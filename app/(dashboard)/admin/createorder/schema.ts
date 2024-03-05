@@ -17,7 +17,7 @@ export const formSchema = z
     writerLevel: z.string(),
     writerId: z.string().nullable(),
     amountReceived: z.number(),
-    clientFiles: z.array(z.instanceof(File)).nullable(),
+    clientFiles: z.any().array().nullable(),
     educationLevel: z
       .array(z.string())
       .refine((value) => value.some((item) => item), {

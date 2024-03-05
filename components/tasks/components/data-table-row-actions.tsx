@@ -48,7 +48,7 @@ export function DataTableRowActions<TData>({
 
   const order = orderSchema.parse(row.original);
   const { writerId, id }: any = order;
-
+  console.log(row.original)
   return (
     <Dialog >
 

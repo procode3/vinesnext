@@ -47,7 +47,7 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 
 					)}
 					<div className="text-md ">
-						{session?.user?.userType === "ADMIN" && (
+						{session?.user?.userType === "WRITER" && (
 							<Button
 								className="flex items-center backdrop-blur-md  hover:text-white border-black justify-center border "
 								variant="default"
@@ -56,7 +56,7 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 								<span className="hidden xl:inline" >Take</span>
 							</Button>
 						)}
-						{session?.user?.userType === "ADMI" && (
+						{session?.user?.userType === "ADMIN" && (
 							<Select>
 								<SelectTrigger className="w-[150px] h-[40px] bg-slate-900 border-none text-white p-3">
 									<SelectValue
@@ -66,7 +66,6 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 								</SelectTrigger>
 								<SelectContent>
 									<SelectGroup className="bg-white ">
-										<SelectLabel>Status</SelectLabel>
 										<SelectItem value="available">Available</SelectItem>
 										<SelectItem value="in_progress">In Progress</SelectItem>
 										<SelectItem value="revision">Revision</SelectItem>
@@ -83,11 +82,8 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 			</div>
 			<div className="flex flex-col space-y-4 bg-white p-5 rounded">
 				<span className="text-base ">{order?.topic} </span>
-				<div className="flex flex-row justify-between items-center space-y-0 text-md">
-					<span>
-						English(US)
-					</span>
-					<Separator orientation="vertical" color='black' />
+				<div className="flex flex-row justify-between items-center space-y-0 text-xs">
+					
 					<div>
 						<Badge className=" lowercase">
 							{order?.orderStatus}
@@ -95,11 +91,16 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 					</div>
 					<Separator orientation="vertical" />
 					<span>
-						{order?.writerDeadline}
+					{order && typeof order.writerDeadline === 'string' 
+						? new Date(order.writerDeadline).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric' })
+						: 'Invalid date'
+					}
 					</span>
+
 					<Separator orientation="vertical" />
 
 					<Countdown writerDeadline={order?.writerDeadline} />
+					<Separator orientation="vertical" />
 
 					<div >
 						Total: Ksh.{" "}

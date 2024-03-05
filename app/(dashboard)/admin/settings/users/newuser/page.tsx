@@ -123,7 +123,7 @@ function CreateUser() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel className="text-xs">firstname</FormLabel>
+                    <FormLabel className="text-xs">Firstname</FormLabel>
                     <FormControl>
                       <Input className="bg-slate-100 placeholder-text-xs" placeholder="james" {...field} />
                     </FormControl>
@@ -170,7 +170,7 @@ function CreateUser() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel>phone number</FormLabel>
+                    <FormLabel>Phone number</FormLabel>
                     <FormControl>
                       <Input className="bg-slate-100 text-xs" placeholder='+0123456789' {...field} />
                     </FormControl>
@@ -187,7 +187,7 @@ function CreateUser() {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full">
-                  <FormLabel className="text-xs">email address</FormLabel>
+                  <FormLabel className="text-xs">Email address</FormLabel>
                   <FormControl>
                     <Input className="bg-slate-100 text-xs" placeholder="email address" {...field} />
                   </FormControl>
@@ -203,7 +203,7 @@ function CreateUser() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel>password</FormLabel>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input className="bg-slate-100 text-xs" type="password" placeholder="Enter password" {...field} />
                     </FormControl>
@@ -218,7 +218,7 @@ function CreateUser() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel className="text-xs">confirm password</FormLabel>
+                    <FormLabel className="text-xs">Confirm password</FormLabel>
                     <FormControl>
                       <Input className="bg-slate-100 text-xs" type="password" placeholder="confirm password" {...field} />
                     </FormControl>
@@ -237,18 +237,18 @@ function CreateUser() {
             name="role"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="flex flex-col w-full">
-                <FormLabel className="text-xs">set user role</FormLabel>
+              <FormItem className="flex flex-col w-full my-3">
+                <FormLabel className="text-sm">Set user role</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange}>
-                    <SelectTrigger className="w-[180px] bg-white opacity-100 border-gray-200">
+                    <SelectTrigger className="w-[180px] h-full bg-white opacity-100 border-gray-200">
                       <SelectValue placeholder="user's role" />
                     </SelectTrigger>
                     <SelectContent className="bg-white opacity-100 z-10">
-                      <SelectItem value="client">client</SelectItem>
                       <SelectItem value="admin">admin</SelectItem>
-                      <SelectItem value="writer">writer</SelectItem>
                       <SelectItem value="manager">manager</SelectItem>
+                      <SelectItem value="writer">writer</SelectItem>
+                      <SelectItem value="client">client</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>

@@ -1,6 +1,4 @@
-
-
-import { httpGetOrder, httpGetOrders } from "@/app/(dashboard)/hooks/requests";
+import { httpGetOrder } from "@/app/(dashboard)/hooks/requests";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OrderHeader from "@/components/OrderHeader";
 import OrderDetails from "@/components/OrderDetails";
@@ -31,7 +29,7 @@ async function Dashboard({ params }: { params: { orderId: string } }) {
 					<TabsTrigger value="manage">Manage</TabsTrigger>
 				</TabsList>
 				<TabsContent value="details">
-					<OrderDetails session={session} order={order} />
+					<OrderDetails order={order} />
 					<OrderAttachments file={order?.File} />
 				</TabsContent>
 				<TabsContent value="manage">

@@ -5,85 +5,98 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Separator } from "./ui/separator";
 
 
 interface OrderHeaderProps {
-	session: any,
 	order: any
 }
 
-export default function OrderDetails({ session, order }: OrderHeaderProps) {
-
+export default function OrderDetails({  order }: OrderHeaderProps) {
+	console.log
 	return (
 
-		<Card className="bg-white">
+		<Card className="bg-white my-3">
 			<CardHeader className="flex flex-row justify-between items-center space-y-0 ">
-				<CardTitle>Order Details:</CardTitle>
+				<CardTitle 	className="text-">Order Details:</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<div className="grid grid-cols-2 md:grid-cols-4 w-full">
-					<div>
-						<div className="p-2 font-semibold text-sm">Subject:</div>
-						<div className="p-2 font-light text-smapitalize">
-							{order?.subject}
+				<div className="flex flex-col md:flex-row px-20">
+					<div className="flex flex-col w-full md:w-1/2">
+					<div className="flex justify-between items-center">
+						<div className="p-2 font-semibold text-xs ">Subject:</div>
+						<div className="p-2 font-light text-xs">
+							{`${order?.subject.charAt(0).toUpperCase() + order?.subject.slice(1).toLowerCase()}`}
 						</div>
 					</div>
 
-					<div>
-						<div className="p-2 font-semibold text-sm">Pages:</div>
-						<div className="p-2 font-light text-sm">{order?.pages}</div>
+
+					<div className="flex justify-between items-center">
+						<div className="p-2 font-semibold text-xs ">Pages:</div>
+						<div className="p-2 font-light text-xs ">{order?.pages}</div>
 					</div>
 
-					<div>
-						<div className="p-2 font-semibold text-sm">Order Type:</div>
-						<div className="p-2 font-light text-sm">
-							{order?.orderType}
+					<div className="flex justify-between items-center">
+						<div className="p-2 font-semibold text-xs ">Order Type:</div>
+						<div className="p-2 font-light text-xs ">
+							{`${order?.orderType.charAt(0).toUpperCase() + order?.orderType.slice(1).toLowerCase()}`}
 						</div>
 					</div>
 
-					<div>
-						<div className="p-2 font-semibold text-sm">Sources:</div>
-						<div className="p-2 font-light text-sm">
+					<div className="flex justify-between items-center">
+						<div className="p-2 font-semibold text-xs ">Sources:</div>
+						<div className="p-2 font-light text-xs ">
 							{order?.sources}
 						</div>
+					</div><div className="flex justify-between items-center">
+						<div className="p-2 font-semibold text-xs ">Language Style:</div>
+						<div className="p-2 font-light text-xs ">
+							English(US)
+						</div>
 					</div>
+					
 
-					<div>
-						<div className="p-2 font-semibold text-sm">
+					<div className="flex justify-between items-center">
+						<div className="p-2 font-semibold text-xs ">
 							Education Level:
 						</div>
-						<div className="p-2 font-light text-sm">
-							{order?.educationLevel}
+						<div className="p-2 font-light text-xs ">
+							{`${order?.educationLevel.charAt(0).toUpperCase() + order?.educationLevel.slice(1).toLowerCase()}`}
 						</div>
 					</div>
 
-					<div>
-						<div className="p-2 font-semibold text-sm">Words:</div>
-						<div className="p-2 font-light text-sm">
+					<div className="flex justify-between items-center">
+						<div className="p-2 font-semibold text-xs ">Words:</div>
+						<div className="p-2 font-light text-xs ">
 							{order?.words}
 						</div>
 					</div>
 
-					<div>
-						<div className="p-2 font-semibold text-sm">Citation Style:</div>
-						<div className="p-2 font-light text-sm">
+					<div className="flex justify-between items-center">
+						<div className="p-2 font-semibold text-xs ">Citation Style:</div>
+						<div className="p-2 font-light text-xs ">
 							{order?.citationStyle}
 						</div>
 					</div>
 
-					<div>
-						<div className="p-2 font-semibold text-sm">Spacing:</div>
-						<div className="p-2 font-light text-sm">
-							{order?.spacing}
+					<div className="flex justify-between items-center">
+						<div className="p-2 font-semibold text-xs ">Spacing:</div>
+						<div className="p-2 font-light text-xs ">
+							{`${order?.spacing.charAt(0).toUpperCase() + order?.spacing.slice(1).toLowerCase()}`}
 						</div>
 					</div>
 
-					<div className="col-span-2 md:col-span-4">
-						<div className="p-2 font-semibold text-sm">Description:</div>
-						<div className="p-2 font-light text-sm">
+				</div>
+				<Separator orientation="vertical" />
+				<div className="flex flex-col w-full md:w-1/2">
+					
+					<div className="w-full">
+						<div className="p-2 font-semibold text-xs ">Description:</div>
+						<div className="p-2 font-light text-xs ">
 							{order?.description}
 						</div>
 					</div>
+				</div>
 				</div>
 			</CardContent>
 		</Card>

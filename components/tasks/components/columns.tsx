@@ -17,6 +17,7 @@ import {
 } from "@radix-ui/react-icons"
 
 import Deadline from './deadline'
+import Link from "next/link";
 
 //return remaining time to deadline in format "1d 4h 20m"
 const formatDate = (date: any) => {
@@ -84,7 +85,7 @@ export const columns: ColumnDef<Order>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Order" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("name")}</div>,
+    cell: ({ row }) => <Link href={`/orders/${row.original.id}`} className="w-[80px] hover:underline">{row.getValue("name")}</Link>,
     enableSorting: false,
     enableHiding: false,
   },
