@@ -13,7 +13,7 @@ export const formSchema = z
     orderNumber: z.string().min(2).max(50),
     topic: z.string().min(2).max(50),
     description: z.string().min(0).max(1024),
-    writerFee: z.number().nullable(),
+    writerFee: z.number(),
     writerLevel: z.string(),
     writerId: z.string().nullable(),
     amountReceived: z.number(),
