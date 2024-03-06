@@ -3,6 +3,7 @@ import multer from "multer";
 import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { handleUpload } from "@/lib/cloudinary";
+import { NextApiRequestt } from "next-auth";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -25,7 +26,7 @@ export function runMiddleware(
 }
 
 export async function processUploads(
-  req: NextApiRequest,
+  req: NextApiRequestt,
   res: NextApiResponse
 ) {
   await runMiddleware(req, res, myUploadMiddleware);
