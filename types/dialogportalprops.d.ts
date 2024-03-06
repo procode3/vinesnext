@@ -16,3 +16,5 @@ export interface DialogPortalProps {
      */
     forceMount?: true;
 }
+
+export const Portal: React.FC<DialogPortalProps>;
