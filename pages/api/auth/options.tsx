@@ -4,8 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import { prisma } from '@/lib/prisma';
-import bcrypt from 'bcryptjs'
-
+import bcrypt from 'bcryptjs';
 
 export const options: NextAuthOptions = {
 
@@ -67,12 +66,6 @@ export const options: NextAuthOptions = {
             // Allows callback URLs on the same origin
             else if (new URL(url).origin === baseUrl) return url
             return baseUrl
-        },
-        async jwt({ token, user }) {
-            if (user) {
-                return { ...token, id: user?.id, userType: user?.userType }
-            }
-            return token
         },
         async session({ session, token, user }) {
             return {
