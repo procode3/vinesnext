@@ -1,8 +1,10 @@
+import * as React from "react"
 import { Portal as _Portal1 } from "@radix-ui/react-portal";
+
 
 type PortalProps = React.ComponentPropsWithoutRef<typeof _Portal1>;
 
-export interface DialogPortalProps {
+interface DialogPortalProps {
     children?: React.ReactNode;
     className?: string;
 
@@ -16,5 +18,5 @@ export interface DialogPortalProps {
      */
     forceMount?: true;
 }
-
+export type {DialogPortalProps}
 export const Portal: React.FC<DialogPortalProps>;
