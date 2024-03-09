@@ -67,6 +67,12 @@ export const options: NextAuthOptions = {
             else if (new URL(url).origin === baseUrl) return url
             return baseUrl
         },
+          async jwt({ token, user }: {token: any ; user: any}) {
+            if (user) {
+                return { ...token, id: user?.id, userType: user?.userType }
+            }
+            return token
+        },
         async session({ session, token, user }) {
             return {
                 ...session, user: {
