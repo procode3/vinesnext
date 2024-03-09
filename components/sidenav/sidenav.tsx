@@ -22,7 +22,7 @@ export default async function Sidenav() {
     redirect('/signin')
     return null
   }
-
+  console.log(session.user)
   const appRoutes: Route[] = getRoutesByUserType(session?.user?.userType)
   const headersList = headers();
   const fullUrl = headersList.get('referer') || "";
