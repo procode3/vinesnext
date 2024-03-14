@@ -78,6 +78,7 @@ const formItems = [
 
 function CreateOrder() {
   const { data: session }: any = useSession();
+  const [clientName, setClientName] = useState<any>('');
   const [orderName, setOrderName] = useState('');
   const [step, setStep] = useState(1);
   const [isloading, setIsloading] = useState(false);
@@ -117,6 +118,7 @@ function CreateOrder() {
   const handleOrderNumberChange = (event: any) => {
 
     const prefixName = form.getValues('clientId');
+    console.log(clientName);
     const orderNumber = event.target!.value;
     const generatedOrderName = `GW${orderNumber}`;
     setOrderName(generatedOrderName);
@@ -330,7 +332,7 @@ function CreateOrder() {
                         <FormItem>
                           <FormLabel className="font-semibold">Words</FormLabel>
                           <FormControl>
-                            <Input type="number" placeholder='number of words' {...field} />
+                            <Input min={0} type="number" placeholder='number of words' {...field} />
                           </FormControl>
                         </FormItem>
 
@@ -641,7 +643,10 @@ function CreateOrder() {
                         <FormLabel className="font-semibold">Select Client</FormLabel>
                         <FormControl>
                           <Fragment >
-                            <UsersCombobox httpHook={httpGetClients} form={form} formField={`clientId`} />
+                            <UsersCombobox httpHook={httpGetClients} form={form} formField={`clientId`} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                              field.onChange(e);
+                              setClientName(e);
+                            }} />
                           </Fragment>
                         </FormControl>
                       </FormItem>
