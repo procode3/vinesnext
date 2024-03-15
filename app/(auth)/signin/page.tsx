@@ -17,7 +17,7 @@ export default async function Signin() {
 
 
     return (
-        <div className="flex w-full h-full ">
+        <div className="flex w-full h-screen ">
             <div className="hidden md:flex w-1/2 h-[90vh] bg-slate-500 filter bg-cover items-center
      justify-center rounded-3xl p-10 m-10">
 

@@ -18,7 +18,7 @@ import { ChevronLeftSquare, Frame } from 'lucide-react';
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { httpTakeOrder } from '@/app/(dashboard)/hooks/requests';
-
+import { useRouter } from "next/navigation";
 
 
 interface OrderHeaderProps {
@@ -28,7 +28,7 @@ interface OrderHeaderProps {
 
 export default function OrderHeader({ session, order }: OrderHeaderProps) {
 
-
+const router = useRouter();
 
 
 	return (
@@ -38,7 +38,12 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 					{order ? (
 						<div className="flex items-center gap-2">
 
-							<ChevronLeftSquare size={28} strokeWidth={1} />
+							<ChevronLeftSquare
+							size={28}
+							strokeWidth={1}
+							className="cursor-pointer"
+							onClick={() => router.back()}
+							/>
 							<span className="text-[24px] ">Order {order?.name}</span>
 						</div>
 					) : (

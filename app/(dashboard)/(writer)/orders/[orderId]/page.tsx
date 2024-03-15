@@ -26,7 +26,7 @@ async function Dashboard({ params }: { params: { orderId: string } }) {
 			<OrderHeader session={session} order={order} />
 			<Tabs
 				defaultValue="details"
-				className="w-full"
+				className="w-full my-2"
 			>
 				<TabsList>
 					<TabsTrigger value="details">Order Details:</TabsTrigger>

@@ -32,7 +32,9 @@ export default async function TaskPage({ type = '' }: { type: string; }) {
   if (!!type && type === 'myorders') {
     filterdTasks = filterdTasks.filter((order) => order?.writerId === session?.user?.id)
   }
-
+  if(type =='client'){
+    filterdTasks = filterdTasks.filter((order) => order?.clientId === session?.user?.id)
+  }
 
 
   return (

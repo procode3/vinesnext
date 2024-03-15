@@ -107,7 +107,7 @@ function CreateOrder() {
       assignedById: '',
       clientId: '',
       citationStyle: 'APA7',
-      sources: 0,
+      sources: '0',
       spacing: 'DOUBLE',
     },
   });
@@ -182,6 +182,7 @@ function CreateOrder() {
       }
     } catch (error) {
       console.error('Order creation error:', error);
+      console.log(error)
     } finally {
       setIsloading(false);
     }

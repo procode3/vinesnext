@@ -40,7 +40,7 @@ const cardProps = [
 export default function Home() {
   return (
     <main className="flex max-h-screen  flex-col w-full items-center justify-start gap-y-8 ">
-      <div className="grid text-center gap-4 lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
+      <div className="grid text-center gap-4  lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
         {
           cardProps.map((props, index) => (
             <Link
@@ -61,7 +61,7 @@ export default function Home() {
           ))}
       </div>
 
-      <div className="grid text-center gap-4 lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-5 lg:text-left  min-h-96">
+      <div className="grid text-center gap-4 lg:w-full lg:mb-0 lg:grid-cols-5 lg:text-left  min-h-96">
         <div className="flex flex-col group rounded-lg col-span-3 border  px-5 py-4 transition-colors border-slate-300  bg-[#204C58] hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
           <h2 className={`mb-3 text-xl font-semibold text-white`}>
             Direct Requests

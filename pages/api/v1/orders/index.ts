@@ -128,7 +128,7 @@ export default async function handler(
           assignedById: writerId ? userId : undefined,
           clientId: clientId ? clientId : undefined,
           citationStyle,
-          sources,
+          sources: +sources,
           spacing,
           File: {
             create: files,

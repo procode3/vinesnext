@@ -11,7 +11,7 @@ export const formSchema = z
     words: z.number(),
     subject: z.string().min(2).max(50),
     orderNumber: z.string().min(2).max(50),
-    topic: z.string().min(2).max(50),
+    topic: z.string().min(2).max(200),
     description: z.string().min(0).max(1024),
     writerFee: z.number(),
     writerLevel: z.string(),
@@ -28,7 +28,7 @@ export const formSchema = z
     assignedById: z.string(),
     clientId: z.string(),
     citationStyle: z.string(),
-    sources: z.number(),
+    sources: z.string(),
     spacing: z.string(),
     fileType: z.array(z.string()).nullable(),
   })
