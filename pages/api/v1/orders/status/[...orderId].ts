@@ -9,39 +9,32 @@ export default async function handler(
 ) {
   try {
     if (req.method === 'POST') {
-      const orderId = req.url?.split('take/')[1];
+      const orderId = req.url?.split('status/')[1];
       if (orderId) {
-        const { userId } = req.body;
-        if (!userId) throw new BadRequestError('UserID is missing');
-        const orderPromise = prisma.order.findUnique({
+        const { status } = req.body;
+        if (!status) throw new BadRequestError('Status is missing');
+        const order = await prisma.order.findUnique({
           where: {
             id: orderId,
           },
         });
-        const userPromise = prisma.user.findUnique({
-          where: {
-            id: userId,
-          },
-        });
-        const [order, user] = await Promise.all([orderPromise, userPromise]);
 
         if (!order) throw new NotFoundError('Order not found');
 
-        if (order?.writerId) {
-          throw new BadRequestError('Order already taken');
+        if (order?.orderStatus === status) {
+          throw new BadRequestError(`Order already in ${status} status`);
         }
 
-        if (!user) throw new NotFoundError('User not found');
         const updatedOrder = await prisma.order.update({
           where: {
             id: orderId,
           },
           data: {
-            writerId: user?.id,
+            orderStatus: status,
           },
         });
       }
-      successResponse(res, 'Order taken successfully');
+      successResponse(res, 'Order status updated successfully');
     } else {
       throw new BadRequestError('Invalid request');
     }
