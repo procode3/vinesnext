@@ -1,5 +1,5 @@
 "use client"
-
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {
 } from "@/components/ui/card";
@@ -17,9 +17,27 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ChevronLeftSquare, Frame } from 'lucide-react';
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { httpTakeOrder } from '@/app/(dashboard)/hooks/requests';
+import { httpUpdateStatus } from '@/app/(dashboard)/hooks/requests';
 import { useRouter } from "next/navigation";
-
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { useToast } from "@/components/ui/use-toast"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+ 
+const formSchema = z.object({
+  orderStatus: z.string().min(2, {
+    message: "Order status error",
+  }),
+})
 
 interface OrderHeaderProps {
 	session: any,
@@ -27,10 +45,39 @@ interface OrderHeaderProps {
 }
 
 export default function OrderHeader({ session, order }: OrderHeaderProps) {
+  const [isloading, setIsloading] = useState(false);
+  const { toast } = useToast()
 
-const router = useRouter();
+	const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      orderStatus: `${order?.orderStatus}`,
+    },
+  })
+	const router = useRouter();
+
+  	async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
+    try {
+		setIsloading(true);
+        e.preventDefault();
+
+        const orderId = order?.id;
+        const status = values.orderStatus;     
+
+        const res = await httpUpdateStatus(status, orderId, toast);
+        if (res) {
+            form.reset();
+        }
+    } catch (error) {
+        console.error('Order creation error:', error);
+        console.log(error)
+    } finally {
+        setIsloading(false);
+    }
+};
 
 
+console.log(order);
 	return (
 		<div className=" h-[20vh] flex flex-col justify-evenly  rounded-lg ">
 			<div className="py-2">
@@ -64,25 +111,47 @@ const router = useRouter();
 							</Button>
 						)}
 						{session?.user?.userType === "ADMIN" && (
-							<Select>
-								<SelectTrigger className="w-[150px] h-[40px] bg-slate-900 border-none text-white p-3">
-									<SelectValue
-										className="text-whitebg-white p-2"
-										placeholder="Move To"
-									/>
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup className="bg-white ">
-										<SelectItem value="available">Available</SelectItem>
-										<SelectItem value="in_progress">In Progress</SelectItem>
-										<SelectItem value="revision">Revision</SelectItem>
-										<SelectItem value="disputed">Disputed</SelectItem>
-										<SelectItem value="completed">Completed</SelectItem>
-										<SelectItem value="refunded">Refunded</SelectItem>
-									</SelectGroup>
+							<Form {...form}>
+								<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+									<FormField
+									control={form.control}
+									name="orderStatus"
+									render={({ field }) => (
+										<FormItem>
+										<FormLabel></FormLabel>
+										<FormControl>
+											<Select onValueChange={field.onChange}>
+												<SelectTrigger className="w-[150px] h-[40px] bg-slate-900 border-none text-white p-3">
+													<SelectValue
+													className="text-whitebg-white p-2"
+													placeholder="Move To"
+													/>
+												</SelectTrigger>
+												<SelectContent>
+													<SelectGroup className="bg-white ">
+													<SelectItem value="NEW" >New</SelectItem>
+													<SelectItem value="AVAILABLE" >Available</SelectItem>
+													<SelectItem value="UNCONFIRMED" >Unconfirmed</SelectItem>
+													<SelectItem value="INPROGRESS" >In Progress</SelectItem>
+													<SelectItem value="COMPLETED" >Completed</SelectItem>
+													<SelectItem value="CANCELLED" >Cancelled</SelectItem>
+													<SelectItem value="REVISION" >Revision</SelectItem>
+													<SelectItem value="DISPUTE" >Dispute</SelectItem>
+													<SelectItem value="REFUNDED" >Refunded</SelectItem>
+													<SelectItem value="EDITING" >Editing</SelectItem>
+													<SelectItem value="ACCEPTED" >Accepted</SelectItem>
+													</SelectGroup>
+												</SelectContent>
+											</Select>
+								</FormControl>
+									<FormDescription />
+									<FormMessage />
+								</FormItem>
+								)}
+							/>
+							</form>
+							</Form>
 
-								</SelectContent>
-							</Select>
 						)}
 					</div>
 				</div>

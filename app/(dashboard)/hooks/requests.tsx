@@ -198,4 +198,38 @@ const httpTakeOrder = async (id: string, writerId: string, toast) => {
 
 }
 
-export { httpGetWriters, httpGetClients, httpCreateOrder, httpGetOrders, httpGetOrder, httpTakeOrder };
+const httpUpdateStatus =  async(status: string, orderId: string, toast: any) => {
+     try {
+        const res = await fetch(`/api/v1/orders/status/${orderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: status }), 
+        });
+        if (res.status === 200) {
+            toast({
+                title: "Success!!",
+                description: "Status Updated Successfully",
+            });
+            return true;
+        } else {
+            toast({
+                title: "Failed",
+                description: "Status Update Failed",
+            });
+            return false;
+        }
+
+    } catch (err) {
+        console.error('Error:', err);
+        toast({
+            title: "Failed",
+            description: "An Error Occured: Please try again",
+        });
+        return false;
+    }
+}
+
+
+export { httpGetWriters, httpGetClients, httpCreateOrder, httpGetOrders, httpGetOrder, httpTakeOrder, httpUpdateStatus };
