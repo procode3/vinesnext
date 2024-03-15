@@ -46,7 +46,7 @@ export function EditOrderForm({ order }: any) {
         orderType: orderType,
         clientDeadline: clientDeadline,
         writerDeadline: writerDeadline,
-        pages: pages,
+        pages: pages.toString(),
         words: words,
         subject: subject,
         topic,
@@ -54,11 +54,11 @@ export function EditOrderForm({ order }: any) {
         writerFee,
         amountReceived,
         educationLevel,
-        writerLevel, // Add this line for the missing writerLevel field
+        writerLevel,
         orderStatus,
         userId,
         clientFiles: File,
-        writerId, // Add this line for the missing writerId field
+        writerId,
         assignedById,
         clientId,
         citationStyle,
