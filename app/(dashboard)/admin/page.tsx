@@ -114,9 +114,9 @@ export default async function Dashboard() {
 
   }
   return (
-    <div className="w-full flex flex-col justify-between ">
+    <div className="w-full flex flex-col justify-between">
       <Header notificationCount={5} session={session} />
-      <div className="lg:max-w-5xl lg:w-full  w-full space-y-4">
+      <div className="lg:w-full  w-full space-y-4">
         <div className="grid gap-4 grid-cols-3">
           <Card className="col-span-3 md:col-span-2 rounded-xl bg-[#1F4A57]">
             <CardHeader className='top-0 w-full'>
