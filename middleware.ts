@@ -14,7 +14,7 @@ export default withAuth(
       req.nextauth.token!.userType == 'ADMIN' &&
       req.nextUrl.pathname == '/'
     ){
-      console.log('logged');
+  
       return NextResponse.rewrite(new URL('/admin', req.url));
 
     }
@@ -38,5 +38,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/admin/:path*', '/client/:path*'],
+  matcher: ['/admin/:path*', '/client/:path*', '/'],
 };

@@ -50,10 +50,12 @@ async function httpGetClients(session: any) {
 async function httpGetOrders(session: any = null) {
     try {
         const res = await fetch(
-            `/api/v1/orders`, {
+            `https://writersvine.com/api/v1/orders`, {
 
             next: { revalidate: 60 },
         })
+
+
         return res.status == 200 ? await res.json() : [];
     }
     catch (err) {
@@ -64,7 +66,7 @@ async function httpGetOrders(session: any = null) {
 const httpGetOrder = async (id: string) => {
     try {
         const res = await fetch(
-            `/api/v1/orders/${id}`)
+            `https://writersvine.com/api/v1/orders/${id}`)
         return res.status == 200 ? await res.json() : {};
 
     }
@@ -128,13 +130,12 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: Fil
     }
 };
 
-const httpUpdateWriter = async (id: string, writerId: string, session: any, toast: any) => {
+const httpUpdateWriter = async (id: string, writerId: string, toast: any) => {
     try {
         const res = await fetch(`/api/v1/orders/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + session.user.jwt,
             },
             body: JSON.stringify({ writer: writerId }),
         });
@@ -153,7 +154,7 @@ const httpUpdateWriter = async (id: string, writerId: string, session: any, toas
             return false;
         }
     } catch (err) {
-        console.error('Error:', err);
+        
         toast({
             title: "Failed",
             description: "Order Update Failed",
@@ -162,4 +163,39 @@ const httpUpdateWriter = async (id: string, writerId: string, session: any, toas
     }
 }
 
-export { httpGetWriters, httpGetClients, httpCreateOrder, httpGetOrders, httpGetOrder };
+const httpTakeOrder = async (id: string, writerId: string, toast) => {
+    try {
+        const res = await fetch(`/api/v1/orders/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ writer: writerId }),
+        });
+        if (res.status === 200) {
+            toast({
+                title: "Success!!",
+                description: "Order Taken Successfully",
+            });
+            return true;
+        } else {
+            toast({
+                title: "Failed",
+                description: "Order Update Failed",
+            });
+            return false;
+        }
+
+    } catch (err) {
+        console.error('Error:', err);
+        toast({
+            title: "Failed",
+            description: "An Error Occured: Please try again",
+        });
+        return false;
+    }
+
+
+}
+
+export { httpGetWriters, httpGetClients, httpCreateOrder, httpGetOrders, httpGetOrder, httpTakeOrder };

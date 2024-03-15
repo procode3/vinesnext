@@ -12,7 +12,7 @@ export default function Orders() {
 
     <div className=" w-full min-h-screen">
 
-      <TaskPage />
+      <TaskPage type='' />
 
     </div>
 

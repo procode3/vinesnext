@@ -1,4 +1,5 @@
-'use client'
+"use client"
+
 import { Button } from "@/components/ui/button";
 import {
 } from "@/components/ui/card";
@@ -16,8 +17,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ChevronLeftSquare, Frame } from 'lucide-react';
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { useRouter } from 'next/navigation';
-
+import { httpTakeOrder } from '@/app/(dashboard)/hooks/requests';
+import { useRouter } from "next/navigation";
 
 
 interface OrderHeaderProps {
@@ -53,7 +54,7 @@ const router = useRouter();
 
 					)}
 					<div className="text-md ">
-						{session?.user?.userType === "WRITER" && (
+						{session?.user?.userType === "WRITER" && session?.user?.id !== order?.writerId && (
 							<Button
 								className="flex items-center backdrop-blur-md  hover:text-white border-black justify-center border "
 								variant="default"
@@ -89,7 +90,7 @@ const router = useRouter();
 			<div className="flex flex-col space-y-4 bg-white p-5 rounded">
 				<span className="text-base ">{order?.topic} </span>
 				<div className="flex flex-row justify-between items-center space-y-0 text-xs">
-					
+
 					<div>
 						<Badge className=" lowercase">
 							{order?.orderStatus}
@@ -97,10 +98,10 @@ const router = useRouter();
 					</div>
 					<Separator orientation="vertical" />
 					<span>
-					{order && typeof order.writerDeadline === 'string' 
-						? new Date(order.writerDeadline).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric' })
-						: 'Invalid date'
-					}
+						{order && typeof order.writerDeadline === 'string'
+							? new Date(order.writerDeadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+							: 'Invalid date'
+						}
 					</span>
 
 					<Separator orientation="vertical" />

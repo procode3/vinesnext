@@ -9,6 +9,8 @@ import { DataTable } from "./components/data-table"
 import { UserNav } from "./components/user-nav"
 import { taskSchema } from "./data/schema"
 import { httpGetOrders } from '@/app/(dashboard)/hooks/requests'
+import { getServerSession } from 'next-auth'
+import { options } from '@/pages/api/auth/options'
 
 
 export const metadata: Metadata = {
@@ -19,9 +21,20 @@ export const metadata: Metadata = {
 // Simulate a database read for tasks.
 
 
-export default async function TaskPage() {
-  const { data: tasks } = await httpGetOrders();
+export default async function TaskPage({ type = '' }: { type: string; }) {
+  const session: {user:{id: string}} | null = await getServerSession(options)
 
+  const tasks = await httpGetOrders();
+  let filterdTasks = tasks?.data;
+  if (!!type && type === 'available') {
+    filterdTasks = filterdTasks.filter((order) => order?.status === 'available');
+  }
+  if (!!type && type === 'myorders') {
+    filterdTasks = filterdTasks.filter((order) => order?.writerId === session?.user?.id)
+  }
+  if(type =='client'){
+    filterdTasks = filterdTasks.filter((order) => order?.clientId === session?.user?.id)
+  }
 
 
   return (
@@ -33,7 +46,7 @@ export default async function TaskPage() {
             Here&apos;s a list of your tasks!
           </p>
         </div>
-        <DataTable data={tasks} columns={columns} />
+        <DataTable data={filterdTasks} columns={columns} />
       </div>
     </>
   )
