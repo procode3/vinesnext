@@ -1,9 +1,10 @@
-import { LayoutDashboard } from 'lucide-react';
-import { Wallet } from 'lucide-react';
-import { Settings } from 'lucide-react';
-import { LayoutList } from 'lucide-react';
 import React from 'react'
-import { FilePlus2 } from 'lucide-react';
+import { LayoutDashboard } from 'lucide-react';
+import { Wallet, Settings, LayoutList, FilePlus2, List } from 'lucide-react';
+
+
+
+
 
 
 type UserType = 'ADMIN' | 'CLIENT' | 'MANAGER' | 'WRITER' | "SUPER_ADMIN";
@@ -130,6 +131,14 @@ const writerRoutes: Route[] = [
 
     },
     "active": false,
+  },
+  {
+    "path": "/available",
+    "active": false,
+    "sidebarProps": {
+      "displayText": "Available",
+      "icon": <List strokeWidth={0.75} />,
+    }
   },
   {
     "path": "/orders",

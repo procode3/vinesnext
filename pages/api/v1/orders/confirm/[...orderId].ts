@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { successResponse, failureResponse } from '../middlewares/response';
-import { BadRequestError, NotFoundError } from '../middlewares/errorhandler';
+import { successResponse, failureResponse } from '../../middlewares/response';
+import { BadRequestError, NotFoundError } from '../../middlewares/errorhandler';
 import { prisma } from '@/lib/prisma';
 
 export default async function handler(
