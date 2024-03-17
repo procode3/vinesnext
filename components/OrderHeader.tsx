@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import {
 } from "@/components/ui/card";
@@ -24,19 +24,19 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useToast } from "@/components/ui/use-toast"
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
 } from "@/components/ui/form"
- 
+
 const formSchema = z.object({
-  orderStatus: z.string().min(2, {
-    message: "Order status error",
-  }),
+	orderStatus: z.string().min(2, {
+		message: "Order status error",
+	}),
 })
 
 interface OrderHeaderProps {
@@ -45,39 +45,61 @@ interface OrderHeaderProps {
 }
 
 export default function OrderHeader({ session, order }: OrderHeaderProps) {
-  const [isloading, setIsloading] = useState(false);
-  const { toast } = useToast()
+	const [isloading, setIsloading] = useState(false);
+
+	const [isFetching, setIsFetching] = useState(false);
+	const initialOrderStatus = useRef(order.orderStatus.toLowerCase());
+
+	const { toast } = useToast()
 
 	const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      orderStatus: `${order?.orderStatus}`,
-    },
-  })
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			orderStatus: `${order?.orderStatus}`,
+		},
+	})
 	const router = useRouter();
 
-  	async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
-    try {
-		setIsloading(true);
-        e.preventDefault();
+	const orderStatus = form.watch("orderStatus")
 
-        const orderId = order?.id;
-        const status = values.orderStatus;     
+	useEffect(() => {
+		// Check if the form value has changed
+		if (orderStatus.toLowerCase() !== initialOrderStatus.current) {
+			const fetchOrder = async () => {
+				// Check if a fetch request is already ongoing
+				if (isFetching) return;
 
-        const res = await httpUpdateStatus(status, orderId, toast);
-        if (res) {
-            form.reset();
-        }
-    } catch (error) {
-        console.error('Order creation error:', error);
-        console.log(error)
-    } finally {
-        setIsloading(false);
-    }
-};
+				// Set isFetching to true to indicate a fetch request is ongoing
+				setIsFetching(true);
+
+				try {
+					// Your fetch logic here
+					const response = await fetch(`/api/v1/orders/status/${order.id}`, {
+						method: 'POST',
+						body: JSON.stringify({ status: orderStatus.toUpperCase() }),
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+					const data = await response.json();
+					// Handle response data
+				} catch (error) {
+					console.error('Error:', error);
+				} finally {
+					// Reset isFetching to false when the request is completed
+					setIsFetching(false);
+				}
+			};
+
+			// Call the fetchOrder function when orderStatus changes
+			fetchOrder();
+		}
+
+		// Update the initialOrderStatus ref with the current orderStatus value
+		initialOrderStatus.current = orderStatus;
+	}, [orderStatus]);
 
 
-console.log(order);
 	return (
 		<div className=" h-[20vh] flex flex-col justify-evenly  rounded-lg ">
 			<div className="py-2">
@@ -86,10 +108,10 @@ console.log(order);
 						<div className="flex items-center gap-2">
 
 							<ChevronLeftSquare
-							size={28}
-							strokeWidth={1}
-							className="cursor-pointer"
-							onClick={() => router.back()}
+								size={28}
+								strokeWidth={1}
+								className="cursor-pointer"
+								onClick={() => router.back()}
 							/>
 							<span className="text-[24px] ">Order {order?.name}</span>
 						</div>
@@ -112,44 +134,49 @@ console.log(order);
 						)}
 						{session?.user?.userType === "ADMIN" && (
 							<Form {...form}>
-								<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+								<form className="space-y-8">
 									<FormField
-									control={form.control}
-									name="orderStatus"
-									render={({ field }) => (
-										<FormItem>
-										<FormLabel></FormLabel>
-										<FormControl>
-											<Select onValueChange={field.onChange}>
-												<SelectTrigger className="w-[150px] h-[40px] bg-slate-900 border-none text-white p-3">
-													<SelectValue
-													className="text-whitebg-white p-2"
-													placeholder="Move To"
-													/>
-												</SelectTrigger>
-												<SelectContent>
-													<SelectGroup className="bg-white ">
-													<SelectItem value="NEW" >New</SelectItem>
-													<SelectItem value="AVAILABLE" >Available</SelectItem>
-													<SelectItem value="UNCONFIRMED" >Unconfirmed</SelectItem>
-													<SelectItem value="INPROGRESS" >In Progress</SelectItem>
-													<SelectItem value="COMPLETED" >Completed</SelectItem>
-													<SelectItem value="CANCELLED" >Cancelled</SelectItem>
-													<SelectItem value="REVISION" >Revision</SelectItem>
-													<SelectItem value="DISPUTE" >Dispute</SelectItem>
-													<SelectItem value="REFUNDED" >Refunded</SelectItem>
-													<SelectItem value="EDITING" >Editing</SelectItem>
-													<SelectItem value="ACCEPTED" >Accepted</SelectItem>
-													</SelectGroup>
-												</SelectContent>
-											</Select>
-								</FormControl>
-									<FormDescription />
-									<FormMessage />
-								</FormItem>
-								)}
-							/>
-							</form>
+										control={form.control}
+										name="orderStatus"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel></FormLabel>
+												<FormControl>
+													{isFetching ? (
+														// Show loader when fetching is true
+														<div>Loading...</div>
+													) : (
+														<Select onValueChange={field.onChange} value={orderStatus}>
+															<SelectTrigger className="w-[150px] h-[40px] bg-slate-900 border-none text-white p-3">
+																<SelectValue
+																	className="text-whitebg-white p-2"
+																	placeholder={order?.orderStatus.charAt(0).toUpperCase() + order?.orderStatus.substr(1).toLowerCase()}
+																/>
+															</SelectTrigger>
+															<SelectContent>
+																<SelectGroup className="bg-white ">
+																	<SelectItem value="NEW" >New</SelectItem>
+																	<SelectItem value="AVAILABLE" >Available</SelectItem>
+																	<SelectItem value="UNCONFIRMED" >Unconfirmed</SelectItem>
+																	<SelectItem value="INPROGRESS" >In Progress</SelectItem>
+																	<SelectItem value="COMPLETED" >Completed</SelectItem>
+																	<SelectItem value="CANCELLED" >Cancelled</SelectItem>
+																	<SelectItem value="REVISION" >Revision</SelectItem>
+																	<SelectItem value="DISPUTE" >Dispute</SelectItem>
+																	<SelectItem value="REFUNDED" >Refunded</SelectItem>
+																	<SelectItem value="EDITING" >Editing</SelectItem>
+																	<SelectItem value="ACCEPTED" >Accepted</SelectItem>
+																</SelectGroup>
+															</SelectContent>
+														</Select>
+													)}
+												</FormControl>
+												<FormDescription />
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</form>
 							</Form>
 
 						)}

@@ -20,7 +20,7 @@ export default function OrderSubmissions({ session }: OrderSubmissionsProps) {
 		<div className="w-full flex flex-col md:flex-row gap-5">
 			<Card className="w-full">
 				<CardHeader className="flex flex-row justify-between items-center space-y-0 ">
-					<CardTitle>Submisions</CardTitle>
+					<CardTitle className=''>Submisions</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="flex flex-col justify-center space-y-2 w-full">

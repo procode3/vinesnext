@@ -21,7 +21,7 @@ export default async function handler(
 
         if (!order) throw new NotFoundError('Order not found');
 
-        if (order?.orderStatus === status) {
+        if (order?.orderStatus.toLocaleLowerCase() === status.toLocaleLowerCase()) {
           throw new BadRequestError(`Order already in ${status} status`);
         }
 

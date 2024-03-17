@@ -17,7 +17,7 @@ export default function Dashboard({ file }: OrderAttachmentProps) {
 
 		<Card className="">
 			<CardHeader className="flex flex-row justify-between items-center space-y-0 ">
-				<CardTitle>Attachments</CardTitle>
+				<CardTitle className='text-[20px] font-normal'>Attachments</CardTitle>
 			</CardHeader>
 			<CardContent className="flex flex-col   gap-2">
 				{file?.map((file: any, index: any) => (
