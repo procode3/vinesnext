@@ -6,6 +6,7 @@ import OrderAttachments from "@/components/OrderAttachments";
 import OrderSubmissions from "@/components/OrderSubmissions";
 import { getServerSession } from "next-auth";
 import { options } from '@/pages/api/auth/options'
+import OrderUnavailable from "@/components/OrderUnavailable";
 
 
 
@@ -17,31 +18,28 @@ async function Dashboard({ params }: { params: { orderId: string } }) {
 
 	if (!data) return null;
 	const order = data?.data;
+	console.log(order)
 
-
-
-
-	return (
-		<div className="w-full text-black px-2">
-			<OrderHeader session={session} order={order} />
-			<Tabs
-				defaultValue="details"
-				className="w-full"
-			>
-				<TabsList>
-					<TabsTrigger value="details">Order Details:</TabsTrigger>
-					<TabsTrigger value="manage">Manage</TabsTrigger>
-				</TabsList>
-				<TabsContent value="details">
-					<OrderDetails order={order} />
-					<OrderAttachments file={order?.File} />
-				</TabsContent>
-				<TabsContent value="manage">
-					<OrderSubmissions session={session} />
-				</TabsContent>
-			</Tabs>
-		</div>
-	);
+ return (
+        order?.orderStatus === 'AVAILABLE' ? (
+            <div className="w-full text-black px-2">
+                <OrderHeader session={session} order={order} />
+                <Tabs defaultValue="details" className="w-full">
+                    <TabsList>
+                        <TabsTrigger value="details">Order Details:</TabsTrigger>
+                        <TabsTrigger value="manage">Manage</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="details">
+                        <OrderDetails order={order} />
+                        <OrderAttachments file={order?.File} />
+                    </TabsContent>
+                    <TabsContent value="manage">
+                        <OrderSubmissions session={session} />
+                    </TabsContent>
+                </Tabs>
+            </div>
+        ) : <OrderUnavailable/>
+    );
 }
 
 export default Dashboard;
