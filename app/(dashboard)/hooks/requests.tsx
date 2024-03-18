@@ -50,7 +50,7 @@ async function httpGetClients(session: any) {
 async function httpGetOrders(session: any = null) {
     try {
         const res = await fetch(
-            `https://writersvine.com/api/v1/orders`, {
+            `/api/v1/orders`, {
 
             next: { revalidate: 60 },
         })
@@ -65,8 +65,7 @@ async function httpGetOrders(session: any = null) {
 
 const httpGetOrder = async (id: string) => {
     try {
-        const res = await fetch(
-            `https://writersvine.com/api/v1/orders/${id}`)
+        const res = await fetch(`/api/v1/orders/${id}`)
         return res.status == 200 ? await res.json() : {};
 
     }
@@ -154,7 +153,7 @@ const httpUpdateWriter = async (id: string, writerId: string, toast: any) => {
             return false;
         }
     } catch (err) {
-        
+
         toast({
             title: "Failed",
             description: "Order Update Failed",
@@ -198,14 +197,14 @@ const httpTakeOrder = async (id: string, writerId: string, toast) => {
 
 }
 
-const httpUpdateStatus =  async(status: string, orderId: string, toast: any) => {
-     try {
+const httpUpdateStatus = async (status: string, orderId: string, toast: any) => {
+    try {
         const res = await fetch(`/api/v1/orders/status/${orderId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ status: status }), 
+            body: JSON.stringify({ status: status }),
         });
         if (res.status === 200) {
             toast({

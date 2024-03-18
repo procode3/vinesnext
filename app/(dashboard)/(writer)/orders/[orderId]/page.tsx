@@ -22,11 +22,11 @@ async function Dashboard({ params }: { params: { orderId: string } }) {
 
 
 	return (
-		<div className="w-full text-black px-2">
+		<div className="w-full  text-black px-2">
 			<OrderHeader session={session} order={order} />
 			<Tabs
 				defaultValue="details"
-				className="w-full my-2"
+				className="w-full  my-6"
 			>
 				<TabsList>
 					<TabsTrigger value="details">Order Details:</TabsTrigger>

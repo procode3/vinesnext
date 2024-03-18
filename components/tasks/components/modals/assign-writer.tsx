@@ -48,11 +48,13 @@ export function AssignOrder(order: any) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            writer: undefined,
+            writer: order?.writer?.name,
             clientDeadline: order?.clientDeadline,
             writerDeadline: order?.writerDeadline,
         },
     })
+
+    console.log(order)
     const [isLoading, setIsLoading] = useState(false);
     const [writers, setWriters] = useState<any>([])
 
@@ -122,7 +124,7 @@ export function AssignOrder(order: any) {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(onSubmit)} >
 
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -165,7 +167,7 @@ export function AssignOrder(order: any) {
                                 <FormItem className="flex flex-col w-full col-span-3">
                                     <FormLabel className="">Deadline</FormLabel>
                                     <FormControl>
-                                        <Input className="" placeholder="james" {...field} />
+                                        <Input type="datetime-local" className=""  {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs m-0" />
 
@@ -181,7 +183,7 @@ export function AssignOrder(order: any) {
                                 <FormItem className="col-span-3">
                                     <FormLabel className="">Writer Deadline</FormLabel>
                                     <FormControl>
-                                        <Input className="" placeholder="james" {...field} />
+                                        <Input type="datetime-local" className=""  {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs m-0" />
 

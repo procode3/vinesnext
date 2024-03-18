@@ -45,7 +45,6 @@ export default async function handler(
         spacing,
       } = data;
 
-      console.log(userId, writerId);
       const requiredFields = [
         'name',
         'orderType',
@@ -152,7 +151,7 @@ export default async function handler(
       const isArchived = req?.query.isArchived == 'true' ? true : false;
       const orders = await prisma.order.findMany({
         where: { isArchived },
-        include: { File: true },
+        include: { File: true, writer: true, client: true, creator: true },
       });
       if (!orders) {
         throw new NotFoundError('Order not found');

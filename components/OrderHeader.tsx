@@ -64,7 +64,7 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 
 	useEffect(() => {
 		// Check if the form value has changed
-		if (orderStatus.toLowerCase() !== initialOrderStatus.current) {
+		if (orderStatus.toLowerCase() !== initialOrderStatus.current.toLowerCase()) {
 			const fetchOrder = async () => {
 				// Check if a fetch request is already ongoing
 				if (isFetching) return;
@@ -101,7 +101,7 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 
 
 	return (
-		<div className=" h-[20vh] flex flex-col justify-evenly  rounded-lg ">
+		<div className=" h-[20vh] flex flex-col justify-evenly  rounded-lg">
 			<div className="py-2">
 				<div className="flex flex-row justify-between items-center space-y-0 ">
 					{order ? (
