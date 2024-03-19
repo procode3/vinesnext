@@ -8,27 +8,43 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    if (req.method === 'GET') {
-      const orderId = req.url?.split('orders/')[1];
+    if (req.method === 'POST') {
+      const orderId = req.url?.split('confirm/')[1];
+
+      const { writerId, confirm } = req.body;
 
       if (orderId) {
-        const order = await prisma.order.findUnique({
-          where: {
-            id: orderId,
-          },
-          include: {
-            File: true,
-            submission: {
-              include: {
-                File: true,
+        if (confirm === true) {
+          const order = await prisma.order.update({
+            where: {
+              id: orderId,
+            },
+            data: {
+              orderStatus: 'INPROGRESS',
+              writer: {
+                connect: {
+                  id: writerId,
+                },
               },
             },
-          },
-        });
-        if (!order) {
-          throw new NotFoundError('Order not found');
+          });
+          if (!order) {
+            throw new NotFoundError('Order not found');
+          }
+        } else if (confirm !== true) {
+          const order = await prisma.order.update({
+            where: {
+              id: orderId,
+            },
+            data: {
+              orderStatus: 'NEW',
+            },
+          });
+          if (!order) {
+            throw new NotFoundError('Order not found');
+          }
         }
-        successResponse(res, order, 200);
+        successResponse(res, {}, 200);
       }
     } else if (req.method === 'PUT') {
       const orderId = req.url?.split('orders/')[1];

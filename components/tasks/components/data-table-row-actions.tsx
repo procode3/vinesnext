@@ -120,7 +120,7 @@ export function DataTableRowActions<TData>({
                   Directly assign this order to a writer.
                 </DialogDescription>
               </DialogHeader>
-              <AssignOrder order={order} />
+              <AssignOrder order={row.original} />
             </>
         }
 
