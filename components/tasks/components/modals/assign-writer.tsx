@@ -54,10 +54,9 @@ const formSchema = z.object({
 type OrderFormValues = z.infer<typeof formSchema>
 
 
-export function AssignOrder(order: any) {
+export function AssignOrder({ order }: any) {
 
-    const { clientDeadline, writerDeadline, writer } = order?.order
-
+    const { clientDeadline, writerDeadline, writer } = order
     const defaultValues: Partial<OrderFormValues> = {
         writer: writer?.name,
         clientDeadline: clientDeadline?.substring(0, 16),
