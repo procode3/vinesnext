@@ -21,7 +21,9 @@ export default async function handler(
 
         if (!order) throw new NotFoundError('Order not found');
 
-        if (order?.orderStatus.toLocaleLowerCase() === status.toLocaleLowerCase()) {
+        if (
+          order?.orderStatus.toLocaleLowerCase() === status.toLocaleLowerCase()
+        ) {
           throw new BadRequestError(`Order already in ${status} status`);
         }
 
@@ -29,9 +31,17 @@ export default async function handler(
           where: {
             id: orderId,
           },
-          data: {
-            orderStatus: status,
-          },
+          data:
+            status !== 'available'
+              ? {
+                  orderStatus: status,
+                }
+              : {
+                  orderStatus: status,
+                  writer: {
+                    disconnect: true,
+                  },
+                },
         });
       }
       successResponse(res, 'Order status updated successfully');

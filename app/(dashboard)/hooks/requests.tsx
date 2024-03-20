@@ -50,7 +50,7 @@ async function httpGetClients(session: any) {
 async function httpGetOrders(session: any = null) {
     try {
         const res = await fetch(
-            `${HOST}/api/v1/orders`, {
+            `http://localhost:3000/api/v1/orders`, {
 
             next: { revalidate: 60 },
         })
@@ -65,7 +65,7 @@ async function httpGetOrders(session: any = null) {
 
 const httpGetOrder = async (id: string) => {
     try {
-        const res = await fetch(`${HOST}/api/v1/orders/${id}`)
+        const res = await fetch(`http://localhost:3000/api/v1/orders/${id}`)
         return res.status == 200 ? await res.json() : {};
 
     }

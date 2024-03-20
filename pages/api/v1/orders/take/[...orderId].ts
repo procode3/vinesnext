@@ -41,7 +41,7 @@ export default async function handler(
           },
         });
       }
-      successResponse(res, 'Order taken successfully');
+      successResponse(res, { msg: 'Order taken successfully' });
     } else {
       throw new BadRequestError('Invalid request');
     }

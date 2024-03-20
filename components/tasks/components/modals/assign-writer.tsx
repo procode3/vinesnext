@@ -40,28 +40,46 @@ const formSchema = z.object({
     clientDeadline: z.string(),
     writerDeadline: z.string(),
 
+}).superRefine(({ writerDeadline, clientDeadline }, ctx) => {
+    if (writerDeadline > clientDeadline) {
+        ctx.addIssue({
+            message:
+                'Writer deadline must be sooner than or equal to the client deadline.',
+            code: 'custom',
+            path: ['writerDeadline'],
+        });
+    }
 })
 
+type OrderFormValues = z.infer<typeof formSchema>
 
-export function AssignOrder(order: any) {
+
+export function AssignOrder({ order }: any) {
+
+    const { clientDeadline, writerDeadline, writer } = order
+    const defaultValues: Partial<OrderFormValues> = {
+        writer: writer?.name,
+        clientDeadline: clientDeadline?.substring(0, 16),
+        writerDeadline: writerDeadline?.substring(0, 16),
+    }
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-            writer: order?.writer?.name,
-            clientDeadline: order?.clientDeadline,
-            writerDeadline: order?.writerDeadline,
-        },
+        defaultValues,
+        mode: "onChange",
     })
 
-    console.log(order)
+
+
     const [isLoading, setIsLoading] = useState(false);
+    const [isFetching, setIsFetching] = useState(false);
     const [writers, setWriters] = useState<any>([])
 
     const toast = useToast()
 
     useEffect(() => {
-        setIsLoading(true)
+        setIsFetching(true)
         fetch(
             `/api/v1/users?role=WRITER`, {
             method: "GET",
@@ -72,7 +90,7 @@ export function AssignOrder(order: any) {
 
         }).then(res => res.json()).then(data => {
             setWriters(data.data)
-            setIsLoading(false)
+            setIsFetching(false)
         }).catch(err => {
             console.log(err)
         })
@@ -140,13 +158,12 @@ export function AssignOrder(order: any) {
                                     <FormLabel className="">Writer</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange}>
-                                            <SelectTrigger className="bg-white opacity-100 border-gray-200 py-2">
-    <SelectValue placeholder={isLoading ? "Loading..." : (writers.find(writer => writer.id === order.writerId)?.name || "Select a writer")} />
-</SelectTrigger>
-
+                                            <SelectTrigger className="h-full bg-white opacity-100 border-gray-200 py-2">
+                                                <SelectValue placeholder={field?.value ? field.value : "Select Writer"} />
+                                            </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup>
-                                                    <SelectLabel>{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}</SelectLabel>
+                                                    <SelectLabel>{isFetching && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}</SelectLabel>
                                                     {
                                                         writers && writers?.map((writer: any) => {
                                                             return <SelectItem key={writer.id} value={writer.id}>{writer.name}</SelectItem>
@@ -171,12 +188,7 @@ export function AssignOrder(order: any) {
                                 <FormItem className="flex flex-col w-full col-span-3">
                                     <FormLabel className="">Deadline</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            type="datetime-local"
-                                            className=""
-                                            placeholder={order.clientDeadline ? "Client Deadline" : "Enter Client Deadline"}
-                                            {...field}
-                                        />
+                                        <Input type="datetime-local" className="" placeholder={field.value}  {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs m-0" />
                                 </FormItem>
@@ -191,7 +203,7 @@ export function AssignOrder(order: any) {
                                 <FormItem className="col-span-3">
                                     <FormLabel className="">Writer Deadline</FormLabel>
                                     <FormControl>
-                                        <Input type="datetime-local" className=""  {...field} />
+                                        <Input type="datetime-local" className="" placeholder={field.value} {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs m-0" />
 

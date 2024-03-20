@@ -48,6 +48,7 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 	const [isloading, setIsloading] = useState(false);
 
 	const [isFetching, setIsFetching] = useState(false);
+	const [isTaking, setIsTaking] = useState(false);
 	const initialOrderStatus = useRef(order.orderStatus.toLowerCase());
 
 	const { toast } = useToast()
@@ -61,6 +62,8 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 	const router = useRouter();
 
 	const orderStatus = form.watch("orderStatus")
+
+
 
 	useEffect(() => {
 		// Check if the form value has changed
@@ -99,6 +102,32 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 		initialOrderStatus.current = orderStatus;
 	}, [orderStatus]);
 
+	const takeOrder = (writerId, orderId) => {
+
+		console.log('Start taking order', isTaking);
+		if (isTaking) {
+			try {
+				fetch(`http://localhost:3000/api/v1/orders/takez/${orderId}`, {
+					method: 'POST',
+					body: JSON.stringify({ writerId }),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}).then(res => {
+					setIsTaking(false)
+					const data = res.json().then(res => console.log(res))
+				})
+			} catch (error) {
+				setIsTaking(false)
+				console.error(error)
+			}
+		}
+
+		console.log('Done taking order', isTaking)
+
+		return
+	}
+
 
 	return (
 		<div className=" h-[20vh] flex flex-col justify-evenly  rounded-lg">
@@ -127,9 +156,12 @@ export default function OrderHeader({ session, order }: OrderHeaderProps) {
 							<Button
 								className="flex items-center backdrop-blur-md  hover:text-white border-black justify-center border "
 								variant="default"
+								disabled={isTaking}
+								onClick={() => { setIsTaking(true); takeOrder(session?.user?.id, order.id) }}
+
 							>
 								<Frame className="mr-2 h-4 w-4" />
-								<span className="hidden xl:inline" >Take</span>
+								<span className=" xl:inline" >Take</span>
 							</Button>
 						)}
 						{session?.user?.userType === "ADMIN" && (
