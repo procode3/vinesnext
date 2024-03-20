@@ -12,10 +12,11 @@ import { options } from '@/pages/api/auth/options'
 async function Dashboard({ params }: { params: { orderId: string } }) {
 
 	const session = await getServerSession(options);
+	console.log(session)
 
 	const { data: order } = await httpGetOrder(params.orderId)
 	if (!order) return null;
-
+	console.log(order)
 
 	return (
 		<div className="w-full text-black px-2">

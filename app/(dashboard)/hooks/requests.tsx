@@ -1,12 +1,12 @@
 require('dotenv').config();
 
-const HOST = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || 'http://localhost:3000' ;
 const PORT = 3000;
 
 const httpGetWriters = async (session: any = null) => {
     try {
         const res = await fetch(
-            `/api/v1/users?role=WRITER`, {
+            `${HOST}/api/v1/users?role=WRITER`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -32,7 +32,7 @@ async function httpGetClients(session: any) {
     try {
 
         const res = await fetch(
-            `/api/v1/users?role=CLIENT`, {
+            `${HOST}/api/v1/users?role=CLIENT`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -50,7 +50,7 @@ async function httpGetClients(session: any) {
 async function httpGetOrders(session: any = null) {
     try {
         const res = await fetch(
-            `/api/v1/orders`, {
+            `${HOST}/api/v1/orders`, {
 
             next: { revalidate: 60 },
         })
@@ -65,7 +65,7 @@ async function httpGetOrders(session: any = null) {
 
 const httpGetOrder = async (id: string) => {
     try {
-        const res = await fetch(`/api/v1/orders/${id}`)
+        const res = await fetch(`${HOST}/api/v1/orders/${id}`)
         return res.status == 200 ? await res.json() : {};
 
     }
@@ -94,7 +94,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: Fil
             }
         }
 
-        const res = await fetch(`/api/v1/orders`, {
+        const res = await fetch(`${HOST}/api/v1/orders`, {
             method: 'POST',
             headers: {
                 'authorization': 'Bearer ' + session.user.jwt,
@@ -131,7 +131,7 @@ const httpCreateOrder = async (values: any, session: any, toast: any, files: Fil
 
 const httpUpdateWriter = async (id: string, writerId: string, toast: any) => {
     try {
-        const res = await fetch(`/api/v1/orders/${id}`, {
+        const res = await fetch(`${HOST}/api/v1/orders/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ const httpUpdateWriter = async (id: string, writerId: string, toast: any) => {
 
 const httpTakeOrder = async (id: string, writerId: string, toast) => {
     try {
-        const res = await fetch(`/api/v1/orders/${id}`, {
+        const res = await fetch(`${HOST}/api/v1/orders/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -199,7 +199,7 @@ const httpTakeOrder = async (id: string, writerId: string, toast) => {
 
 const httpUpdateStatus = async (status: string, orderId: string, toast: any) => {
     try {
-        const res = await fetch(`/api/v1/orders/status/${orderId}`, {
+        const res = await fetch(`${HOST}/api/v1/orders/status/${orderId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -231,4 +231,4 @@ const httpUpdateStatus = async (status: string, orderId: string, toast: any) => 
 }
 
 
-export { httpGetWriters, httpGetClients, httpCreateOrder, httpGetOrders, httpGetOrder, httpTakeOrder, httpUpdateStatus };
+export { httpGetWriters, httpGetClients, httpCreateOrder, httpGetOrders, httpGetOrder, httpTakeOrder, httpUpdateStatus, httpUpdateWriter };

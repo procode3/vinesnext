@@ -76,51 +76,54 @@ export function AssignOrder(order: any) {
         }).catch(err => {
             console.log(err)
         })
-
+        
     }, []);
+    console.log(writers)
 
 
-    const onSubmit = (data: z.infer<typeof formSchema>) => {
-        setIsLoading(true);
-        console.log(data);
-        setIsLoading(false);
-        return
-        const { writer, clientDeadline, writerDeadline } = data;
-        const values = {
-            writer: writer,
-            clientDeadline,
-            writerDeadline,
-        }
-        const res = fetch('/api/v1/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(values)
-
-        }).then(res => res.json())
-            .then(data => {
-                if (data?.success === true) {
-                    setIsLoading(false);
-                    toast.toast({
-                        title: "Success!!",
-                        description: "User Created Successfully",
-                    })
-
-                }
-                else {
-                    setIsLoading(false);
-                    toast.toast({
-                        title: "Error!!",
-                        description: "Failed to assign order to selected writer. Error: " + data?.message || "Unknown Error",
-                    })
-                }
-            })
-            .catch(err => {
-
-            })
-
+    const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+    console.log(data);
+    setIsLoading(false);
+    return 
+    const { writer, clientDeadline, writerDeadline } = data;
+    const values = {
+        writer: writer,
+        clientDeadline,
+        writerDeadline,
     }
+    const res = fetch('/api/v1/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+
+    }).then(res => res.json())
+        .then(data => {
+            if (data?.success === true) {
+                setIsLoading(false);
+                toast.toast({
+                    title: "Success!!",
+                    description: "User Created Successfully",
+                })
+
+            }
+            else {
+                setIsLoading(false);
+                toast.toast({
+                    title: "Error!!",
+                    description: "Failed to assign order to selected writer. Error: " + data?.message || "Unknown Error",
+                })
+            }
+        })
+        .catch(err => {
+
+        })
+
+}
+
+
 
     return (
         <Form {...form}>
@@ -137,9 +140,10 @@ export function AssignOrder(order: any) {
                                     <FormLabel className="">Writer</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange}>
-                                            <SelectTrigger className=" bg-white opacity-100 border-gray-200 py-2">
-                                                <SelectValue placeholder="Select a writer" />
-                                            </SelectTrigger>
+                                            <SelectTrigger className="bg-white opacity-100 border-gray-200 py-2">
+    <SelectValue placeholder={isLoading ? "Loading..." : (writers.find(writer => writer.id === order.writerId)?.name || "Select a writer")} />
+</SelectTrigger>
+
                                             <SelectContent>
                                                 <SelectGroup>
                                                     <SelectLabel>{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}</SelectLabel>
@@ -167,10 +171,14 @@ export function AssignOrder(order: any) {
                                 <FormItem className="flex flex-col w-full col-span-3">
                                     <FormLabel className="">Deadline</FormLabel>
                                     <FormControl>
-                                        <Input type="datetime-local" className=""  {...field} />
+                                        <Input
+                                            type="datetime-local"
+                                            className=""
+                                            placeholder={order.clientDeadline ? "Client Deadline" : "Enter Client Deadline"}
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage className="text-xs m-0" />
-
                                 </FormItem>
                             )}
                         />
