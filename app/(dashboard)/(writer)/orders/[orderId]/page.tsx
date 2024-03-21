@@ -17,6 +17,7 @@ async function Dashboard({ params }: { params: { orderId: string } }) {
 
 	if (!data) return null;
 	const order = data?.data;
+	console.log(data)
 
 
 
@@ -37,7 +38,7 @@ async function Dashboard({ params }: { params: { orderId: string } }) {
 					<OrderAttachments file={order?.File} />
 				</TabsContent>
 				<TabsContent value="manage">
-					<OrderSubmissions session={session} />
+					<OrderSubmissions order={order} submissions={order?.submission} session={session} />
 				</TabsContent>
 			</Tabs>
 		</div>

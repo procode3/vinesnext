@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-export default function Submission() {
+export default function Submission({submission}) {
   return (
     <div className='flex justify-between border-[1px] sm:p-3 w-full rounded'>
         <div className="flex  px-2 py-1 text-xs justify-center items-center space-x-4 rounded ">

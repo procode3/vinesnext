@@ -35,24 +35,46 @@ const formSchema = z.object({
 	fileType: z.array(z.string()).nullable(),
 });
 
-export default function SubmitAnswer() {
-	const [fileList, setFileList] = useState<FileList | null>(null);
-	const [isChecked1, setIsChecked1] = useState(false);
-  const [isChecked2, setIsChecked2] = useState(false);
-  const [isChecked3, setIsChecked3] = useState(false);
+export default function SubmitAnswer({session, order}: {session: any , order: any}) {
+	const [fileList, setFileList] = useState<File[]>([]);
+// 	const [isChecked1, setIsChecked1] = useState(false);
+//   const [isChecked2, setIsChecked2] = useState(false);
+//   const [isChecked3, setIsChecked3] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			description: "",
-			clientFiles: ["null"],
-			fileType: ["null"],
+			clientFiles: [],
+			fileType: [],
 		},
 	});
     
-    function onSubmit(values: z.infer<typeof formSchema>, e: any) {
+   async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
+	try {
 		console.log(values);
+		e.preventDefault();
+		const response = await fetch(`http://localhost:3000/api/v1/submissions?orderId=${order.id}&userId=${session.user.id}`, {
+		method: 'POST',
+		body: JSON.stringify(values),
+		headers: {
+			'Content-Type': 'application/json'
+		}
+		});
+		const data = await response.json();
+		console.log(data);
+	} catch (error) {
+		console.error(error);
 	}
+}
+
+	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+
+    const selectedFiles: File[] = e.target.files ? Array.from(e.target.files) : [];
+    console.log(selectedFiles);
+    setFileList(selectedFiles);
+  };
+
     let files = fileList ? [...fileList] : [];
 
     const updateFiletype = (file: any, value: any) => {
@@ -66,9 +88,8 @@ export default function SubmitAnswer() {
 		setFileList(updatedFiles);
 	};
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setFileList(e.target.files);
-	};
+    
+
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -210,7 +231,7 @@ export default function SubmitAnswer() {
 									/>
 								</div>
 								
-								<div className="flex items-center py-3 gap-1">
+								{/* <div className="flex items-center py-3 gap-1">
 									<Checkbox id="terms1" onChange={(e) => setIsChecked1((e.target as HTMLInputElement).checked)} />
 
 									<label
@@ -239,8 +260,9 @@ export default function SubmitAnswer() {
 									>
 									I have rigorously fact-checked and cited all sources for accuracy and reliability.
 									</label>
-								</div>
-								<Button type="submit" disabled={!(isChecked1 && isChecked2 && isChecked3)}>
+								</div> */}
+								{/* disabled={!(isChecked1 && isChecked2 && isChecked3)} */}
+								<Button type="submit" >  
 									Save changes
 								</Button>
 							</div>
