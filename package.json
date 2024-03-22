@@ -10,7 +10,6 @@
     "postinstall": "prisma generate",
     "typecheck": "tsc",
     "typecheck:watch": "tsc -w"
-      
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.1.0",

@@ -27,13 +27,15 @@ export default async function handler(
               id: writer,
             },
           },
-          clientDeadline,
-          writerDeadline,
+          clientDeadline: new Date(clientDeadline).toISOString(),
+          writerDeadline: new Date(writerDeadline).toISOString(),
           orderStatus: 'UNCONFIRMED',
         },
       });
+      return successResponse(res, order)
     }
   } catch (err) {
+    console.log(err)
     return failureResponse(res, err);
   }
 }

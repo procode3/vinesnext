@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Confirmcard from "@/components/confirmcard";
 import Norequest from "@/components/norequest";
+import { getServerSession } from 'next-auth';
+import { options } from '@/pages/api/auth/options';
 
 const cardProps = [
   {
@@ -37,7 +39,15 @@ const cardProps = [
   },
 ];
 
-export default function Home() {
+
+
+export default async function Home() {
+   const session = await getServerSession(options);
+    const res= await fetch(`http://localhost:3000/api/v1/orders`);
+    const orders = await res.json();
+    const unconfirmedOrders = orders?.data.filter(order => order.writerId === session?.user.id && order.orderStatus == 'UNCONFIRMED')
+    console.log(unconfirmedOrders);
+
   return (
     <main className="flex max-h-screen  flex-col w-full items-center justify-start gap-y-8 ">
       <div className="grid text-center gap-4  lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
@@ -66,8 +76,7 @@ export default function Home() {
           <h2 className={`mb-3 text-xl font-semibold text-white`}>
             Direct Requests
           </h2>
-          <Confirmcard />
-          {/* <Norequest /> */}
+          {orders.length > 0 ? <Confirmcard orders={unconfirmedOrders} /> : <Norequest/>}
 
         </div>
         <div className="group rounded-lg border col-span-2 px-5 py-4 transition-colors border-slate-100  bg-white  hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">

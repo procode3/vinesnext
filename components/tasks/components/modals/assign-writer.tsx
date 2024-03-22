@@ -96,21 +96,19 @@ export function AssignOrder({ order }: any) {
         })
         
     }, []);
-    console.log(writers)
 
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     console.log(data);
     setIsLoading(false);
-    return 
     const { writer, clientDeadline, writerDeadline } = data;
     const values = {
         writer: writer,
         clientDeadline,
         writerDeadline,
     }
-    const res = fetch('/api/v1/users', {
+    const res = fetch(`/api/v1/orders/assign/${order.id}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

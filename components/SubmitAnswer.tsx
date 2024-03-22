@@ -30,7 +30,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 
 const formSchema = z.object({
-	description: z.string().min(0).max(1024),
 	clientFiles: z.array(z.string()).nullable(),
 	fileType: z.array(z.string()).nullable(),
 });
@@ -44,19 +43,49 @@ export default function SubmitAnswer({session, order}: {session: any , order: an
     const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			description: "",
 			clientFiles: [],
 			fileType: [],
 		},
 	});
     
+const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+
+    const selectedFiles: File[] = e.target.files ? Array.from(e.target.files) : [];
+    console.log(selectedFiles);
+    setFileList(selectedFiles);
+  };
+
+    let files = fileList ? [...fileList] : [];
+
+    const updateFiletype = (file: any, value: any) => {
+		file.fileType = value;
+	};
+    
+    const removeFileHandler = (index: number) => {
+		const updatedFiles = [...files] as any;
+		updatedFiles.splice(index, 1);
+		setFileList(updatedFiles);
+	};
+
    async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
 	try {
 		console.log(values);
 		e.preventDefault();
+		const formData = new FormData();
+		//  formData.append('data', JSON.stringify(values));
+		 console.log(files)
+		 if (files) {
+			 for (let i = 0; i < files?.length; i++) {
+				 formData.append(`files`, files[i]);
+				}				
+			}
+			for (const value of formData.values()) {
+				console.log(value);
+				}
+
 		const response = await fetch(`http://localhost:3000/api/v1/submissions?orderId=${order.id}&userId=${session.user.id}`, {
 		method: 'POST',
-		body: JSON.stringify(values),
+		body: formData,
 		headers: {
 			'Content-Type': 'application/json'
 		}
@@ -68,25 +97,7 @@ export default function SubmitAnswer({session, order}: {session: any , order: an
 	}
 }
 
-	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-
-    const selectedFiles: File[] = e.target.files ? Array.from(e.target.files) : [];
-    console.log(selectedFiles);
-    setFileList(selectedFiles);
-  };
-
-    let files = fileList ? [...fileList] : [];
-
-    const updateFiletype = (file: any, value: any) => {
-		file.fileType = value;
-		console.log(file);
-	};
-    
-    const removeFileHandler = (index: number) => {
-		const updatedFiles = [...files] as any;
-		updatedFiles.splice(index, 1);
-		setFileList(updatedFiles);
-	};
+	
 
     
 
@@ -110,7 +121,7 @@ export default function SubmitAnswer({session, order}: {session: any , order: an
 							className=" text-black w-full"
 						>
 							<div className="flex flex-col justify-between w-full  rounded">
-								<div className=" ">
+								{/* <div className=" ">
 									<FormField
 										control={form.control}
 										name="description"
@@ -123,7 +134,7 @@ export default function SubmitAnswer({session, order}: {session: any , order: an
 											</FormItem>
 										)}
 									/>
-								</div>
+								</div> */}
 
 								<div className="flex  w-full py-1 text-xs space-x-2 justify-center items-center">
 									<FormField
