@@ -9,12 +9,8 @@ import {
 } from "@/components/ui/dialog"
 import EditProfile from "@/app/(dashboard)/admin/settings/settingscomponents/editprofile";
 
-interface SettingsHeaderProps{
-    session: any
-}
 
-
-export default  async function SettingsHeader({session}: SettingsHeaderProps) {
+export default  async function SettingsHeader({session}) {
 const fullName: any = session?.user?.name;
 const [firstName, lastName] = fullName.split(" ");
 console.log(session)

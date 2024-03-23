@@ -2,93 +2,121 @@ import Image from "next/image";
 import Link from "next/link";
 import Confirmcard from "@/components/confirmcard";
 import Norequest from "@/components/norequest";
-import { getServerSession } from 'next-auth';
-import { options } from '@/pages/api/auth/options';
-
+import { getServerSession } from "next-auth";
+import { options } from "@/pages/api/auth/options";
+import Inprogresscard from "@/components/InProgressCard";
+import { SessionType } from "@/types/types";
 const cardProps = [
-  {
-    title: "Available",
-    value: "97%",
-    changeValue: 1,
-    changeText: "from last month",
-    iconName: "success",
-    link: "#"
-  },
-  {
-    title: "In Progress",
-    value: "20",
-    changeText: "Active Orders",
-    iconName: "progress",
-    link: "#"
-  },
-  {
-    title: "Earnings",
-    value: "20",
-    changeValue: 18,
-    changeText: "from last month",
-    iconName: "activity",
-    link: "#"
-  },
-  {
-    title: "Rating",
-    value: "2",
-    changeValue: 2,
-    changeText: "from last month",
-    iconName: "sanction",
-    link: "#"
-  },
+	{
+		title: "Available",
+		value: "97%",
+		changeValue: 1,
+		changeText: "from last month",
+		iconName: "success",
+		link: "/available",
+	},
+	{
+		title: "In Progress",
+		value: "20",
+		changeText: "Active Orders",
+		iconName: "progress",
+		link: "/orders",
+	},
+	{
+		title: "Earnings",
+		value: "20",
+		changeValue: 18,
+		changeText: "from last month",
+		iconName: "activity",
+		link: "/finance",
+	},
+	{
+		title: "Rating",
+		value: "2",
+		changeValue: 2,
+		changeText: "from last month",
+		iconName: "sanction",
+		link: "#",
+	},
 ];
 
-
-
 export default async function Home() {
-   const session = await getServerSession(options);
-    const res= await fetch(`http://localhost:3000/api/v1/orders`);
-    const orders = await res.json();
-    const unconfirmedOrders = orders?.data.filter(order => order.writerId == session?.user.id && order.orderStatus == 'UNCONFIRMED')
-    console.log(unconfirmedOrders);
+	const session : SessionType | null = await getServerSession(options);
+	const res = await fetch(`http://localhost:3000/api/v1/orders`);
+	const orders = await res.json();
+	const unconfirmedOrders = orders?.data.filter(
+		(order) =>
+			order.writerId == session?.user.id && order.orderStatus == "UNCONFIRMED"
+	);
 
+	const inprogressOrders = orders?.data.filter(
+		(order) =>
+			order.writerId == session?.user.id && order.orderStatus == "INPROGRESS"
+	);
+  
+	console.log(unconfirmedOrders);
+	console.log(inprogressOrders);
 
-  return (
-    <main className="flex max-h-screen  flex-col w-full items-center justify-start gap-y-8 ">
-      <div className="grid text-center gap-4  lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        {
-          cardProps.map((props, index) => (
-            <Link
-              href="#"
-              key={index}
-              className="group rounded-lg border  px-5 py-4 transition-colors border-slate-300  bg-gray-100 hover:bg-[#CAED5B] hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            >
-              <h2 className={`mb-3 text-2xl font-semibold`}>
-                {`${props.title} `}
-                <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                  -&gt;
-                </span>
-              </h2>
-              <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-                Find in-depth information about Next.js features and API.
-              </p>
-            </Link>
-          ))}
-      </div>
+	return (
+		<main className="flex max-h-screen  flex-col w-full items-center justify-start gap-y-8 ">
+			<div className="grid text-center gap-4  lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
+				{cardProps.map((props, index) => (
+					<Link
+						href={`${props.link}`}
+						key={index}
+						className="group rounded-lg border  px-5 py-4 transition-colors border-slate-300  bg-gray-100 hover:bg-[#CAED5B] hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+					>
+						<h2 className={`mb-3 text-2xl font-semibold`}>
+							{`${props.title} `}
+							<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+								-&gt;
+							</span>
+						</h2>
+						<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+							Find in-depth information about Next.js features and API.
+						</p>
+					</Link>
+				))}
+			</div>
 
-      <div className="grid text-center gap-4 lg:w-full lg:mb-0 lg:grid-cols-5 lg:text-left  min-h-96">
-        <div className="flex flex-col group rounded-lg col-span-3 border  px-5 py-4 transition-colors border-slate-300  bg-[#204C58] hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-          <h2 className={`mb-3 text-xl font-semibold text-white`}>
-            Direct Requests
-          </h2>
-          {unconfirmedOrders.length > 0 ? <Confirmcard orders={unconfirmedOrders} /> : <Norequest/>}
+			<div className="grid text-center gap-4 lg:w-full lg:mb-0 lg:grid-cols-5 lg:text-left  min-h-96">
+				<div className="flex flex-col group rounded-lg col-span-3 border  px-5 py-4 transition-colors border-slate-300  bg-[#204C58] hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
+					<h2 className={`mb-3 text-xl font-semibold text-white`}>
+						Direct Requests
+					</h2>
+					<div className="flex flex-col gap-3 overflow-y-scroll">
+						{unconfirmedOrders.length > 0 ? (
+							unconfirmedOrders.map((order, index) => (
+								<Confirmcard
+									key={order.id}
+									order={order}
+								/>
+							))
+						) : (
+							<Norequest />
+						)}
+					</div>
+				</div>
+				<div className="group rounded-lg border col-span-2 px-5 py-4 transition-colors border-slate-100  bg-white  hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
+					<h2 className={`mb-3 text-xl font-semibold`}>
+						Assignments in Progress
+					</h2>
+					<div className="flex flex-col gap-3 overflow-y-scroll">
+						{inprogressOrders.length > 0 ? (
+							inprogressOrders.map((order, index) => (
+								<Inprogresscard
+									key={order.id}
+									order={order}
+								/>
+							))
+						) : (
+							<Norequest />
+						)}
+					</div>
+				</div>
+			</div>
 
-        </div>
-        <div className="group rounded-lg border col-span-2 px-5 py-4 transition-colors border-slate-100  bg-white  hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-          <h2 className={`mb-3 text-xl font-semibold`}>
-            Assignments in Progress
-          </h2>
-
-        </div>
-      </div>
-
-      {/* <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+			{/* <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
           Get started by editing&nbsp;
           <code className="font-mono font-bold">app/page.tsx</code>
@@ -112,7 +140,6 @@ export default async function Home() {
           </a>
         </div>
       </div> */}
-
-    </main>
-  );
+		</main>
+	);
 }

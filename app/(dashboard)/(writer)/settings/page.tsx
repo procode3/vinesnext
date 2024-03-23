@@ -2,9 +2,10 @@ import { getServerSession } from 'next-auth';
 import { options } from '@/pages/api/auth/options';
 import SettingsHeader from "@/app/(dashboard)/admin/settings/settingscomponents/SettingsHeader";
 import PersonalInfomation from './settingscomponents/PersonalInfomation';
+import { SessionType } from '@/types/types';
 
 export default  async function Page() {
-const session = await getServerSession(options);
+const session : SessionType | null = await getServerSession(options);
 
 console.log(session)
   return (
